@@ -1,24 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2022/11/14/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>2022计算机保研经历：末九6%的头铁之路（南大软院、浙大软院、武大计算机、中科大先研院、西交软院）</title>
     <url>/2022/12/02/2022%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BF%9D%E7%A0%94%E7%BB%8F%E5%8E%86%EF%BC%9A%E6%9C%AB%E4%B9%9D6-%E7%9A%84%E5%A4%B4%E9%93%81%E4%B9%8B%E8%B7%AF%EF%BC%88%E5%8D%97%E5%A4%A7%E8%BD%AF%E9%99%A2%E3%80%81%E6%B5%99%E5%A4%A7%E8%BD%AF%E9%99%A2%E3%80%81%E6%AD%A6%E5%A4%A7%E8%AE%A1%E7%AE%97%E6%9C%BA%E3%80%81%E4%B8%AD%E7%A7%91%E5%A4%A7%E5%85%88%E7%A0%94%E9%99%A2%E3%80%81%E8%A5%BF%E4%BA%A4%E8%BD%AF%E9%99%A2%EF%BC%89/</url>
     <content><![CDATA[<h1 id="Prelude"><a href="#Prelude" class="headerlink" title="Prelude"></a><strong>Prelude</strong></h1><p>上岸躺平了好长时间了，还是决定写点东西记录一下</p>
@@ -266,6 +248,143 @@
 ]]></content>
       <tags>
         <tag>保研</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2022/11/14/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>《MySQL是怎样运行的》笔记 第一章</title>
+    <url>/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%80%E7%AB%A0/</url>
+    <content><![CDATA[<h1 id="重新认识MySQL"><a href="#重新认识MySQL" class="headerlink" title="重新认识MySQL"></a><strong>重新认识MySQL</strong></h1><pre><code>1 MySQL的客户端/服务器架构
+    a. 服务器处理存储的数据，客户端发出增删改查的请求
+    b. 服务器进程的名称为mysqld
+    c. 客户端进程的名称为mysql
+2. MySQL的安装
+    a. bin目录下的可执行文件
+        i. MySQL的安装目录下有一个bin文件夹，有很多可执行文件
+    b. 运行bin目录下的mysqld就可以开启mysql服务器
+        i. 环境变量PATH
+            1) 环境变量是一系列地址的集合，通过冒号隔开
+            2) 指定了环境变量之后，输入命令的时候就会从环境变量的地址中找有没有这个命令
+            3) 就不需要每次都到MySQL的目录下去执行命令了
+3. 启动MySQL服务器程序
+    a. UNIX
+        i. mysqld
+        ii. mysqld_safe
+        iii. mysql.server
+        iv. mysql_multi
+        v. 自己看详细区别，启动的时候查手册就行
+    b. Windows
+        i. mysqld
+            1) 直接双击就能启动了
+            2) 或者把mysqld注册为windows服务
+                a) 需要长时间使用的程序都可以注册为服务
+                b) 注册为服务的指令
+                    i) &quot;文件的完整路径&quot; --install [-manual] [服务名]
+            3) 然后通过net start MySQL来启动服务
+            4) 用stop来停止服务
+4. 启动MySQL客户端程序
+    a. 连接方法
+        i. 执行mysql文件就行
+        ii. mysql -h主机名 -u用户名 -p密码
+            1) mysql -hlocalhost -uroot -p123456
+            2) -P 大写的P参数可以用来指定端口号
+        iii. 小注意：
+            3) 对于-h -u -p这种只有一个字母的参数，前面加一个dash
+            4) 对于--password这种长参数，前面就需要加两个dash
+    b. 断开连接并且关闭mysql客户端的方法
+        i. 三种
+            5) quit
+            6) exit
+            7) \q
+        ii. 输出Bye时，就说明关闭成功了
+        iii. 但是只是关闭了客户端程序，服务端程序并没有关闭
+    c. 注意点
+        i. 可以-p后面不加密码，然后会单独要求输入密码，更安全
+        ii. 如果想在-p后面加密码，就注意和密码之间不能有空格
+        iii. 如果客户端和服务端在同一台机器上，就可以省略 -h参数
+        iv. 如果使用linux，可以省略-u参数，会自动使用linux的用户名
+5. 客户端与服务器连接的过程
+    本质就是进程的通信
+    a. TCP/IP
+        i. 一般服务器和客户端之间使用TCP连接
+        ii. 服务器默认申请3306端口号
+        iii. mysqld -P3307
+            1) 可以在启动的时候指定申请的端口号
+    b. 命名管道和共享内存
+        i. 这两种都是windows提供的进程间通信方式
+        ii. mysql可以用这种方式连接同一主机的进程
+    c. Unix域套接字文件
+        i. 也就是socket文件，linux里万物皆文件
+        ii. 使用linux的话，如果客户端和服务端在同一台主机上
+            2) 那么就可以使用linux套接字文件进行连接
+6. 服务端处理请求的流程
+    a. 简介
+        i. 
+</code></pre>
+<p><img src="/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%80%E7%AB%A0/image.png" alt="Alt text"></p>
+<pre><code>    b. 连接管理
+        i. 会给每个客户端都分配一个线程
+            1) 因此会用到线程池，复用线程
+        ii. 还能使用SSL来增强连接的安全性
+    c. 解析和优化
+        i. 简介
+            2) mysql服务器获得文本形式的请求后，会进行 查询缓存、语法解析和查询优化
+        ii. 查询缓存
+            3) 只有查询语句一模一样时，才会命中缓存
+                a) 只要有一点改变都不会命中
+            4) 调用系统函数或者查询系统的表时，不会缓存请求
+                a) 因为每次调用返回的值都有可能不同
+            5) 当表被更新时，涉及到该表的缓存会立刻失效
+            6) 因为维护缓存比较麻烦，所以MySQL8.0的时候就把查询缓存给删了
+        iii. 语法解析
+            7) 缓存未命中之后，就进行语法解析
+            8) 判断sql语句语法是否正确
+            9) 然后进行编译
+        iv. 查询优化
+            10) 服务器会对我们写SQL语句进行优化，提高执行效率
+            11) 使用Explain就可以查看语句的执行计划
+    d. 存储引擎
+        i. mysql把对于数据的存储和读取都封装到了存储引擎中
+            12) 前面的连接管理 解析和优化其实并不涉及到数据
+        ii. 存储引擎负责数据的存储和读取
+        iii. MySQL server完成了查询优化之后，只需要调用存储引擎提供的API就行了
+7. 常用存储引擎
+    a. 有很多不同的存储引擎
+    b. 其实最常用的就是InnoDB和MyISAM
+        i. 一个支持事务和外键，一个不支持
+        ii. 后面有详细讲解
+8. 关于存储引擎的操作
+    a. 查看当前支持的存储引擎
+        i. SHOW ENGINES;
+    b. 设置表的存储引擎
+        i. 可以给不同的表设置不同的存储引擎
+        ii. 默认使用InnoDB
+        iii. 创建表时指定存储引擎
+</code></pre>
+<p> <img src="/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%80%E7%AB%A0/image-1.png" alt="Alt text"></p>
+<pre><code>        iv. 修改表的存储引擎
+</code></pre>
+<p><img src="/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%80%E7%AB%A0/image-2.png" alt="Alt text"></p>
+]]></content>
+      <tags>
+        <tag>数据库</tag>
       </tags>
   </entry>
 </search>
