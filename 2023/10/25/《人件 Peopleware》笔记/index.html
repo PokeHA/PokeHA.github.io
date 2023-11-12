@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>《人件 Peopleware》笔记 - Shawn Zong&#039;s Notes</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Shawn Zong&#039;s Notes"><meta name="msapplication-TileImage" content="/img/avatar.jpg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Shawn Zong&#039;s Notes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="一、书名和作者 书名： 人件 Peopleware: Productive Projects and Teams 作者： Tom DeMarco &amp;#x2F; Timothy Lister  二、书籍概览 主要论点和结构   本书是软件管理领域的传奇经典，被誉为“对美国软件业影响最大的一本书”。全书从管理人力资源、创建健康的办公环境、雇用并留用正确的人、高效团队形成、改造企业文化和快乐工作等多个角"><meta property="og:type" content="blog"><meta property="og:title" content="《人件 Peopleware》笔记"><meta property="og:url" content="http://shawnzong.top/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/"><meta property="og:site_name" content="Shawn Zong&#039;s Notes"><meta property="og:description" content="一、书名和作者 书名： 人件 Peopleware: Productive Projects and Teams 作者： Tom DeMarco &amp;#x2F; Timothy Lister  二、书籍概览 主要论点和结构   本书是软件管理领域的传奇经典，被誉为“对美国软件业影响最大的一本书”。全书从管理人力资源、创建健康的办公环境、雇用并留用正确的人、高效团队形成、改造企业文化和快乐工作等多个角"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://shawnzong.top/img/og_image.png"><meta property="article:published_time" content="2023-10-25T03:42:28.000Z"><meta property="article:modified_time" content="2023-11-12T08:32:02.627Z"><meta property="article:author" content="Shawn Zong"><meta property="article:tag" content="项目管理"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://shawnzong.top/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://shawnzong.top/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/"},"headline":"《人件 Peopleware》笔记","image":["http://shawnzong.top/img/og_image.png"],"datePublished":"2023-10-25T03:42:28.000Z","dateModified":"2023-11-12T08:32:02.627Z","author":{"@type":"Person","name":"Shawn Zong"},"publisher":{"@type":"Organization","name":"Shawn Zong's Notes","logo":{"@type":"ImageObject","url":"http://shawnzong.top/img/avatar.jpg"}},"description":"一、书名和作者 书名： 人件 Peopleware: Productive Projects and Teams 作者： Tom DeMarco &#x2F; Timothy Lister  二、书籍概览 主要论点和结构   本书是软件管理领域的传奇经典，被誉为“对美国软件业影响最大的一本书”。全书从管理人力资源、创建健康的办公环境、雇用并留用正确的人、高效团队形成、改造企业文化和快乐工作等多个角"}</script><link rel="canonical" href="http://shawnzong.top/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/"><link rel="icon" href="/img/avatar.jpg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const $tabMenu = document.querySelector(`a[href="${location.hash}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(location.hash);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-10-25T03:42:28.000Z" title="10/25/2023, 11:42:28 AM">2023-10-25</time>发表</span><span class="level-item"><time dateTime="2023-11-12T08:32:02.627Z" title="11/12/2023, 4:32:02 PM">2023-11-12</time>更新</span><span class="level-item">22 分钟读完 (大约3237个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">《人件 Peopleware》笔记</h1><div class="content"><h2 id="一、书名和作者"><a href="#一、书名和作者" class="headerlink" title="一、书名和作者"></a><strong>一、书名和作者</strong></h2><ul>
+<li><strong>书名：</strong> 人件 Peopleware: Productive Projects and Teams</li>
+<li><strong>作者：</strong> Tom DeMarco &#x2F; Timothy Lister</li>
+</ul>
+<h2 id="二、书籍概览"><a href="#二、书籍概览" class="headerlink" title="二、书籍概览"></a><strong>二、书籍概览</strong></h2><ul>
+<li><p><strong>主要论点和结构</strong></p>
+<p>  本书是软件管理领域的传奇经典，被誉为“对美国软件业影响最大的一本书”。全书从管理人力资源、创建健康的办公环境、雇用并留用正确的人、高效团队形成、改造企业文化和快乐工作等多个角度阐释了如何思考和管理软件开发的最大问题——人，以得到高效的项目和团队。</p>
+<p>  全书分为六个主要部分，分别是“管理人力资源”、“办公环境”、“正确的人”、“高效团队养成”、“沃土”和“快乐地工作”。</p>
+</li>
+<li><p><strong>目标读者和应用场景</strong></p>
+<p>  本书适合所有软件工程师、项目经理、软件开发者、软件工程专业学生等正在或者将要从事软件开发的人员阅读。</p>
+</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="三、核心观点与主题"><a href="#三、核心观点与主题" class="headerlink" title="三、核心观点与主题"></a><strong>三、核心观点与主题</strong></h2><h3 id="主题一-此时此刻，一个项目正在走向失败"><a href="#主题一-此时此刻，一个项目正在走向失败" class="headerlink" title="主题一  此时此刻，一个项目正在走向失败"></a><strong>主题一  此时此刻，一个项目正在走向失败</strong></h3><ul>
+<li><p><strong>子观点1</strong></p>
+<p>  作为管理者，典型的失败情境：习惯把人当作固定的模块来管理。</p>
+</li>
+<li><p><strong>子观点2</strong></p>
+<p>  在失败的绝大多数项目中，没有一个是因为单纯的技术问题导致失败的。</p>
+</li>
+<li><p><strong>子观点3</strong></p>
+<p>  工作中的问题更多属于社会学范畴，而非技术范畴。<br>  但是大部分管理者总是将精力放在解决技术问题上，与人相关的要素被放到了最低优先级。</p>
+</li>
+<li><p><strong>子观点4</strong></p>
+<p>  大家以为自己是高科技工作者（其实不是），并且习惯性地专注于工作中的技术问题。并不是因为他们重要，而是因为他们更简单。比人与人之间的互动简单多了。</p>
+</li>
+<li><p><strong>实例或案例</strong></p>
+<p> 统计结果表明有15%的项目出现问题:项目取消、终止、延迟或者交付的产品从未被使用。项目越大，出现问题的几率就越高。对于持续时间达到25个工作年及以上的项目，足有25%的项目最后宣告失败。作者分析了这些案例，并且发现绝大多数失败项目中，没有一个是因单纯的技术问题导致失败的。</p>
+</li>
+</ul>
+<h3 id="主题二-干酪汉堡，做一个卖一个"><a href="#主题二-干酪汉堡，做一个卖一个" class="headerlink" title="主题二  干酪汉堡，做一个卖一个"></a><strong>主题二  干酪汉堡，做一个卖一个</strong></h3><ul>
+<li><p><strong>子观点1</strong></p>
+<p>  管理脑力劳动者，不应该采用快餐行业的管理方法。也就是不应该把员工当作可以随便替换的零部件。</p>
+</li>
+<li><p><strong>子观点2</strong></p>
+<p>  营造一个不容许任何失误的氛围会让大家持有戒心，大家就会害怕犯错。在这种情况下，平均水平也许会提高，但是团队的社会氛围会遭受伤害。</p>
+<p>  相反的做法是鼓励大家犯错。可以不时地去问问大家遭遇了那些错误，让大家明白犯错是可以的。</p>
+</li>
+<li><p><strong>子观点3</strong></p>
+<p>  管理不是踢屁股。向人们施压可以增加短期输出，长远看还是无效的。</p>
+<p>  不需要使用严格的度量来促使大家工作，大部分人是热爱工作的。有时可能需要采取一些手段让大家少工作一会儿。</p>
+</li>
+<li><p><strong>子观点4</strong></p>
+<p>  在生产环境中，容易将人当作是机器的零部件。磨损了就可以换个新的。不要盲目地遵从这个风格。</p>
+<p>  不要因为员工的独特个性而感到害怕，从而去扼杀它。</p>
+</li>
+<li><p><strong>子观点5</strong></p>
+<p>  不要只关注每个员工在当下的产出，从而来评估员工对于项目的贡献。</p>
+<p>  有的员工产生的作用并不是明显可见的，比如催化剂的角色，可以增加整个项目团队的粘性。</p>
+</li>
+<li><p><strong>子观点6</strong></p>
+<p>  磨刀不误砍柴工。花更多的时间在思考和计划上，而不是在实施上。越是时间紧迫的项目，更是应该在团队内部进行频繁的头脑风暴。</p>
+</li>
+<li><p><strong>实例或案例</strong></p>
+<p>  有的员工并不能做出明显的对项目的贡献，但可能是一个超级催化剂。这种存在使得团队内部更有黏度。可以帮助团队成员互相交流和相处，有他的项目会变得更加有趣。我们需要认识到催化剂这个角色在一个项目中的重要性。</p>
+</li>
+</ul>
+<h3 id="主题三-维也纳在等你"><a href="#主题三-维也纳在等你" class="headerlink" title="主题三  维也纳在等你"></a><strong>主题三  维也纳在等你</strong></h3><ul>
+<li><p><strong>子观点1</strong></p>
+<p>  管理者总是在研究如何让人们以牺牲自我生活为代价来承受更大的工作强度。</p>
+</li>
+<li><p><strong>子观点2</strong></p>
+<p>  西班牙理论就是认为财富的总量是固定的，因此得殖民别人，抢黄金，造成的结果就是通货膨胀。</p>
+<p>  生产效率应该是在单位工作时间内产生更多的价值，而管理者思考的是如何在单位薪酬内获取更多的价值。</p>
+<p>  奉行西班牙理论的管理者想通过无偿的加班来获得生产效率的提高。他们给员工强化交付日期的重要性（其实可能是随意的，地球不会因为项目晚了一个月就停止转动）。让员工因为内疚而不得不牺牲自己的时间来工作。</p>
+</li>
+<li><p><strong>子观点3</strong></p>
+<p>  项目成员都会意识到人生苦短，生活中还有很多比工作更重要的事情。</p>
+</li>
+<li><p><strong>子观点4</strong></p>
+<p>  每加班一个小时，就可能导致员工在正常的工作时间摸鱼一个小时进行补偿，这是杀鸡取卵。<br>  但管理者看不到摸鱼时间，只关注总时间。实际上最终的有效工作时间还是相同的。</p>
+</li>
+<li><p><strong>子观点5</strong></p>
+<p>  工作狂会自愿做很多加班，如果管理者无底线地对工作狂进行压榨。工作狂迟早有一天也会离职。</p>
+</li>
+<li><p><strong>子观点6</strong></p>
+<p>  需要多考虑考虑生产效率和人员流失率之间的取舍，控制在可接受范围内。<br>  别超额完成任务后导致所有人在项目结束后离职。</p>
+<p>  也要考虑工作速度和产品质量之间的关系。</p>
+</li>
+<li><p><strong>实例或案例</strong></p>
+<p>  大多数组织不会对流失人员进行统计。无论什么时候讨论生产效率，衡量起来都好像人员流失根本不存在，或者与成本无关一样。DataGeneral的Eagle项目就是这样一个案例。该项目是西班牙理论的胜利：工作狂的项目成员通过不停加班把生产效率推向了一个前所未有的高度。但项目最后，几乎所有开发人员都离职了。</p>
+</li>
+</ul>
+<h3 id="主题四-质量——如果时间允许"><a href="#主题四-质量——如果时间允许" class="headerlink" title="主题四  质量——如果时间允许"></a><strong>主题四  质量——如果时间允许</strong></h3><ul>
+<li><p><strong>子观点1</strong></p>
+<p>  采取任何可能牺牲产品质量的行动都可能挑起员工反对的情绪。</p>
+</li>
+<li><p><strong>子观点2</strong></p>
+<p>  当开发过程被置于极度的时间压力时，质量是第一个开始被牺牲的代价。<br>  但质量毫无疑问是重要的，不过很多管理者认为为了快速抢占市场，降低点质量也是可以的。</p>
+</li>
+<li><p><strong>子观点3</strong></p>
+<p>  大部分人认为过度提高质量是做无用的工作。</p>
+</li>
+<li><p><strong>子观点4</strong></p>
+<p>  有些日本的企业，项目团队拥有否决发布未成熟产品的权力。<br>  是否给予团队成员否决交付的权力是一个需要考虑的问题。</p>
+</li>
+<li><p><strong>实例或案例</strong></p>
+<p>  惠普就被认为是一个通过制造者自定义高质量标准而提升生产效率获益的典型组织。从一开始，惠普就信奉质量。在这种环境下，需要更多时间或资金来生产高质量产品的说法压根儿就没有出现过。因此，开发人员形成的文化是交付的质量要超越市场的质量要求。他们追求质量的标志成为提高他们工作满意度的动因，从而拥有行业内最低的人员流失率。</p>
+</li>
+</ul>
+<h3 id="主题五-再谈帕金森管理"><a href="#主题五-再谈帕金森管理" class="headerlink" title="主题五  再谈帕金森管理"></a><strong>主题五  再谈帕金森管理</strong></h3><ul>
+<li><p><strong>子观点1</strong></p>
+<p>  帕金森定律：工作会自动膨胀，占满一个人所有的可用时间。但帕金森定律并不是公理，只是存在一定的真实成分。</p>
+</li>
+<li><p><strong>子观点2</strong></p>
+<p>  一旦某个员工表现出工作低效，那么应该让他调换工作或跳槽，而不是继续施加更多的压力。</p>
+</li>
+<li><p><strong>子观点3</strong></p>
+<p>  在某些情况下，不给团队压力，反而会得到最高的生产效率，但也不是绝对的。</p>
+</li>
+<li><p><strong>子观点4</strong></p>
+<p>  一个组织的工作如果都忙忙碌碌，就会膨胀以至于占满整个工作日。</p>
+</li>
+<li><p><strong>实例或案例</strong></p>
+<p>  倘若你不知道其实很少有管理者接受过管理方面的正规培训，你可能会错以为他们都是科班出身，在学校就学过帕金森定律及其分支理论。即使管理者对管理一无所知，他们也极为认同帕金森定律这一针对员工及其态度进行管理的公理。定律为他们提供了强有力的证据，只有设定不可能完成的交付日期，才能保证工作的完成。</p>
+</li>
+</ul>
+<h2 id="四、亮点与启发"><a href="#四、亮点与启发" class="headerlink" title="四、亮点与启发"></a><strong>四、亮点与启发</strong></h2><ul>
+<li><p><strong>最有影响的观点或实例</strong></p>
+<p>  本书强调了在软件项目开发过程中，最重要的是人而不是技术。因为我们工作中所面临的问题，本质上都是社会性的问题而不是技术性的问题。因此我们需要学习如何尊重人，发挥人的潜能，通过人来创造高效率的团队。</p>
+</li>
+<li><p><strong>对个人或专业发展的启示</strong></p>
+<p>  如果我以后成为了管理者，我需要像书中所讲的那样尊重自己的团队成员，规划合理的工作时间，打造怡人的工作环境，鼓励大家试错，尊重不同成员的个性，不以单一的指标去评判员工对于项目的贡献，以此来可持续性地提高整个团队的工作效率。</p>
+</li>
+</ul>
+<h2 id="五、批评与局限性"><a href="#五、批评与局限性" class="headerlink" title="五、批评与局限性"></a><strong>五、批评与局限性</strong></h2><ul>
+<li><p><strong>任何有争议、模糊或过时的信息</strong></p>
+<p>  书中所讲的内容可能太过于理想化了，就像乌托邦一样，给员工最好的福利和最低的压力真的就能有最好的工作效率吗。并且考虑到当今IT行业的工作的环境，感到的只有离天堂太远的哀伤。</p>
+</li>
+</ul>
+<h2 id="六、实际应用和拓展"><a href="#六、实际应用和拓展" class="headerlink" title="六、实际应用和拓展"></a><strong>六、实际应用和拓展</strong></h2><ul>
+<li><p><strong>在实际工作&#x2F;学习中如何应用这些概念</strong></p>
+<p>  书中提到了一个“流”的概念，流是一种深度的近乎于冥想的融入情况。在此种状态下，有一种普适幸福感存在，人们几乎不会意识到时间的流逝，工作会变得非常高产。</p>
+<p>  不幸的是，我们需要一个缓慢的过程来进入状态，15分钟或更长时间的集中才能把自己锁定在流里面。在这个引入过程中，我们对噪声和干扰是非常敏感的。</p>
+<p>  因此在我们平时的学习工作时，可以提前有意减少潜在的打扰对象，比如把手机放在远处、把耳机带上等等，这可以提高我们的工作效率。</p>
+</li>
+</ul>
+<h2 id="七、总结与评价"><a href="#七、总结与评价" class="headerlink" title="七、总结与评价"></a><strong>七、总结与评价</strong></h2><ul>
+<li><p><strong>对书籍的整体评价</strong></p>
+<p>  很有启发性，读起来很有趣，语言也翻译得没有那么生涩，容易理解。书中讲解的内容和以后的工作也息息相关，可以派上用场。</p>
+</li>
+<li><p><strong>书籍的长处和短处</strong></p>
+<p>  这本书读起来很有道理，但我毕业后先去干开发，这些道理又好像没用了，因为我是被管的那个。短处就是让我窥见了天堂，自己又只能下地狱，更绝望了。</p>
+</li>
+</ul>
+</div><div class="article-licensing box"><div class="licensing-title"><p>《人件 Peopleware》笔记</p><p><a href="http://shawnzong.top/2023/10/25/《人件 Peopleware》笔记/">http://shawnzong.top/2023/10/25/《人件 Peopleware》笔记/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Shawn Zong</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-10-25</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2023-11-12</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/">项目管理</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/10/09/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%20The%20Mythical%20Man-Month%E3%80%8B%E7%AC%94%E8%AE%B0/"><span class="level-item">《人月神话 The Mythical Man-Month》笔记</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="disqus_thread"><noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div><script>var disqus_config = function () {
+            this.page.url = 'http://shawnzong.top/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/';
+            this.page.identifier = '2023/10/25/《人件 Peopleware》笔记/';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');  
+            s.src = '//' + 'Shawn' + '.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#一、书名和作者"><span class="level-left"><span class="level-item">1</span><span class="level-item">一、书名和作者</span></span></a></li><li><a class="level is-mobile" href="#二、书籍概览"><span class="level-left"><span class="level-item">2</span><span class="level-item">二、书籍概览</span></span></a></li><li><a class="level is-mobile" href="#三、核心观点与主题"><span class="level-left"><span class="level-item">3</span><span class="level-item">三、核心观点与主题</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#主题一-此时此刻，一个项目正在走向失败"><span class="level-left"><span class="level-item">3.1</span><span class="level-item">主题一  此时此刻，一个项目正在走向失败</span></span></a></li><li><a class="level is-mobile" href="#主题二-干酪汉堡，做一个卖一个"><span class="level-left"><span class="level-item">3.2</span><span class="level-item">主题二  干酪汉堡，做一个卖一个</span></span></a></li><li><a class="level is-mobile" href="#主题三-维也纳在等你"><span class="level-left"><span class="level-item">3.3</span><span class="level-item">主题三  维也纳在等你</span></span></a></li><li><a class="level is-mobile" href="#主题四-质量——如果时间允许"><span class="level-left"><span class="level-item">3.4</span><span class="level-item">主题四  质量——如果时间允许</span></span></a></li><li><a class="level is-mobile" href="#主题五-再谈帕金森管理"><span class="level-left"><span class="level-item">3.5</span><span class="level-item">主题五  再谈帕金森管理</span></span></a></li></ul></li><li><a class="level is-mobile" href="#四、亮点与启发"><span class="level-left"><span class="level-item">4</span><span class="level-item">四、亮点与启发</span></span></a></li><li><a class="level is-mobile" href="#五、批评与局限性"><span class="level-left"><span class="level-item">5</span><span class="level-item">五、批评与局限性</span></span></a></li><li><a class="level is-mobile" href="#六、实际应用和拓展"><span class="level-left"><span class="level-item">6</span><span class="level-item">六、实际应用和拓展</span></span></a></li><li><a class="level is-mobile" href="#七、总结与评价"><span class="level-left"><span class="level-item">7</span><span class="level-item">七、总结与评价</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar.jpg" alt="Shawn Zong"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Shawn Zong</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">6</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">4</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/PokeHA" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="hhttps://github.com/PokeHA"><i class="fab fa-github"></i></a></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-25T03:42:28.000Z">2023-10-25</time></p><p class="title"><a href="/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/">《人件 Peopleware》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-09T03:42:28.000Z">2023-10-09</time></p><p class="title"><a href="/2023/10/09/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%20The%20Mythical%20Man-Month%E3%80%8B%E7%AC%94%E8%AE%B0/">《人月神话 The Mythical Man-Month》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-03-16T03:42:28.000Z">2023-03-16</time></p><p class="title"><a href="/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%80%E7%AB%A0/">《MySQL是怎样运行的》笔记 第一章</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-02-09T03:42:28.000Z">2023-02-09</time></p><p class="title"><a href="/2023/02/09/%E3%80%8A%E5%8E%9F%E5%AD%90%E4%B9%A0%E6%83%AF%20Atomic%20Habits%E3%80%8B%E7%AC%AC%E4%B8%80%E7%AB%A0&amp;%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E7%AC%94%E8%AE%B0/">《原子习惯 Atomic Habits》第一章&amp;第二章 笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2022-12-02T03:42:28.000Z">2022-12-02</time></p><p class="title"><a href="/2022/12/02/2022%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BF%9D%E7%A0%94%E7%BB%8F%E5%8E%86%EF%BC%9A%E6%9C%AB%E4%B9%9D6-%E7%9A%84%E5%A4%B4%E9%93%81%E4%B9%8B%E8%B7%AF%EF%BC%88%E5%8D%97%E5%A4%A7%E8%BD%AF%E9%99%A2%E3%80%81%E6%B5%99%E5%A4%A7%E8%BD%AF%E9%99%A2%E3%80%81%E6%AD%A6%E5%A4%A7%E8%AE%A1%E7%AE%97%E6%9C%BA%E3%80%81%E4%B8%AD%E7%A7%91%E5%A4%A7%E5%85%88%E7%A0%94%E9%99%A2%E3%80%81%E8%A5%BF%E4%BA%A4%E8%BD%AF%E9%99%A2%EF%BC%89/">2022计算机保研经历：末九6%的头铁之路（南大软院、浙大软院、武大计算机、中科大先研院、西交软院）</a></p></div></article></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/%E4%BF%9D%E7%A0%94/"><span class="tag">保研</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%A0%E6%83%AF/"><span class="tag">学习习惯</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><span class="tag">项目管理</span><span class="tag">2</span></a></div></div></div></div></div><!--!--></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a><p class="is-size-7"><span>&copy; 2023 Shawn Zong</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
