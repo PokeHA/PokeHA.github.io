@@ -720,4 +720,120 @@
         <tag>学习习惯</tag>
       </tags>
   </entry>
+  <entry>
+    <title>《MySQL是怎样运行的》笔记 第三章 字符集和比较规则</title>
+    <url>/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E5%AD%97%E7%AC%A6%E9%9B%86%E5%92%8C%E6%AF%94%E8%BE%83%E8%A7%84%E5%88%99/</url>
+    <content><![CDATA[<ol>
+<li><p><strong>字符集和比较规则简介</strong></p>
+<ul>
+<li><strong>字符集简介</strong><ul>
+<li>字符集负责处理字符与二进制数据的存储关系</li>
+</ul>
+</li>
+<li><strong>比较规则</strong><ul>
+<li>字典序也就是比较他们二进制的大小</li>
+<li>除了字典序外也有其他的比较规则</li>
+</ul>
+</li>
+<li><strong>重要的字符集</strong><ul>
+<li><strong>ASCII</strong><ol>
+<li>128个字符，包括数字、大小写字母、空格等等</li>
+<li>每个字符一个字节</li>
+</ol>
+</li>
+<li><strong>GB2132</strong><ol>
+<li>包括中文和其他国家的字符</li>
+<li>存在于ASCII中的字符用1个字节存储</li>
+<li>其余的字符用2个字节存储</li>
+<li>也就是变长存储方式</li>
+</ol>
+</li>
+<li><strong>GBK</strong><ol>
+<li>对于GB2132的字符收集范围做了补充，其余一样</li>
+</ol>
+</li>
+<li><strong>Unicode系列</strong><ol>
+<li>对地球上所有的字符进行了收录，同样是变长编码</li>
+<li><strong>utf-8</strong><ul>
+<li>1-4个字节存储字符</li>
+</ul>
+</li>
+<li><strong>utf-16</strong><ul>
+<li>2或4个字节存储字符</li>
+</ul>
+</li>
+<li><strong>utf-32</strong><ul>
+<li>全用4字节存</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>MySQL支持的字符集</strong></p>
+<ul>
+<li><strong>utf8和utf-8mb4</strong><ul>
+<li><strong>utf8</strong><ol>
+<li>utf8mb3的别名，依旧用1-3个字节存储字符</li>
+</ol>
+</li>
+<li><strong>utf8mb3</strong><ol>
+<li>是阉割版，用1-3个字节存储字符</li>
+</ol>
+</li>
+<li><strong>utf8mb4</strong><ol>
+<li>完整版，用1-4个字节存储字符</li>
+<li>如果要存储更完整的数据的话就用这个，比如emoji表情</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>字符集的查看</strong><ul>
+<li>使用<code>SHOW CHARACTER SET</code>命令，可以指定匹配的模式</li>
+</ul>
+</li>
+<li><strong>比较规则的查看</strong><ul>
+<li>使用<code>SHOW COLLATION</code>命令，可以指定匹配的模式</li>
+<li>每种语言都有多个比较规则</li>
+<li>还会有个默认的比较规则<ol>
+<li>比如utf8的默认比较规则就是utf8_general_ci</li>
+<li>ci是case insensitive</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>字符集和比较规则的应用</strong></p>
+<ul>
+<li><strong>各级别的字符集和比较规则</strong><ul>
+<li>字符集的级别分为<ol>
+<li>服务器级别</li>
+<li>数据库级别</li>
+<li>表级别</li>
+<li>列级别</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>客户端和服务器通信中的字符集</strong><ul>
+<li>客户端和服务器通信时需要进行字符集的转换</li>
+<li>因为转换来转换去容易出错，所以一般通知设置为一样的字符集</li>
+</ul>
+</li>
+<li><strong>比较规则的应用</strong><ul>
+<li>如果发现按列排序后不是自己想要的顺序</li>
+<li>就可以考虑下更改比较规则</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>数据库</tag>
+      </tags>
+  </entry>
 </search>
