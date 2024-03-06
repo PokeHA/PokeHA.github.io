@@ -652,29 +652,42 @@
 </ul>
 </li>
 <li><p><strong>MySQL支持的字符集</strong></p>
-</li>
+ <span id="more"></span>
+<ul>
+<li><strong>utf8和utf-8mb4</strong><ul>
+<li><strong>utf8</strong><ol>
+<li>utf8mb3的别名，依旧用1-3个字节存储字符</li>
 </ol>
-<span id="more"></span>
-
-<pre><code>- **utf8和utf-8mb4**
-    - **utf8**
-        1. utf8mb3的别名，依旧用1-3个字节存储字符
-    - **utf8mb3**
-        1. 是阉割版，用1-3个字节存储字符
-    - **utf8mb4**
-        1. 完整版，用1-4个字节存储字符
-        2. 如果要存储更完整的数据的话就用这个，比如emoji表情
-- **字符集的查看**
-    - 使用`SHOW CHARACTER SET`命令，可以指定匹配的模式
-- **比较规则的查看**
-    - 使用`SHOW COLLATION`命令，可以指定匹配的模式
-    - 每种语言都有多个比较规则
-    - 还会有个默认的比较规则
-        1. 比如utf8的默认比较规则就是utf8_general_ci
-        2. ci是case insensitive
-</code></pre>
-<ol>
-<li><strong>字符集和比较规则的应用</strong><ul>
+</li>
+<li><strong>utf8mb3</strong><ol>
+<li>是阉割版，用1-3个字节存储字符</li>
+</ol>
+</li>
+<li><strong>utf8mb4</strong><ol>
+<li>完整版，用1-4个字节存储字符</li>
+<li>如果要存储更完整的数据的话就用这个，比如emoji表情</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>字符集的查看</strong><ul>
+<li>使用<code>SHOW CHARACTER SET</code>命令，可以指定匹配的模式</li>
+</ul>
+</li>
+<li><strong>比较规则的查看</strong><ul>
+<li>使用<code>SHOW COLLATION</code>命令，可以指定匹配的模式</li>
+<li>每种语言都有多个比较规则</li>
+<li>还会有个默认的比较规则<ol>
+<li>比如utf8的默认比较规则就是utf8_general_ci</li>
+<li>ci是case insensitive</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>字符集和比较规则的应用</strong></p>
+<ul>
 <li><strong>各级别的字符集和比较规则</strong><ul>
 <li>字符集的级别分为<ol>
 <li>服务器级别</li>
@@ -819,6 +832,368 @@
 <pre><code>        iv. 修改表的存储引擎
 </code></pre>
 <p><img src="/image-2.png"></p>
+]]></content>
+      <tags>
+        <tag>数据库</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《MySQL是怎样运行的》笔记 第四章 InnoDB记录结构</title>
+    <url>/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<ol>
+<li><p><strong>准备工作</strong></p>
+<ul>
+<li>不同存储引擎对于数据的存储格式都是不同的</li>
+<li>这本书主要讲的是InnoDB的格式</li>
+</ul>
+</li>
+<li><p><strong>InnoDB页简介</strong></p>
+<ul>
+<li>InnoDB会把数据划分为多个页</li>
+<li>以页作为磁盘和内存之间交互的基本单位</li>
+<li>页的大小一般为16KB</li>
+<li>一次至少读取16KB内容的数据到内存<ul>
+<li>同样的，一次最少刷新16KB的数据到磁盘</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>InnoDB行格式</strong></p>
+<ul>
+<li><p><strong>简介</strong></p>
+<ul>
+<li>我们以记录为单位往表中存储数据</li>
+<li>每一条记录在磁盘上的存储方式就被称为 行格式 或者 记录格式</li>
+<li>InnoDB有四种不同的行格式<ol>
+<li>Compact</li>
+<li>Redundant</li>
+<li>Dynamic</li>
+<li>Compressed <span id="more"></span></li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p><strong>指定行格式的语法</strong></p>
+<ul>
+<li><code>CREATE TABLE 表名 (列的信息) ROW_FORMAT=行格式名称</code></li>
+<li><code>ALTER TABLE 表名 ROW_FORMAT=行格式名称</code></li>
+</ul>
+</li>
+<li><p><strong>Compact行格式</strong></p>
+<ul>
+<li><strong>结构</strong><br> <img src="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/image.png" alt="alt text"></li>
+<li><strong>记录的额外的信息</strong><ul>
+<li>也就是为了描述记录不得不添加的记录</li>
+<li><strong>变长字段长度列表</strong><ul>
+<li>因为有些字段是变长的，所以我们除了记录实际的数据之外，还需要记录每个变长数据占用的字节数</li>
+<li>所以在Compact行格式中，会把每个变长字段数据的字节数按照逆序存放</li>
+<li>每个变成字段数据占用的字节数用一个字节或两个字节存，取决于字符集和变长字段的最长长度</li>
+<li>注意 当变长字段数据为null时，不存储它的长度</li>
+</ul>
+</li>
+<li><strong>NULL值列表</strong><ul>
+<li>用来标记哪些字段的值为null</li>
+<li>每个字段用一个bit来标记，也是逆序，为1时表示该值为null</li>
+<li>如果每个字段都不允许为null，那就不记录数据</li>
+</ul>
+</li>
+<li><strong>记录头信息</strong><ul>
+<li>记录一些额外信息，比如<ul>
+<li>删除标记</li>
+<li>记录类型</li>
+<li>下一条记录的相对位置</li>
+</ul>
+</li>
+<li>之后会详细讲</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>记录的真实数据</strong><ul>
+<li>除了实际的字段值之外，还会存储一些隐藏字段，比如<ul>
+<li>行ID<ul>
+<li>在没有主键，没有unique键的情况下</li>
+<li>才会自动生成row id</li>
+</ul>
+</li>
+<li>事务ID</li>
+<li>回滚指针</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Redundant行格式</strong></p>
+<ul>
+<li><strong>示意图</strong></li>
+</ul>
+<p>  <img src="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/image-1.png" alt="alt text"></p>
+<ul>
+<li><strong>简介</strong><ul>
+<li>这个过时了，看看就行</li>
+<li>字段长度偏移表记录每个字段的结束地址<ul>
+<li>需要用相邻的偏移量相减才能知道该字段的长度</li>
+</ul>
+</li>
+<li>记录头信息和Compact差不多，有些许的不同</li>
+<li>偏移量会有一个null比特位，标记该字段是否为null</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>行溢出数据的情况</strong></p>
+<ul>
+<li><strong>varchar(M)最多能存储的数据</strong><ul>
+<li>mysql中对于varchar类型，最多可以占用65535个字节<ul>
+<li>对于BLOB和TEXT类型倒没要求</li>
+</ul>
+</li>
+<li>其中M表示最多可以存储的字符数量<ul>
+<li>因为总体字节数有限制，所以M的大小取决于用的字符集占用几个字节</li>
+</ul>
+</li>
+<li>其实是因为mysql对于一条记录的大小限制为65535个字节<ul>
+<li>包括了除了真实数据之外的额外记录数据，比如变长字段长度列表和NULL列表</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>记录中的数据太多产生的行溢出</strong><ul>
+<li>因为数据库中的数据是以页为单位存储的，16KB，而varchar最多能存64KB的数据</li>
+<li>所以当一个字段数据太多时，会只存一部分，以及一个指向其它页的指针，指针指向的页存放剩余的部分，也叫溢出页(这是Compact和Redundant行格式处理溢出的方法)</li>
+</ul>
+</li>
+<li><strong>行溢出的临界点</strong><ul>
+<li>一条记录中的所有数据以及额外记录信息 超过16KB时就会发生行溢出</li>
+<li>不需要知道具体的临界点，只需要知道当存储数据很大时就可能发生溢出就行了</li>
+</ul>
+</li>
+<li><strong>Dynamic和Compressed行格式</strong><ul>
+<li>MySQL5.7默认使用的行格式就是Dynamic</li>
+<li>这两种行格式和Compact的区别只在于对于行溢出的处理<ul>
+<li>Dynamic和Compressed都会把产生行溢出的字段的全部真实数据放在其他页上，只在记录中存放指针</li>
+</ul>
+</li>
+<li>Compressed会在Dynamic基础上对页面进行压缩，节省空间</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>数据库</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《MySQL是怎样运行的》笔记 第五章 InnoDB数据页结构</title>
+    <url>/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<ol>
+<li><p><strong>不同类型的页简介</strong></p>
+<ul>
+<li>页是InnoDB管理空间的基本单位</li>
+<li>一个页的大小一般是16KB</li>
+<li>InnoDB中有多种页<ul>
+<li>存放Insert Buffer信息的页</li>
+<li>存放INODE信息的页</li>
+<li>存放undo信息的页</li>
+<li>索引页INDEX<ul>
+<li>这个就是用来存放记录的页</li>
+<li>也称为数据页</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>数据页结构的快速浏览</strong></p>
+<ul>
+<li>数据页被划分为多个部分 如图<br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-8.png" alt="alt text"></li>
+<li>总共分7个部分，简介如下：<br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-9.png" alt="alt text"> <span id="more"></span></li>
+</ul>
+</li>
+<li><p><strong>User Records 记录在页中的存储</strong></p>
+<ul>
+<li><strong>简介</strong><br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-11.png" alt="alt text"><ul>
+<li>纪录会以我们指定的行格式存储在User Records中</li>
+<li>一开始只有Free Space，没有User Records部分</li>
+<li>每插入一条记录时，将Free Space中的一部分划入到User Records中</li>
+<li>当FreeSpace用完时，就得申请新的page了</li>
+</ul>
+</li>
+<li><strong>记录头信息详解</strong><ul>
+<li>Compact行格式记录头信息如下<br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-12.png" alt="alt text"></li>
+<li>delete_mask<ul>
+<li>标记当前记录是否被删除</li>
+<li>之所以不直接删除是删除完重排序开销大</li>
+<li>被删除的记录会组成一个垃圾链表，链表中的记录 都是可重用空间<ul>
+<li>有新的记录的来的话，可以把被删除记录的空间覆盖掉</li>
+<li>垃圾链表也通过next_record属性连接</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>min_rec_mask<ul>
+<li>B+树每层非叶节点中 最小的记录，该标记为1</li>
+</ul>
+</li>
+<li>n_owned<ul>
+<li>表示该记录在槽中拥有多少条记录</li>
+</ul>
+</li>
+<li>heap_no<ul>
+<li>表示当前记录在该页面中的序号</li>
+<li>但是是从2开始的<ul>
+<li>因为每个页里面有两个伪记录</li>
+<li>infimum和supremum</li>
+<li>分别作为最小记录和最大记录，heap_no为0和1</li>
+<li>不存放在User Records里</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>record_type<ul>
+<li>表示记录类型，分别有四种<ul>
+<li>0 普通记录</li>
+<li>1 B+树非叶节点记录</li>
+<li>2 最小记录</li>
+<li>3 最大记录</li>
+</ul>
+</li>
+<li>最小记录和最大记录的 record_type就为2和3</li>
+</ul>
+</li>
+<li>next_record<ul>
+<li>到下一条记录的真实数据的偏移地址<ul>
+<li>可以理解为指向下一条记录的指针</li>
+<li>之所以指向的是记录头和真实数据之间的地址<ul>
+<li>是因为这样往左读就是记录头，往右读就是真实数据</li>
+<li>这也是为什么变成字段长度列表和NULL值列表要逆序存储</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>整个就是一个链表结构<ul>
+<li>所以对记录做增删改操作就是对链表做增删改操作</li>
+</ul>
+</li>
+<li>该链表的顺序并不是插入顺序，而是按照主键排序的<ul>
+<li>最小记录指向最小的用户记录</li>
+<li>最大的用户记录指向最大记录</li>
+</ul>
+</li>
+<li>为0时表示没有下一条记录</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Page Directory 页目录</strong></p>
+<ul>
+<li><strong>简介</strong><ul>
+<li>页目录是用来加快对于记录的查询速度的</li>
+<li>如果不用页目录的话，只能进行顺序查找，效率很低</li>
+<li>用页目录的话<ul>
+<li>就可以把记录分为多个组</li>
+<li>正常情况下，每个组中有4-8个记录</li>
+<li>页目录 中存放每个组中最大记录的地址，每个地址都是一个槽</li>
+<li>查找的时候就可以对槽进行二分查找，然后对槽内进行顺序查找</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>页目录的详细运作方式</strong><ul>
+<li>将所有记录划分为几个组，包括最大记录和最小记录<ul>
+<li>最小记录单独为一组，包含最大记录的组含有1-8条记录，其余的组含有4-8条记录</li>
+<li>插入或删除记录后，可能需要对分组进行合并或分裂，以满足条件</li>
+</ul>
+</li>
+<li>每个组的最大记录中有个n_owned字段，记录该组中有多少条记录</li>
+<li>页目录中存放每个每组中最大元素的地址，也称为槽</li>
+<li>查询流程<ul>
+<li>对页目录进行二分查找，找到目标记录所在的槽</li>
+<li>通过上一个槽找到该槽中最小的记录</li>
+<li>通过记录的 next_record 属性遍历找到目标记录</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Page Header 页面头部</strong></p>
+<ul>
+<li><strong>简介</strong><ul>
+<li>Page Header 用于存储和记录相关的状态信息</li>
+<li>比如当前存放了多少记录，有多少个槽等等</li>
+</ul>
+</li>
+<li><strong>详细信息</strong><br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-13.png" alt="alt text"></li>
+</ul>
+</li>
+<li><p><strong>File Header 文件头部</strong></p>
+<ul>
+<li><strong>简介</strong><ul>
+<li>负责存储和和页面相关的状态信息</li>
+<li>比如页号，上一个页号、下一个页号、页面类型</li>
+</ul>
+</li>
+<li><strong>图解</strong><br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-14.png" alt="alt text"></li>
+<li><strong>常用字段</strong><ul>
+<li>FIL_PAGE_SPACE_CHKSUM<ul>
+<li>用于检测页面是否完整</li>
+</ul>
+</li>
+<li>FIL_PAGE_OFFSET<ul>
+<li>页号</li>
+<li>可以用来定位一个页</li>
+</ul>
+</li>
+<li>FIL_PAGE_TYPE<ul>
+<li>页面类型</li>
+<li>比如索引页就是FIL_PAGE_INDEX</li>
+</ul>
+</li>
+<li>FIL_PAGE_PREV<ul>
+<li>上一个页面的页号</li>
+</ul>
+</li>
+<li>FIL_PAGE_NEXT<ul>
+<li>下一个页面的页号</li>
+<li>页面本质上是通过双向链表连接起来的<ul>
+<li>索引页是有两个指针的，其他页就不一定了</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>File Trailer 文件结尾</strong></p>
+<ul>
+<li><strong>作用</strong><ul>
+<li>用于检测一个页是否完整</li>
+</ul>
+</li>
+<li><strong>分为两部分</strong><ul>
+<li>校验和<ul>
+<li>这个校验和应该与Page Header中的校验和相同</li>
+<li>如果不相同就说明当前页面数据出错了</li>
+</ul>
+</li>
+<li>LSN 日志序列位置<ul>
+<li>也是用来校验页面完整性的</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
 ]]></content>
       <tags>
         <tag>数据库</tag>

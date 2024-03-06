@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>《MySQL是怎样运行的》笔记 第四章 InnoDB记录结构 - Shawn Zong&#039;s Notes</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Shawn Zong&#039;s Notes"><meta name="msapplication-TileImage" content="/images/avatar.jpg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Shawn Zong&#039;s Notes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="准备工作  不同存储引擎对于数据的存储格式都是不同的 这本书主要讲的是InnoDB的格式   InnoDB页简介  InnoDB会把数据划分为多个页 以页作为磁盘和内存之间交互的基本单位 页的大小一般为16KB 一次至少读取16KB内容的数据到内存 同样的，一次最少刷新16KB的数据到磁盘     InnoDB行格式  简介  我们以记录为单位往表中存储数据 每一条记录在磁盘上的存储方式就被称为"><meta property="og:type" content="blog"><meta property="og:title" content="《MySQL是怎样运行的》笔记 第四章 InnoDB记录结构"><meta property="og:url" content="http://shawnzong.cn/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/"><meta property="og:site_name" content="Shawn Zong&#039;s Notes"><meta property="og:description" content="准备工作  不同存储引擎对于数据的存储格式都是不同的 这本书主要讲的是InnoDB的格式   InnoDB页简介  InnoDB会把数据划分为多个页 以页作为磁盘和内存之间交互的基本单位 页的大小一般为16KB 一次至少读取16KB内容的数据到内存 同样的，一次最少刷新16KB的数据到磁盘     InnoDB行格式  简介  我们以记录为单位往表中存储数据 每一条记录在磁盘上的存储方式就被称为"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://shawnzong.cn/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/image.png"><meta property="og:image" content="http://shawnzong.cn/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/image-1.png"><meta property="article:published_time" content="2023-03-17T07:59:28.000Z"><meta property="article:modified_time" content="2024-03-05T13:11:19.326Z"><meta property="article:author" content="Shawn Zong"><meta property="article:tag" content="数据库"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://shawnzong.cn/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://shawnzong.cn/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/"},"headline":"《MySQL是怎样运行的》笔记 第四章 InnoDB记录结构","image":["http://shawnzong.cn/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/image.png","http://shawnzong.cn/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/image-1.png"],"datePublished":"2023-03-17T07:59:28.000Z","dateModified":"2024-03-05T13:11:19.326Z","author":{"@type":"Person","name":"Shawn Zong"},"publisher":{"@type":"Organization","name":"Shawn Zong's Notes","logo":{"@type":"ImageObject","url":"http://shawnzong.cn/images/avatar.jpg"}},"description":"准备工作  不同存储引擎对于数据的存储格式都是不同的 这本书主要讲的是InnoDB的格式   InnoDB页简介  InnoDB会把数据划分为多个页 以页作为磁盘和内存之间交互的基本单位 页的大小一般为16KB 一次至少读取16KB内容的数据到内存 同样的，一次最少刷新16KB的数据到磁盘     InnoDB行格式  简介  我们以记录为单位往表中存储数据 每一条记录在磁盘上的存储方式就被称为"}</script><link rel="canonical" href="http://shawnzong.cn/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/"><link rel="icon" href="/images/avatar.jpg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const $tabMenu = document.querySelector(`a[href="${location.hash}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(location.hash);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-17T07:59:28.000Z" title="3/17/2023, 3:59:28 PM">2023-03-17</time>发表</span><span class="level-item"><time dateTime="2024-03-05T13:11:19.326Z" title="3/5/2024, 9:11:19 PM">2024-03-05</time>更新</span><span class="level-item">7 分钟读完 (大约1073个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">《MySQL是怎样运行的》笔记 第四章 InnoDB记录结构</h1><div class="content"><ol>
+<li><p><strong>准备工作</strong></p>
+<ul>
+<li>不同存储引擎对于数据的存储格式都是不同的</li>
+<li>这本书主要讲的是InnoDB的格式</li>
+</ul>
+</li>
+<li><p><strong>InnoDB页简介</strong></p>
+<ul>
+<li>InnoDB会把数据划分为多个页</li>
+<li>以页作为磁盘和内存之间交互的基本单位</li>
+<li>页的大小一般为16KB</li>
+<li>一次至少读取16KB内容的数据到内存<ul>
+<li>同样的，一次最少刷新16KB的数据到磁盘</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>InnoDB行格式</strong></p>
+<ul>
+<li><p><strong>简介</strong></p>
+<ul>
+<li>我们以记录为单位往表中存储数据</li>
+<li>每一条记录在磁盘上的存储方式就被称为 行格式 或者 记录格式</li>
+<li>InnoDB有四种不同的行格式<ol>
+<li>Compact</li>
+<li>Redundant</li>
+<li>Dynamic</li>
+<li>Compressed <span id="more"></span></li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p><strong>指定行格式的语法</strong></p>
+<ul>
+<li><code>CREATE TABLE 表名 (列的信息) ROW_FORMAT=行格式名称</code></li>
+<li><code>ALTER TABLE 表名 ROW_FORMAT=行格式名称</code></li>
+</ul>
+</li>
+<li><p><strong>Compact行格式</strong></p>
+<ul>
+<li><strong>结构</strong><br> <img src="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/image.png" alt="alt text"></li>
+<li><strong>记录的额外的信息</strong><ul>
+<li>也就是为了描述记录不得不添加的记录</li>
+<li><strong>变长字段长度列表</strong><ul>
+<li>因为有些字段是变长的，所以我们除了记录实际的数据之外，还需要记录每个变长数据占用的字节数</li>
+<li>所以在Compact行格式中，会把每个变长字段数据的字节数按照逆序存放</li>
+<li>每个变成字段数据占用的字节数用一个字节或两个字节存，取决于字符集和变长字段的最长长度</li>
+<li>注意 当变长字段数据为null时，不存储它的长度</li>
+</ul>
+</li>
+<li><strong>NULL值列表</strong><ul>
+<li>用来标记哪些字段的值为null</li>
+<li>每个字段用一个bit来标记，也是逆序，为1时表示该值为null</li>
+<li>如果每个字段都不允许为null，那就不记录数据</li>
+</ul>
+</li>
+<li><strong>记录头信息</strong><ul>
+<li>记录一些额外信息，比如<ul>
+<li>删除标记</li>
+<li>记录类型</li>
+<li>下一条记录的相对位置</li>
+</ul>
+</li>
+<li>之后会详细讲</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>记录的真实数据</strong><ul>
+<li>除了实际的字段值之外，还会存储一些隐藏字段，比如<ul>
+<li>行ID<ul>
+<li>在没有主键，没有unique键的情况下</li>
+<li>才会自动生成row id</li>
+</ul>
+</li>
+<li>事务ID</li>
+<li>回滚指针</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Redundant行格式</strong></p>
+<ul>
+<li><strong>示意图</strong></li>
+</ul>
+<p>  <img src="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/image-1.png" alt="alt text"></p>
+<ul>
+<li><strong>简介</strong><ul>
+<li>这个过时了，看看就行</li>
+<li>字段长度偏移表记录每个字段的结束地址<ul>
+<li>需要用相邻的偏移量相减才能知道该字段的长度</li>
+</ul>
+</li>
+<li>记录头信息和Compact差不多，有些许的不同</li>
+<li>偏移量会有一个null比特位，标记该字段是否为null</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>行溢出数据的情况</strong></p>
+<ul>
+<li><strong>varchar(M)最多能存储的数据</strong><ul>
+<li>mysql中对于varchar类型，最多可以占用65535个字节<ul>
+<li>对于BLOB和TEXT类型倒没要求</li>
+</ul>
+</li>
+<li>其中M表示最多可以存储的字符数量<ul>
+<li>因为总体字节数有限制，所以M的大小取决于用的字符集占用几个字节</li>
+</ul>
+</li>
+<li>其实是因为mysql对于一条记录的大小限制为65535个字节<ul>
+<li>包括了除了真实数据之外的额外记录数据，比如变长字段长度列表和NULL列表</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>记录中的数据太多产生的行溢出</strong><ul>
+<li>因为数据库中的数据是以页为单位存储的，16KB，而varchar最多能存64KB的数据</li>
+<li>所以当一个字段数据太多时，会只存一部分，以及一个指向其它页的指针，指针指向的页存放剩余的部分，也叫溢出页(这是Compact和Redundant行格式处理溢出的方法)</li>
+</ul>
+</li>
+<li><strong>行溢出的临界点</strong><ul>
+<li>一条记录中的所有数据以及额外记录信息 超过16KB时就会发生行溢出</li>
+<li>不需要知道具体的临界点，只需要知道当存储数据很大时就可能发生溢出就行了</li>
+</ul>
+</li>
+<li><strong>Dynamic和Compressed行格式</strong><ul>
+<li>MySQL5.7默认使用的行格式就是Dynamic</li>
+<li>这两种行格式和Compact的区别只在于对于行溢出的处理<ul>
+<li>Dynamic和Compressed都会把产生行溢出的字段的全部真实数据放在其他页上，只在记录中存放指针</li>
+</ul>
+</li>
+<li>Compressed会在Dynamic基础上对页面进行压缩，节省空间</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</div><div class="article-licensing box"><div class="licensing-title"><p>《MySQL是怎样运行的》笔记 第四章 InnoDB记录结构</p><p><a href="http://shawnzong.cn/2023/03/17/《MySQL是怎样运行的》笔记 第四章 InnoDB记录结构/">http://shawnzong.cn/2023/03/17/《MySQL是怎样运行的》笔记 第四章 InnoDB记录结构/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Shawn Zong</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-03-17</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-03-05</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">《MySQL是怎样运行的》笔记 第五章 InnoDB数据页结构</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E5%AD%97%E7%AC%A6%E9%9B%86%E5%92%8C%E6%AF%94%E8%BE%83%E8%A7%84%E5%88%99/"><span class="level-item">《MySQL是怎样运行的》笔记 第三章 字符集和比较规则</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="disqus_thread"><noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div><script>var disqus_config = function () {
+            this.page.url = 'http://shawnzong.cn/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/';
+            this.page.identifier = '2023/03/17/《MySQL是怎样运行的》笔记 第四章 InnoDB记录结构/';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');  
+            s.src = '//' + 'Shawn' + '.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1 is-sticky"><!--!--><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.jpg" alt="Shawn Zong"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Shawn Zong</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">8</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">4</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/PokeHA" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="hhttps://github.com/PokeHA"><i class="fab fa-github"></i></a></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-25T03:42:28.000Z">2023-10-25</time></p><p class="title"><a href="/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/">《人件 Peopleware》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-09T03:42:28.000Z">2023-10-09</time></p><p class="title"><a href="/2023/10/09/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%20The%20Mythical%20Man-Month%E3%80%8B%E7%AC%94%E8%AE%B0/">《人月神话 The Mythical Man-Month》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-03-18T07:59:28.000Z">2023-03-18</time></p><p class="title"><a href="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/">《MySQL是怎样运行的》笔记 第五章 InnoDB数据页结构</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-03-17T07:59:28.000Z">2023-03-17</time></p><p class="title"><a href="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/">《MySQL是怎样运行的》笔记 第四章 InnoDB记录结构</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-03-16T14:59:28.000Z">2023-03-16</time></p><p class="title"><a href="/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E5%AD%97%E7%AC%A6%E9%9B%86%E5%92%8C%E6%AF%94%E8%BE%83%E8%A7%84%E5%88%99/">《MySQL是怎样运行的》笔记 第三章 字符集和比较规则</a></p></div></article></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/%E4%BF%9D%E7%A0%94/"><span class="tag">保研</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%A0%E6%83%AF/"><span class="tag">学习习惯</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><span class="tag">项目管理</span><span class="tag">2</span></a></div></div></div></div></div><!--!--></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a><p class="is-size-7"><span>&copy; 2024 Shawn Zong</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
