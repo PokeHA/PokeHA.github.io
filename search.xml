@@ -1199,4 +1199,500 @@
         <tag>数据库</tag>
       </tags>
   </entry>
+  <entry>
+    <title>《Linux从入门到精通》笔记 第5章 Shell基本命令</title>
+    <url>/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<p><strong>Shell 简介</strong></p>
+<ul>
+<li>命令行是输入命令的界面</li>
+<li>Shell是命令解释器，是程序</li>
+<li>Linux默认的Shell是 Bash Shell</li>
+</ul>
+<p><strong>输入输出约定</strong></p>
+<ul>
+<li><strong>提示符</strong><ul>
+<li>输入行开头的 $ 或 # 表示提示符<ul>
+<li>$表示普通身份</li>
+<li>#表示root身份</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>命令格式</strong><ul>
+<li>提示符+命令+注释</li>
+<li>注释 由”##”开头</li>
+</ul>
+</li>
+</ul>
+<p><strong>简单文件指令</strong></p>
+<ul>
+<li><strong>进入目录：</strong> cd+地址<ul>
+<li>cd &#x2F; ：进入根目录</li>
+<li>cd ：单独一个cd不带参数，进入home下的用户目录</li>
+<li>cd &#x2F;地址：地址以斜杠开头，表示进入从根目录开始的完整地址</li>
+</ul>
+</li>
+<li><strong>列出当前地址下的文件和目录：</strong> ls</li>
+<li>**&#x2F;etc目录下存放了linux的配置文件</li>
+</ul>
+<span id="more"></span>
+
+<p><strong>提高效率：使用命令行补全和通配符</strong></p>
+<ul>
+<li><strong>补全</strong><ul>
+<li>单击 tap 可以补全命令或者文件名</li>
+<li>双击 tap 可以显示当前输入开头的所有内容</li>
+</ul>
+</li>
+<li><strong>通配符</strong><ul>
+<li>“*”  表示一个或多个字符</li>
+<li>“?” 匹配单个字符</li>
+<li>“[abc]” 匹配 a或b或c，单个字符</li>
+<li>“[1-3]” “[a-z]” 表示字符范围中的某个字符</li>
+<li>ls 字符串表达式<ul>
+<li>这样就可以列出符合条件的关键字</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>完整的查看目录和文件命令</strong></p>
+<ul>
+<li><strong>显示当前路径:</strong> pwd</li>
+<li><strong>改变目录:</strong> cd<ul>
+<li>cd &#x2F;：进入根目录</li>
+<li>cd ..：返回上一层目录<ul>
+<li>.. 表示上一层目录</li>
+<li>. 表示当前目录</li>
+</ul>
+</li>
+<li>cd 或 cd ~：回到用户主目录</li>
+</ul>
+</li>
+<li><strong>列出目录内容：</strong> ls<ul>
+<li>ls的语法格式： ls [optional] [file]</li>
+<li>ls：不带参数<ul>
+<li>列出所有的目录和文件</li>
+<li>颜色，不同平台上颜色不一样<ul>
+<li>目录 蓝色</li>
+<li>普通文件 白色</li>
+<li>链接文件（快捷方式） 青色</li>
+<li>可执行文件 草绿色</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ls -F<ul>
+<li>通过后缀标明 文件类型</li>
+<li>&#x2F; 文件夹</li>
+<li>@ 链接文件</li>
+<li><ul>
+<li>可执行文件</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>-a <ul>
+<li>显示所有的“.”开头的隐藏文件</li>
+<li>-aF<ul>
+<li>指定多个选项只需要一个横杠</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>-l<ul>
+<li>显示文件的属性</li>
+</ul>
+</li>
+<li>ls + 路径名<ul>
+<li>可以查看指定路径中的文件</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>列出目录内容：</strong> dir和vdir<ul>
+<li>dir 等同于 ls，不过不显示颜色</li>
+<li>vdir 等同于 ls -l，显示详细信息</li>
+</ul>
+</li>
+<li><strong>查看文本文件：</strong> cat和more<ul>
+<li>cat <ul>
+<li>cat 文件名：查看文本文件</li>
+<li>cat -n 文件名：查看的时候显示行号</li>
+</ul>
+</li>
+<li>more<ul>
+<li>more 文件名：一页一页查看文件</li>
+<li>按空格翻动一页，按Enter翻动一行，按Q退出</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>查看文件的开头和结尾：</strong> head和tail<ul>
+<li>head<ul>
+<li>head 文件名：简单查看文件开头</li>
+<li>head -n 行数 文件名：指定查看文件的行数</li>
+</ul>
+</li>
+<li>tail<ul>
+<li>用法和head相同</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>更好的文本阅读工具：</strong> less<ul>
+<li>基础用法：less 文件名</li>
+<li>移动方式<ul>
+<li>可以通过方向键控制文档移动</li>
+<li>空格 下一页，B 上一页，Q 退出</li>
+</ul>
+</li>
+<li>字符串搜索<ul>
+<li>按下&#x2F;，输入key，按回车</li>
+<li>搜到的关键字会被高亮</li>
+</ul>
+</li>
+<li>less -M 文件名<ul>
+<li>可以在最后一行显示文件名，行数，百分比</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>查找文件内容：</strong> grep<ul>
+<li>基本用法<ul>
+<li>grep [options] PATTERN [FILE…]</li>
+<li>grep 可选项 ‘模式串’ 文件名</li>
+</ul>
+</li>
+<li>例子<ul>
+<li>grep un day</li>
+<li>在day文件中 查找包含 un 的那行</li>
+</ul>
+</li>
+<li>当模式串中包含空格时，需要用单引号括起来</li>
+<li>模式串还可以使用正则表达式</li>
+</ul>
+</li>
+</ul>
+<p><strong>find命令</strong></p>
+<ul>
+<li><strong>基本语法</strong><ul>
+<li>find [option] [path…] [expression]</li>
+</ul>
+</li>
+<li>例子<ul>
+<li>find &#x2F;usr&#x2F;bin&#x2F; -name zip -print<ul>
+<li>&#x2F;usr&#x2F;bin&#x2F;： 指定路径范围<ul>
+<li>如果搜索全路径，可以用 “&#x2F;”</li>
+</ul>
+</li>
+<li>-name zip： 指定名称</li>
+<li>-print：将结果打印到屏幕，这个不加实际上也没事</li>
+</ul>
+</li>
+<li>find &#x2F;etc&#x2F; -name init.d -type d -print<ul>
+<li>-type d：指定文件类型为d，也就是目录文件<br>  <img src="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>-atime +n<ul>
+<li>最后一次使用在n天之前的文件</li>
+</ul>
+</li>
+<li>-mtime +n<ul>
+<li>最后一次修改在n天之前的文件</li>
+</ul>
+</li>
+</ul>
+<p><strong>更快速地定位文件 locate命令</strong></p>
+<ul>
+<li><strong>基本用法</strong><ul>
+<li>locate [pattern]</li>
+</ul>
+</li>
+<li>例子<ul>
+<li>locate *.doc</li>
+<li>直接找到所有类型为doc的文件</li>
+<li>支持正则表达式</li>
+</ul>
+</li>
+<li><strong>优点</strong><ul>
+<li>比起find方便多了，不需要太多的参数</li>
+<li>并且更快，因为locate查询的是文件名数据库，不是文件目录</li>
+<li>可以通过 updatedb手动更新数据库</li>
+</ul>
+</li>
+<li><strong>依赖</strong><ul>
+<li>sudo apt install mlocate</li>
+</ul>
+</li>
+<li><strong>缺点</strong><ul>
+<li>如果查的是新文件，那么每次查询前需手动 updatedb</li>
+</ul>
+</li>
+</ul>
+<p><strong>从终端运行程序</strong></p>
+<ul>
+<li><strong>使用方式</strong><ul>
+<li>直接输入应用的名字</li>
+<li>比如 $ firefox</li>
+<li>如果运行当前目录中的文件，则需要 “.&#x2F;可执行文件名”</li>
+</ul>
+</li>
+<li>$ firefox：前台打开firefox，并且关闭之后才能从控制台输入新的指令</li>
+<li>$ firefox &amp;：后台打开firefox，此时可以正常输入指令</li>
+<li>$ kill 12876：关闭端口号为12806的进程</li>
+</ul>
+<p><strong>查找特定程序 whereis</strong></p>
+<ul>
+<li><strong>whereis find</strong><ul>
+<li>查找find程序的可执行文件位置 和  手册页存放位置</li>
+</ul>
+</li>
+<li><strong>whereis -b find</strong><ul>
+<li>查找find程序的二进制可执行文件</li>
+</ul>
+</li>
+</ul>
+<p><strong>用户及版本信息查看</strong></p>
+<ul>
+<li><strong>who</strong><ul>
+<li>当前系统有哪些人登录</li>
+</ul>
+</li>
+<li><strong>whoami</strong><ul>
+<li>察看自己的身份</li>
+</ul>
+</li>
+<li><strong>uname -a</strong><ul>
+<li>给出操作系统所有信息</li>
+</ul>
+</li>
+<li><strong>uname -r</strong><ul>
+<li>给出内核版本信息</li>
+</ul>
+</li>
+</ul>
+<p><strong>寻求帮助 man命令</strong></p>
+<ul>
+<li><strong>man 命令名称</strong><ul>
+<li>给出命令的详细帮助信息</li>
+<li>实际上用的是less指令</li>
+<li>j向上，k向下，或者用方向键也行</li>
+<li>空格下一页，b上一页</li>
+</ul>
+</li>
+</ul>
+<p><strong>获取命令简介，whatis和apropos</strong></p>
+<ul>
+<li><strong>whatis find</strong><ul>
+<li>给出find命令的简介，一句话</li>
+</ul>
+</li>
+<li><strong>apropos search</strong><ul>
+<li>给出与search相关的所有命令</li>
+<li>属于用功能反推出命令</li>
+</ul>
+</li>
+</ul>
+<p><strong>小结</strong></p>
+<ol>
+<li>pwd 显示当前目录</li>
+<li>cd 切换目录</li>
+<li>ls 查看目录</li>
+<li>find和locate可以查找文件和目录</li>
+<li>grep可以查找文件内的内容</li>
+<li>less 查看文件直接用这个就行</li>
+<li>whereis 可以查找程序文件的位置</li>
+<li>man 查看程序的详细帮助</li>
+<li>whatis 查看程序的简要说明</li>
+<li>apropos 通过功能查找指定的程序</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>操作系统</tag>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《Linux从入门到精通》笔记 第10章 进程管理</title>
+    <url>/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<p><strong>快速上手：结束一个失控的程序</strong></p>
+<ul>
+<li><code>./badpro &amp;</code><ul>
+<li>后台执行当前目录的badpro可执行文件</li>
+</ul>
+</li>
+<li><code>ps aux | grep badpro</code><ul>
+<li>在所有后台进程中寻找badpro</li>
+</ul>
+</li>
+<li><code>kill 12974</code><ul>
+<li>杀死端口号为12974的进程</li>
+</ul>
+</li>
+</ul>
+<p><strong>什么是进程</strong></p>
+<ul>
+<li><strong>简介</strong><ul>
+<li>进程是运行着的程序</li>
+</ul>
+</li>
+<li><strong>进程的重要信息</strong><ul>
+<li>内存地址</li>
+<li>进程当前的状态</li>
+<li>进程正在使用的资源</li>
+<li>进程的优先级</li>
+<li>进程的属主</li>
+</ul>
+</li>
+</ul>
+<p><strong>进程的常用属性</strong></p>
+<ul>
+<li><strong>PID：进程的ID号</strong><ul>
+<li>在对进程进行操作时，使用的都是PID，而不是进程名</li>
+</ul>
+</li>
+<li><strong>PPID</strong><ul>
+<li>父进程的PID</li>
+<li>Linux中所有的进程都由另一个进程创建</li>
+<li>实际上子进程由父进程克隆而来</li>
+</ul>
+</li>
+<li><strong>UID和EUID</strong><ul>
+<li>真是和有效的用户ID</li>
+<li>UID为进程属主</li>
+<li>EUID为有效用户ID，一般情况下和用户ID相同</li>
+</ul>
+</li>
+<li><strong>GID和EGID</strong><ul>
+<li>真实和有效的组ID</li>
+</ul>
+</li>
+<li><strong>谦让度和优先级</strong><ul>
+<li>优先级越高越容易被执行</li>
+<li>谦让度和优先级是相反的概念</li>
+<li>用户只能够设置谦让度</li>
+</ul>
+</li>
+</ul>
+<span id="more"></span>
+
+<p><strong>监视进程：ps命令</strong></p>
+<ul>
+<li><strong>ps</strong><ul>
+<li>显示前台所有的进程信息</li>
+</ul>
+</li>
+<li><strong>ps aux</strong><ul>
+<li>显示当前系统上所有的进程信息<br>   <img src="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/image.png"></li>
+</ul>
+</li>
+<li><strong>ps lax</strong><ul>
+<li>可以在ps aux的基础上提供父进程PPID和谦让度NI</li>
+<li>不会显示进程属主的用户名</li>
+</ul>
+</li>
+</ul>
+<p><strong>即时跟踪进程信息：top命令</strong></p>
+<ul>
+<li>ps可以给出当前系统中所有进程信息的快照，但是缺乏时效性</li>
+<li><strong>top</strong><ul>
+<li>可以实时跟踪当前系统中进程的情况</li>
+<li>显示的信息会占满一页，每10s更新一次</li>
+<li>可以显示cpu使用率、内存占用率等信息</li>
+<li>按q退出监视程序</li>
+</ul>
+</li>
+</ul>
+<p><strong>查看占用文件的进程</strong></p>
+<ul>
+<li><strong>lsof 文件名</strong><ul>
+<li>给出给出使用当前文件的进程的信息</li>
+</ul>
+</li>
+</ul>
+<p><strong>向进程发送信号：kill</strong></p>
+<ul>
+<li><strong>简介</strong><ul>
+<li>kill命令可以杀死进程</li>
+</ul>
+</li>
+<li><strong>kill标准语法</strong><ul>
+<li>kill [-signal] pid</li>
+</ul>
+</li>
+<li><strong>kill命令的常用signal</strong><ul>
+<li>使用kill -l可以显示所有的signal<br>   <img src="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/image-1.png"></li>
+</ul>
+</li>
+<li><strong>kill 12974</strong><ul>
+<li>终止某个进程</li>
+</ul>
+</li>
+<li><strong>Ctrl+C</strong><ul>
+<li>等同于信号INT</li>
+</ul>
+</li>
+<li><strong>sudo kill -KILL pid</strong><ul>
+<li>-TERM只是向进程发送终止信号，进程可能忽略该信号</li>
+<li>-KILL可以从内核级别杀死一个进程</li>
+</ul>
+</li>
+</ul>
+<p><strong>调整进程的谦让度：nice和renice</strong></p>
+<ul>
+<li><strong>nice</strong><ul>
+<li><strong>简介</strong><ul>
+<li>nice可以在程序启动的时候设置谦让度</li>
+<li>谦让度越低优先级越高</li>
+</ul>
+</li>
+<li><strong>使用例子</strong><ul>
+<li>nice -n 2 bc<ul>
+<li>以谦让度2启动bc</li>
+</ul>
+</li>
+<li>sudo nice -n -3 bc<ul>
+<li>以谦让度-3启动bc</li>
+</ul>
+</li>
+<li>nice bc<ul>
+<li>不加-n的话，无法指定谦让度，默认为10</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>renice</strong><ul>
+<li><strong>简介</strong><ul>
+<li>可以在程序运行时设置其谦让度</li>
+</ul>
+</li>
+<li>renice +12 -p 8567<ul>
+<li>通过-p指定进程的pid</li>
+<li>将pid为8567的进程的谦让度设置为12</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>现在设置谦让度没什么意义了，cpu会自动调度</strong></li>
+</ul>
+<p><strong>&#x2F;PROC文件系统</strong></p>
+<ul>
+<li><strong>简介</strong><ul>
+<li>proc文件夹存放了和内核有关系统状态的信息</li>
+<li>ps和top读取的就是&#x2F;proc文件夹中的信息</li>
+</ul>
+</li>
+</ul>
+<p><strong>小结</strong></p>
+]]></content>
+      <tags>
+        <tag>操作系统</tag>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
 </search>
