@@ -881,7 +881,7 @@
 </li>
 <li><p><strong>Compact行格式</strong></p>
 <ul>
-<li><strong>结构</strong><br> <img src="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/image.png" alt="alt text"></li>
+<li><strong>结构</strong><br> <img src="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/image.png"></li>
 <li><strong>记录的额外的信息</strong><ul>
 <li>也就是为了描述记录不得不添加的记录</li>
 <li><strong>变长字段长度列表</strong><ul>
@@ -928,7 +928,7 @@
 <ul>
 <li><strong>示意图</strong></li>
 </ul>
-<p>  <img src="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/image-1.png" alt="alt text"></p>
+<p>  <img src="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/image-1.png"></p>
 <ul>
 <li><strong>简介</strong><ul>
 <li>这个过时了，看看就行</li>
@@ -1011,13 +1011,13 @@
 </li>
 <li><p><strong>数据页结构的快速浏览</strong></p>
 <ul>
-<li>数据页被划分为多个部分 如图<br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-8.png" alt="alt text"></li>
-<li>总共分7个部分，简介如下：<br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-9.png" alt="alt text"> <span id="more"></span></li>
+<li>数据页被划分为多个部分 如图<br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-8.png"></li>
+<li>总共分7个部分，简介如下：<br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-9.png"> <span id="more"></span></li>
 </ul>
 </li>
 <li><p><strong>User Records 记录在页中的存储</strong></p>
 <ul>
-<li><strong>简介</strong><br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-11.png" alt="alt text"><ul>
+<li><strong>简介</strong><br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-11.png"><ul>
 <li>纪录会以我们指定的行格式存储在User Records中</li>
 <li>一开始只有Free Space，没有User Records部分</li>
 <li>每插入一条记录时，将Free Space中的一部分划入到User Records中</li>
@@ -1025,7 +1025,7 @@
 </ul>
 </li>
 <li><strong>记录头信息详解</strong><ul>
-<li>Compact行格式记录头信息如下<br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-12.png" alt="alt text"></li>
+<li>Compact行格式记录头信息如下<br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-12.png"></li>
 <li>delete_mask<ul>
 <li>标记当前记录是否被删除</li>
 <li>之所以不直接删除是删除完重排序开销大</li>
@@ -1131,7 +1131,7 @@
 <li>比如当前存放了多少记录，有多少个槽等等</li>
 </ul>
 </li>
-<li><strong>详细信息</strong><br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-13.png" alt="alt text"></li>
+<li><strong>详细信息</strong><br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-13.png"></li>
 </ul>
 </li>
 <li><p><strong>File Header 文件头部</strong></p>
@@ -1141,7 +1141,7 @@
 <li>比如页号，上一个页号、下一个页号、页面类型</li>
 </ul>
 </li>
-<li><strong>图解</strong><br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-14.png" alt="alt text"></li>
+<li><strong>图解</strong><br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-14.png"></li>
 <li><strong>常用字段</strong><ul>
 <li>FIL_PAGE_SPACE_CHKSUM<ul>
 <li>用于检测页面是否完整</li>
