@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>《MySQL是怎样运行的》笔记 第八章 数据目录 - Shawn Zong&#039;s Notes</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Shawn Zong&#039;s Notes"><meta name="msapplication-TileImage" content="/images/avatar.jpg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Shawn Zong&#039;s Notes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="8.1 数据库和文件系统的关系存储引擎是通过文件系统将数据存储在磁盘上的，数据写回时也依赖文件系统。 8.2 MySQL数据目录数据目录是数据库在文件系统中存储和加载数据的位置。  数据目录和安装目录的区别：  安装目录是数据库的安装路径。 数据目录用于存储数据库在运行过程中产生的数据。   如何确定MySQL中的数据目录：  数据目录对应一个系统变量 datadir。 执行查询语句即可获取数据目"><meta property="og:type" content="blog"><meta property="og:title" content="《MySQL是怎样运行的》笔记 第八章 数据目录"><meta property="og:url" content="http://shawnzong.cn/2023/03/21/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%85%AB%E7%AB%A0%20%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/"><meta property="og:site_name" content="Shawn Zong&#039;s Notes"><meta property="og:description" content="8.1 数据库和文件系统的关系存储引擎是通过文件系统将数据存储在磁盘上的，数据写回时也依赖文件系统。 8.2 MySQL数据目录数据目录是数据库在文件系统中存储和加载数据的位置。  数据目录和安装目录的区别：  安装目录是数据库的安装路径。 数据目录用于存储数据库在运行过程中产生的数据。   如何确定MySQL中的数据目录：  数据目录对应一个系统变量 datadir。 执行查询语句即可获取数据目"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://shawnzong.cn/img/og_image.png"><meta property="article:published_time" content="2023-03-21T08:00:00.000Z"><meta property="article:modified_time" content="2024-09-15T13:54:53.591Z"><meta property="article:author" content="Shawn Zong"><meta property="article:tag" content="数据库"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://shawnzong.cn/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://shawnzong.cn/2023/03/21/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%85%AB%E7%AB%A0%20%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/"},"headline":"《MySQL是怎样运行的》笔记 第八章 数据目录","image":["http://shawnzong.cn/img/og_image.png"],"datePublished":"2023-03-21T08:00:00.000Z","dateModified":"2024-09-15T13:54:53.591Z","author":{"@type":"Person","name":"Shawn Zong"},"publisher":{"@type":"Organization","name":"Shawn Zong's Notes","logo":{"@type":"ImageObject","url":"http://shawnzong.cn/images/avatar.jpg"}},"description":"8.1 数据库和文件系统的关系存储引擎是通过文件系统将数据存储在磁盘上的，数据写回时也依赖文件系统。 8.2 MySQL数据目录数据目录是数据库在文件系统中存储和加载数据的位置。  数据目录和安装目录的区别：  安装目录是数据库的安装路径。 数据目录用于存储数据库在运行过程中产生的数据。   如何确定MySQL中的数据目录：  数据目录对应一个系统变量 datadir。 执行查询语句即可获取数据目"}</script><link rel="canonical" href="http://shawnzong.cn/2023/03/21/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%85%AB%E7%AB%A0%20%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/"><link rel="icon" href="/images/avatar.jpg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const $tabMenu = document.querySelector(`a[href="${location.hash}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(location.hash);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/tags">标签</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-21T08:00:00.000Z" title="3/21/2023, 4:00:00 PM">2023-03-21</time>发表</span><span class="level-item"><time dateTime="2024-09-15T13:54:53.591Z" title="9/15/2024, 9:54:53 PM">2024-09-15</time>更新</span><span class="level-item">8 分钟读完 (大约1134个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">《MySQL是怎样运行的》笔记 第八章 数据目录</h1><div class="content"><h2 id="8-1-数据库和文件系统的关系"><a href="#8-1-数据库和文件系统的关系" class="headerlink" title="8.1 数据库和文件系统的关系"></a>8.1 数据库和文件系统的关系</h2><p>存储引擎是通过文件系统将数据存储在磁盘上的，数据写回时也依赖文件系统。</p>
+<h2 id="8-2-MySQL数据目录"><a href="#8-2-MySQL数据目录" class="headerlink" title="8.2 MySQL数据目录"></a>8.2 MySQL数据目录</h2><p>数据目录是数据库在文件系统中存储和加载数据的位置。</p>
+<ol>
+<li><p><strong>数据目录和安装目录的区别</strong>：</p>
+<ul>
+<li>安装目录是数据库的安装路径。</li>
+<li>数据目录用于存储数据库在运行过程中产生的数据。</li>
+</ul>
+</li>
+<li><p><strong>如何确定MySQL中的数据目录</strong>：</p>
+<ul>
+<li>数据目录对应一个系统变量 <code>datadir</code>。</li>
+<li>执行查询语句即可获取数据目录位置。</li>
+</ul>
+</li>
+</ol>
+<h2 id="8-3-数据目录的结构"><a href="#8-3-数据目录的结构" class="headerlink" title="8.3 数据目录的结构"></a>8.3 数据目录的结构</h2><ol>
+<li><p><strong>简介</strong>：</p>
+<ul>
+<li>数据目录包含用户创建的数据库、表、视图和触发器等用户数据，也包含一些额外数据。 <span id="more"></span></li>
+</ul>
+</li>
+<li><p><strong>数据库在文件系统中的表示</strong>：</p>
+<ul>
+<li>每个数据库对应数据目录下的一个子目录。</li>
+<li>新建数据库时，MySQL会在数据目录下创建与数据库同名的子目录，并生成一个 <code>db.opt</code> 文件，包含数据库的属性信息。</li>
+</ul>
+</li>
+<li><p><strong>表在文件系统中的表示</strong>：</p>
+<ul>
+<li><p>每个表的信息分为两部分：</p>
+<ol>
+<li>表结构的定义。</li>
+<li>表中的数据。</li>
+</ol>
+</li>
+<li><p><strong>表结构的存储</strong>：</p>
+<ul>
+<li>表结构包括字段数量、字段类型、约束条件、索引信息等。</li>
+<li>每创建一个表，数据库子目录下会生成一个 <code>.frm</code> 文件，用于存储表结构信息。</li>
+</ul>
+</li>
+<li><p><strong>InnoDB的存储方式</strong>：</p>
+<ol>
+<li><p><strong>表空间（Table Space）</strong>：</p>
+<ul>
+<li>表空间对应文件系统上的一个或多个文件，被划分为多个页，用户记录存放在表空间下的某个页里。</li>
+</ul>
+</li>
+<li><p><strong>系统表空间（System Table Space）</strong>：</p>
+<ul>
+<li>可以对应多个文件，并可自增。</li>
+<li>默认是数据目录下的 <code>ibdata1</code> 文件。</li>
+<li>在 MySQL 5.5.7 到 MySQL 5.6.6 版本之间，所有表的数据都存储在系统表空间中。</li>
+</ul>
+</li>
+<li><p><strong>独立表空间（File-Per-Table Tablespace）</strong>：</p>
+<ul>
+<li>从 MySQL 5.5.6 开始，表的数据不再默认存储在系统表空间中，而是每个表拥有独立的表空间。</li>
+<li>独立表空间下，每个表会在数据库子目录下生成一个 <code>.ibd</code> 文件，存储表数据和索引。</li>
+</ul>
+</li>
+<li><p><strong>其他表空间类型</strong>：</p>
+<ul>
+<li>通用表空间（General Tablespace）。</li>
+<li>Undo 表空间（Undo Tablespace）。</li>
+<li>临时表空间（Temporary Tablespace）。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p><strong>MyISAM的存储方式</strong>：</p>
+<ul>
+<li>MyISAM 不使用表空间概念，所有表数据存储在数据库子目录下。</li>
+<li>每个表在数据库子目录下生成三个文件：<ol>
+<li><code>.frm</code>：存储表结构。</li>
+<li><code>.MYD</code>：存储用户记录。</li>
+<li><code>.MYI</code>：存储索引。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>视图在文件系统中的表示</strong>：</p>
+<ul>
+<li>视图是虚拟表，存储时不保存实际数据，只存储视图的结构，即 <code>.frm</code> 文件。</li>
+</ul>
+</li>
+<li><p><strong>其他文件</strong>：</p>
+<ul>
+<li>数据目录下还包含一些额外文件：<ol>
+<li><strong>服务器进程文件</strong>：MySQL 服务器会将自身进程ID写入该文件。</li>
+<li><strong>服务器日志文件</strong>：包括查询日志、错误日志、redo日志等。</li>
+<li><strong>证书和密钥</strong>：用于服务器和客户端的通信。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="8-4-文件系统对数据库的影响"><a href="#8-4-文件系统对数据库的影响" class="headerlink" title="8.4 文件系统对数据库的影响"></a>8.4 文件系统对数据库的影响</h2><p>MySQL 依赖文件系统存储数据，因此文件系统的限制会影响数据库的命名、表大小和性能。</p>
+<ol>
+<li><strong>数据库和表名长度</strong>：不允许超过文件系统的最大长度。</li>
+<li><strong>特殊字符问题</strong>：为避免字符冲突，所有非拉丁字母和数字的字符都会被替换为 <code>@+编码</code>。</li>
+<li><strong>文件大小限制</strong>：表大小受文件系统最大长度的限制。</li>
+</ol>
+<h2 id="8-5-MySQL系统数据库简介"><a href="#8-5-MySQL系统数据库简介" class="headerlink" title="8.5 MySQL系统数据库简介"></a>8.5 MySQL系统数据库简介</h2><p>除了用户数据库外，MySQL 还包括几个系统数据库：</p>
+<ol>
+<li><strong>mysql</strong>：<ul>
+<li>核心系统数据库，存储用户账户和权限信息、存储过程、事件信息和日志信息等。</li>
+</ul>
+</li>
+<li><strong>information_schema</strong>：<ul>
+<li>存储所有其他数据库的元信息，如表、视图、触发器等。</li>
+</ul>
+</li>
+<li><strong>performance_schema</strong>：<ul>
+<li>监控 MySQL 服务器性能，存储服务器状态信息。</li>
+</ul>
+</li>
+<li><strong>sys</strong>：<ul>
+<li><code>sys</code> 结合了 <code>information_schema</code> 和 <code>performance_schema</code>，提供更便捷的视图来查看数据库信息。</li>
+</ul>
+</li>
+</ol>
+</div><div class="article-licensing box"><div class="licensing-title"><p>《MySQL是怎样运行的》笔记 第八章 数据目录</p><p><a href="http://shawnzong.cn/2023/03/21/《MySQL是怎样运行的》笔记 第八章 数据目录/">http://shawnzong.cn/2023/03/21/《MySQL是怎样运行的》笔记 第八章 数据目录/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Shawn Zong</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-03-21</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-09-15</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2023/03/22/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B9%9D%E7%AB%A0%20InnoDB%E8%A1%A8%E7%A9%BA%E9%97%B4%E8%AF%A6%E8%A7%A3/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">《MySQL是怎样运行的》笔记 第九章 InnoDB表空间详解</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/03/20/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%83%E7%AB%A0%20B+%E6%A0%91%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E7%82%B9/"><span class="level-item">《MySQL是怎样运行的》笔记 第七章 B+树索引的使用注意点</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="disqus_thread"><noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div><script>var disqus_config = function () {
+            this.page.url = 'http://shawnzong.cn/2023/03/21/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%85%AB%E7%AB%A0%20%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/';
+            this.page.identifier = '2023/03/21/《MySQL是怎样运行的》笔记 第八章 数据目录/';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');  
+            s.src = '//' + 'Shawn' + '.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#8-1-数据库和文件系统的关系"><span class="level-left"><span class="level-item">1</span><span class="level-item">8.1 数据库和文件系统的关系</span></span></a></li><li><a class="level is-mobile" href="#8-2-MySQL数据目录"><span class="level-left"><span class="level-item">2</span><span class="level-item">8.2 MySQL数据目录</span></span></a></li><li><a class="level is-mobile" href="#8-3-数据目录的结构"><span class="level-left"><span class="level-item">3</span><span class="level-item">8.3 数据目录的结构</span></span></a></li><li><a class="level is-mobile" href="#8-4-文件系统对数据库的影响"><span class="level-left"><span class="level-item">4</span><span class="level-item">8.4 文件系统对数据库的影响</span></span></a></li><li><a class="level is-mobile" href="#8-5-MySQL系统数据库简介"><span class="level-left"><span class="level-item">5</span><span class="level-item">8.5 MySQL系统数据库简介</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.jpg" alt="Shawn Zong"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Shawn Zong</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">21</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">6</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/PokeHA" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="hhttps://github.com/PokeHA"><i class="fab fa-github"></i></a></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-26T03:22:28.000Z">2023-11-26</time></p><p class="title"><a href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第10章 进程管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-12T03:22:28.000Z">2023-11-12</time></p><p class="title"><a href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">《Linux从入门到精通》笔记 第5章 Shell基本命令</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-25T03:42:28.000Z">2023-10-25</time></p><p class="title"><a href="/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/">《人件 Peopleware》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-09T03:42:28.000Z">2023-10-09</time></p><p class="title"><a href="/2023/10/09/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%20The%20Mythical%20Man-Month%E3%80%8B%E7%AC%94%E8%AE%B0/">《人月神话 The Mythical Man-Month》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-07T08:00:00.000Z">2023-04-07</time></p><p class="title"><a href="/2023/04/07/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%BA%94%E7%AB%A0%20%E9%94%81/">《MySQL是怎样运行的》笔记 第二十五章 锁</a></p></div></article></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BF%9D%E7%A0%94/"><span class="tag">保研</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%A0%E6%83%AF/"><span class="tag">学习习惯</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="tag">操作系统</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><span class="tag">项目管理</span><span class="tag">2</span></a></div></div></div></div></div><!--!--></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a><p class="is-size-7"><span>&copy; 2024 Shawn Zong</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

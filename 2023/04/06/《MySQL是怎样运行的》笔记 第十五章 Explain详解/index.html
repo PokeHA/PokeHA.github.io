@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>《MySQL是怎样运行的》笔记 第十五章 Explain详解 - Shawn Zong&#039;s Notes</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Shawn Zong&#039;s Notes"><meta name="msapplication-TileImage" content="/images/avatar.jpg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Shawn Zong&#039;s Notes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="简介   MySQL在进行基于规则的优化和基于成本的优化之后，会生成最终的执行计划。   执行计划记录了最终执行查询的步骤，比如多表连接的顺序，每个表采用什么访问方法等。   使用EXPLAIN关键字可以查看一个查询语句的具体执行计划。   执行计划中的各列详解   table   不管查询语句多么复杂，最后都是单表访问。   所以执行计划中的每一条记录都对应一个单表，记录了对于该单表怎么执行（"><meta property="og:type" content="blog"><meta property="og:title" content="《MySQL是怎样运行的》笔记 第十五章 Explain详解"><meta property="og:url" content="http://shawnzong.cn/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%20Explain%E8%AF%A6%E8%A7%A3/"><meta property="og:site_name" content="Shawn Zong&#039;s Notes"><meta property="og:description" content="简介   MySQL在进行基于规则的优化和基于成本的优化之后，会生成最终的执行计划。   执行计划记录了最终执行查询的步骤，比如多表连接的顺序，每个表采用什么访问方法等。   使用EXPLAIN关键字可以查看一个查询语句的具体执行计划。   执行计划中的各列详解   table   不管查询语句多么复杂，最后都是单表访问。   所以执行计划中的每一条记录都对应一个单表，记录了对于该单表怎么执行（"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://shawnzong.cn/img/og_image.png"><meta property="article:published_time" content="2023-04-06T08:00:00.000Z"><meta property="article:modified_time" content="2024-09-15T13:54:53.591Z"><meta property="article:author" content="Shawn Zong"><meta property="article:tag" content="数据库"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://shawnzong.cn/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://shawnzong.cn/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%20Explain%E8%AF%A6%E8%A7%A3/"},"headline":"《MySQL是怎样运行的》笔记 第十五章 Explain详解","image":["http://shawnzong.cn/img/og_image.png"],"datePublished":"2023-04-06T08:00:00.000Z","dateModified":"2024-09-15T13:54:53.591Z","author":{"@type":"Person","name":"Shawn Zong"},"publisher":{"@type":"Organization","name":"Shawn Zong's Notes","logo":{"@type":"ImageObject","url":"http://shawnzong.cn/images/avatar.jpg"}},"description":"简介   MySQL在进行基于规则的优化和基于成本的优化之后，会生成最终的执行计划。   执行计划记录了最终执行查询的步骤，比如多表连接的顺序，每个表采用什么访问方法等。   使用EXPLAIN关键字可以查看一个查询语句的具体执行计划。   执行计划中的各列详解   table   不管查询语句多么复杂，最后都是单表访问。   所以执行计划中的每一条记录都对应一个单表，记录了对于该单表怎么执行（"}</script><link rel="canonical" href="http://shawnzong.cn/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%20Explain%E8%AF%A6%E8%A7%A3/"><link rel="icon" href="/images/avatar.jpg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const $tabMenu = document.querySelector(`a[href="${location.hash}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(location.hash);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/tags">标签</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-04-06T08:00:00.000Z" title="4/6/2023, 4:00:00 PM">2023-04-06</time>发表</span><span class="level-item"><time dateTime="2024-09-15T13:54:53.591Z" title="9/15/2024, 9:54:53 PM">2024-09-15</time>更新</span><span class="level-item">8 分钟读完 (大约1146个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">《MySQL是怎样运行的》笔记 第十五章 Explain详解</h1><div class="content"><ol>
+<li><strong>简介</strong>  <ul>
+<li>MySQL在进行基于规则的优化和基于成本的优化之后，会生成最终的执行计划。  </li>
+<li>执行计划记录了最终执行查询的步骤，比如多表连接的顺序，每个表采用什么访问方法等。  </li>
+<li>使用<code>EXPLAIN</code>关键字可以查看一个查询语句的具体执行计划。</li>
+</ul>
+</li>
+<li><strong>执行计划中的各列详解</strong>  <ol>
+<li><strong>table</strong>  <ul>
+<li>不管查询语句多么复杂，最后都是单表访问。  </li>
+<li>所以执行计划中的每一条记录都对应一个单表，记录了对于该单表怎么执行（如访问方法<code>const</code>、<code>ref</code>、<code>range</code>等）。  </li>
+<li>这些记录的顺序就是表的连接顺序。  </li>
+<li><code>table</code>指的是该条记录对应的表名。</li>
+</ul>
+</li>
+<li><strong>id</strong>  <ul>
+<li><code>id</code>是<code>SELECT</code>关键字的id。  </li>
+<li>每使用一个<code>SELECT</code>关键字，就会分配一个<code>id</code>。  </li>
+<li>进行连接查询的表拥有同一个<code>id</code>。  </li>
+<li>子查询则会使用另一个<code>id</code>。  </li>
+<li>如果子查询被转换为连接查询，也会拥有相同的<code>id</code>。  </li>
+<li><code>id</code>为<code>NULL</code>表示这是一个临时表。</li>
+</ul>
+</li>
+<li><strong>select_type</strong>  <ul>
+<li>每个<code>SELECT</code>语句代表一个小查询，会被分配一个<code>id</code>。  </li>
+<li><code>select_type</code>表示这个<code>SELECT</code>关键字对应的小查询的类型。  </li>
+<li>常见的<code>select_type</code>：  <ol>
+<li><strong>simple</strong>：表示查询不包括子查询或<code>UNION</code>操作，常见于单表查询和连接查询。  </li>
+<li><strong>primary</strong>：表示该查询是一个大查询，由几个小查询组成。使用了<code>UNION</code>或子查询的查询就是<code>primary</code>。  </li>
+<li><strong>union</strong>：用于<code>UNION</code>查询，第一个小查询的类型是<code>primary</code>，其余的小查询类型是<code>union</code>。  </li>
+<li><strong>union result</strong>：表示该表是一个用于<code>UNION</code>的临时表，并且这表没有<code>id</code>。  </li>
+<li><strong>subquery</strong>：表示该查询是未转换为半连接的不相关子查询，并使用物化方式执行。  </li>
+<li><strong>dependent subquery</strong>：表示这是未转换为半连接的相关子查询，会执行多遍。  </li>
+<li><strong>dependent union</strong>：子查询中的<code>UNION</code>查询，依赖于外层查询。  </li>
+<li><strong>drived</strong>：表示用物化表的方式执行派生表查询。  </li>
+<li><strong>materialized</strong>：子查询物化后与外层查询进行连接查询。    <span id="more"></span></li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>partitions</strong>  <ul>
+<li>跟分区相关，通常为<code>NULL</code>。</li>
+</ul>
+</li>
+<li><strong>type</strong>  <ul>
+<li>表示查询该表时使用的访问方法，如<code>system</code>、<code>const</code>、<code>eq_ref</code>、<code>ref</code>、<code>index_merge</code>、<code>range</code>、<code>index</code>、<code>all</code>等。  </li>
+<li>访问方法按效率从高到低排列：<code>system</code> &gt; <code>const</code> &gt; <code>eq_ref</code> &gt; <code>ref</code> &gt; <code>range</code> &gt; <code>index</code> &gt; <code>all</code>。  </li>
+<li>详细解释：  <ol>
+<li><strong>system</strong>：表中只有一条记录，用MyISAM或Memory存储引擎，表的统计信息是精确的。  </li>
+<li><strong>const</strong>：单表查询时，对主键或唯一二级索引字段进行常数等值匹配。  </li>
+<li><strong>eq_ref</strong>：连接查询时，对被驱动表的主键或唯一二级索引字段进行常数等值匹配。  </li>
+<li><strong>ref</strong>：对普通二级索引字段进行常量等值匹配。  </li>
+<li><strong>index_merge</strong>：索引合并，多个索引同时使用。  </li>
+<li><strong>range</strong>：单表查询时使用范围查询。  </li>
+<li><strong>index</strong>：使用覆盖索引，对二级索引进行扫描，不回表。  </li>
+<li><strong>all</strong>：对聚集索引进行全表扫描。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>possible_keys和key</strong>  <ul>
+<li><code>possible_keys</code>表示可以使用的索引，<code>key</code>表示实际使用的索引。  </li>
+<li>注意：<code>possible_keys</code>并不是越多越好，可用索引越多，查询优化器就需要为更多的执行方案计算成本。</li>
+</ul>
+</li>
+<li><strong>key_len</strong>  <ul>
+<li>表示使用的索引字段的最大长度，主要功能是让我们知道使用联合索引时用到了几个字段。</li>
+</ul>
+</li>
+<li><strong>ref</strong>  <ul>
+<li><code>ref</code>表示对索引列进行等值匹配时，匹配的是什么类型。</li>
+</ul>
+</li>
+<li><strong>rows</strong>  <ul>
+<li>表示预计扫描的行数。</li>
+</ul>
+</li>
+<li><strong>filtered</strong>  <ul>
+<li>与<code>condition filtering</code>相关，用于计算<code>fanout</code>。  </li>
+<li><code>filtered</code>是一个百分比，用于估计扫描到的记录中有多少记录符合条件。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><strong>执行计划中剩下的字段</strong>  <ol>
+<li><strong>Extra</strong>  <ul>
+<li>提供一些额外的提示信息，如：  <ol>
+<li><strong>no tables used</strong>：<code>FROM</code>子句为空。  </li>
+<li><strong>impossible where</strong>：<code>WHERE</code>子句为永假式。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><strong>JSON格式的执行计划</strong>  <ul>
+<li>使用<code>FORMAT=JSON</code>，可以将执行计划通过JSON格式输出。</li>
+</ul>
+</li>
+<li><strong>show warnings</strong>  <ul>
+<li>执行完<code>EXPLAIN</code>后，再调用<code>SHOW WARNINGS</code>，就可以看到查询优化器重写后的查询语句。</li>
+</ul>
+</li>
+</ol>
+</div><div class="article-licensing box"><div class="licensing-title"><p>《MySQL是怎样运行的》笔记 第十五章 Explain详解</p><p><a href="http://shawnzong.cn/2023/04/06/《MySQL是怎样运行的》笔记 第十五章 Explain详解/">http://shawnzong.cn/2023/04/06/《MySQL是怎样运行的》笔记 第十五章 Explain详解/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Shawn Zong</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-04-06</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-09-15</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%B9%9D%E7%AB%A0%20%E4%BA%8B%E5%8A%A1%E7%AE%80%E4%BB%8B/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">《MySQL是怎样运行的》笔记 第十九章 事务简介</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/04/05/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0%20MySQL%E5%9F%BA%E4%BA%8E%E6%88%90%E6%9C%AC%E7%9A%84%E4%BC%98%E5%8C%96/"><span class="level-item">《MySQL是怎样运行的》笔记 第十二章 MySQL基于成本的优化</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="disqus_thread"><noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div><script>var disqus_config = function () {
+            this.page.url = 'http://shawnzong.cn/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%20Explain%E8%AF%A6%E8%A7%A3/';
+            this.page.identifier = '2023/04/06/《MySQL是怎样运行的》笔记 第十五章 Explain详解/';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');  
+            s.src = '//' + 'Shawn' + '.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1 is-sticky"><!--!--><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.jpg" alt="Shawn Zong"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Shawn Zong</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">21</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">6</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/PokeHA" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="hhttps://github.com/PokeHA"><i class="fab fa-github"></i></a></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-26T03:22:28.000Z">2023-11-26</time></p><p class="title"><a href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第10章 进程管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-12T03:22:28.000Z">2023-11-12</time></p><p class="title"><a href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">《Linux从入门到精通》笔记 第5章 Shell基本命令</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-25T03:42:28.000Z">2023-10-25</time></p><p class="title"><a href="/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/">《人件 Peopleware》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-09T03:42:28.000Z">2023-10-09</time></p><p class="title"><a href="/2023/10/09/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%20The%20Mythical%20Man-Month%E3%80%8B%E7%AC%94%E8%AE%B0/">《人月神话 The Mythical Man-Month》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-07T08:00:00.000Z">2023-04-07</time></p><p class="title"><a href="/2023/04/07/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%BA%94%E7%AB%A0%20%E9%94%81/">《MySQL是怎样运行的》笔记 第二十五章 锁</a></p></div></article></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BF%9D%E7%A0%94/"><span class="tag">保研</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%A0%E6%83%AF/"><span class="tag">学习习惯</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="tag">操作系统</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><span class="tag">项目管理</span><span class="tag">2</span></a></div></div></div></div></div><!--!--></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a><p class="is-size-7"><span>&copy; 2024 Shawn Zong</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

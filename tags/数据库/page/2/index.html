@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="robots" content="noindex"><meta><title>标签: 数据库 - Shawn Zong&#039;s Notes</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Shawn Zong&#039;s Notes"><meta name="msapplication-TileImage" content="/images/avatar.jpg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Shawn Zong&#039;s Notes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="Guns, lots of guns"><meta property="og:type" content="blog"><meta property="og:title" content="Shawn Zong&#039;s Notes"><meta property="og:url" content="http://shawnzong.cn/"><meta property="og:site_name" content="Shawn Zong&#039;s Notes"><meta property="og:description" content="Guns, lots of guns"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://shawnzong.cn/img/og_image.png"><meta property="article:author" content="Shawn Zong"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://shawnzong.cn/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://shawnzong.cn"},"headline":"Shawn Zong's Notes","image":["http://shawnzong.cn/img/og_image.png"],"author":{"@type":"Person","name":"Shawn Zong"},"publisher":{"@type":"Organization","name":"Shawn Zong's Notes","logo":{"@type":"ImageObject","url":"http://shawnzong.cn/images/avatar.jpg"}},"description":"Guns, lots of guns"}</script><link rel="icon" href="/images/avatar.jpg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const $tabMenu = document.querySelector(`a[href="${location.hash}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(location.hash);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/tags">标签</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/PokeHA"><i class="fab fa-github"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><div class="card-content"><nav class="breadcrumb" aria-label="breadcrumbs"><ul><li><a href="/tags">标签</a></li><li class="is-active"><a href="#" aria-current="page">数据库</a></li></ul></nav></div></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-19T08:00:00.000Z" title="3/19/2023, 4:00:00 PM">2023-03-19</time>发表</span><span class="level-item"><time dateTime="2024-09-15T13:54:53.587Z" title="9/15/2024, 9:54:53 PM">2024-09-15</time>更新</span><span class="level-item">7 分钟读完 (大约1081个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/19/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%85%AD%E7%AB%A0%20B+%E6%A0%91%E7%B4%A2%E5%BC%95/">《MySQL是怎样运行的》笔记 第六章 B+树索引</a></h1><div class="content"><ol>
+<li><strong>没有索引的查找</strong>  <ul>
+<li>在没有索引的情况下，查找记录的操作如下：</li>
+</ul>
+<ol>
+<li><strong>在一个页中查找</strong>  <ul>
+<li>假设记录数量较少，全部存储在一个数据页中。  </li>
+<li>有两种情况：  <ol>
+<li><strong>以主键为搜索条件</strong>：  <ul>
+<li>先对页目录使用二分法找到对应的槽，然后遍历得到目标记录。</li>
+</ul>
+</li>
+<li><strong>以其他字段为搜索条件</strong>：  <ul>
+<li>只能遍历所有记录进行查找。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>在多个页中查找</strong>  <ul>
+<li>如果表中的记录存储在多个数据页中，查找分为两个步骤：  <ol>
+<li>使用双向链表遍历每个数据页，因为页之间不是有序的。  </li>
+<li>在每个数据页中对记录进行查找。</li>
+</ol>
+</li>
+<li><strong>问题</strong>：  <ul>
+<li>没有索引时，需要遍历所有数据页才能找到目标记录。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><strong>使用索引的情况</strong>  <ol>
+<li><strong>一个简单的索引方案</strong>  <ul>
+<li>通过以下步骤优化查找效率：  <ol>
+<li>让所有数据页按主键有序排列。  </li>
+<li>为每个数据页建立目录，目录项存储数据页中最小记录的主键和页号。  </li>
+<li>通过二分法在目录中查找目标记录所在页，然后在该页中查找具体记录。  </li>
+<li>该目录即为<strong>索引</strong>。</div><a class="article-more button is-small is-size-7" href="/2023/03/19/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%85%AD%E7%AB%A0%20B+%E6%A0%91%E7%B4%A2%E5%BC%95/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-18T07:59:28.000Z" title="3/18/2023, 3:59:28 PM">2023-03-18</time>发表</span><span class="level-item"><time dateTime="2024-03-05T14:04:45.996Z" title="3/5/2024, 10:04:45 PM">2024-03-05</time>更新</span><span class="level-item">9 分钟读完 (大约1285个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/">《MySQL是怎样运行的》笔记 第五章 InnoDB数据页结构</a></h1><div class="content"><ol>
+<li><p><strong>不同类型的页简介</strong></p>
+<ul>
+<li>页是InnoDB管理空间的基本单位</li>
+<li>一个页的大小一般是16KB</li>
+<li>InnoDB中有多种页<ul>
+<li>存放Insert Buffer信息的页</li>
+<li>存放INODE信息的页</li>
+<li>存放undo信息的页</li>
+<li>索引页INDEX<ul>
+<li>这个就是用来存放记录的页</li>
+<li>也称为数据页</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>数据页结构的快速浏览</strong></p>
+<ul>
+<li>数据页被划分为多个部分 如图<br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-8.png"></li>
+<li>总共分7个部分，简介如下：<br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-9.png"></div><a class="article-more button is-small is-size-7" href="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-17T07:59:28.000Z" title="3/17/2023, 3:59:28 PM">2023-03-17</time>发表</span><span class="level-item"><time dateTime="2024-03-05T14:04:50.416Z" title="3/5/2024, 10:04:50 PM">2024-03-05</time>更新</span><span class="level-item">7 分钟读完 (大约1069个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/">《MySQL是怎样运行的》笔记 第四章 InnoDB记录结构</a></h1><div class="content"><ol>
+<li><p><strong>准备工作</strong></p>
+<ul>
+<li>不同存储引擎对于数据的存储格式都是不同的</li>
+<li>这本书主要讲的是InnoDB的格式</li>
+</ul>
+</li>
+<li><p><strong>InnoDB页简介</strong></p>
+<ul>
+<li>InnoDB会把数据划分为多个页</li>
+<li>以页作为磁盘和内存之间交互的基本单位</li>
+<li>页的大小一般为16KB</li>
+<li>一次至少读取16KB内容的数据到内存<ul>
+<li>同样的，一次最少刷新16KB的数据到磁盘</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>InnoDB行格式</strong></p>
+<ul>
+<li><p><strong>简介</strong></p>
+<ul>
+<li>我们以记录为单位往表中存储数据</li>
+<li>每一条记录在磁盘上的存储方式就被称为 行格式 或者 记录格式</li>
+<li>InnoDB有四种不同的行格式<ol>
+<li>Compact</li>
+<li>Redundant</li>
+<li>Dynamic</li>
+<li>Compressed</div><a class="article-more button is-small is-size-7" href="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-16T14:59:28.000Z" title="3/16/2023, 10:59:28 PM">2023-03-16</time>发表</span><span class="level-item"><time dateTime="2024-03-05T13:11:12.138Z" title="3/5/2024, 9:11:12 PM">2024-03-05</time>更新</span><span class="level-item">4 分钟读完 (大约534个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E5%AD%97%E7%AC%A6%E9%9B%86%E5%92%8C%E6%AF%94%E8%BE%83%E8%A7%84%E5%88%99/">《MySQL是怎样运行的》笔记 第三章 字符集和比较规则</a></h1><div class="content"><ol>
+<li><p><strong>字符集和比较规则简介</strong></p>
+<ul>
+<li><strong>字符集简介</strong><ul>
+<li>字符集负责处理字符与二进制数据的存储关系</li>
+</ul>
+</li>
+<li><strong>比较规则</strong><ul>
+<li>字典序也就是比较他们二进制的大小</li>
+<li>除了字典序外也有其他的比较规则</li>
+</ul>
+</li>
+<li><strong>重要的字符集</strong><ul>
+<li><strong>ASCII</strong><ol>
+<li>128个字符，包括数字、大小写字母、空格等等</li>
+<li>每个字符一个字节</li>
+</ol>
+</li>
+<li><strong>GB2132</strong><ol>
+<li>包括中文和其他国家的字符</li>
+<li>存在于ASCII中的字符用1个字节存储</li>
+<li>其余的字符用2个字节存储</li>
+<li>也就是变长存储方式</li>
+</ol>
+</li>
+<li><strong>GBK</strong><ol>
+<li>对于GB2132的字符收集范围做了补充，其余一样</li>
+</ol>
+</li>
+<li><strong>Unicode系列</strong><ol>
+<li>对地球上所有的字符进行了收录，同样是变长编码</li>
+<li><strong>utf-8</strong><ul>
+<li>1-4个字节存储字符</li>
+</ul>
+</li>
+<li><strong>utf-16</strong><ul>
+<li>2或4个字节存储字符</li>
+</ul>
+</li>
+<li><strong>utf-32</strong><ul>
+<li>全用4字节存</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>MySQL支持的字符集</strong></p></div><a class="article-more button is-small is-size-7" href="/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E5%AD%97%E7%AC%A6%E9%9B%86%E5%92%8C%E6%AF%94%E8%BE%83%E8%A7%84%E5%88%99/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-16T03:42:28.000Z" title="3/16/2023, 11:42:28 AM">2023-03-16</time>发表</span><span class="level-item"><time dateTime="2024-03-05T12:18:31.841Z" title="3/5/2024, 8:18:31 PM">2024-03-05</time>更新</span><span class="level-item">9 分钟读完 (大约1299个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86MySQL/">《MySQL是怎样运行的》笔记 第一章</a></h1><div class="content"><h1 id="重新认识MySQL"><a href="#重新认识MySQL" class="headerlink" title="重新认识MySQL"></a><strong>重新认识MySQL</strong></h1><pre><code>1 MySQL的客户端/服务器架构
+    a. 服务器处理存储的数据，客户端发出增删改查的请求
+    b. 服务器进程的名称为mysqld
+    c. 客户端进程的名称为mysql
+2. MySQL的安装
+    a. bin目录下的可执行文件
+        i. MySQL的安装目录下有一个bin文件夹，有很多可执行文件
+    b. 运行bin目录下的mysqld就可以开启mysql服务器
+        i. 环境变量PATH
+            1) 环境变量是一系列地址的集合，通过冒号隔开
+            2) 指定了环境变量之后，输入命令的时候就会从环境变量的地址中找有没有这个命令
+            3) 就不需要每次都到MySQL的目录下去执行命令了
+</code></pre></div><a class="article-more button is-small is-size-7" href="/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86MySQL/#more">阅读更多</a></article></div><nav class="pagination" role="navigation" aria-label="pagination"><div class="pagination-previous"><a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">上一页</a></div><div class="pagination-next is-invisible is-hidden-mobile"><a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/page/3/">下一页</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">1</a></li><li><a class="pagination-link is-current" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/page/2/">2</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.jpg" alt="Shawn Zong"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Shawn Zong</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">21</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">6</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/PokeHA" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/PokeHA"><i class="fab fa-github"></i></a></div></div></div><!--!--><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BF%9D%E7%A0%94/"><span class="tag">保研</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%A0%E6%83%AF/"><span class="tag">学习习惯</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="tag">操作系统</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><span class="tag">项目管理</span><span class="tag">2</span></a></div></div></div></div></div><!--!--><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-26T03:22:28.000Z">2023-11-26</time></p><p class="title"><a href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第10章 进程管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-12T03:22:28.000Z">2023-11-12</time></p><p class="title"><a href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">《Linux从入门到精通》笔记 第5章 Shell基本命令</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-25T03:42:28.000Z">2023-10-25</time></p><p class="title"><a href="/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/">《人件 Peopleware》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-09T03:42:28.000Z">2023-10-09</time></p><p class="title"><a href="/2023/10/09/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%20The%20Mythical%20Man-Month%E3%80%8B%E7%AC%94%E8%AE%B0/">《人月神话 The Mythical Man-Month》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-07T08:00:00.000Z">2023-04-07</time></p><p class="title"><a href="/2023/04/07/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%BA%94%E7%AB%A0%20%E9%94%81/">《MySQL是怎样运行的》笔记 第二十五章 锁</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2023/11/"><span class="level-start"><span class="level-item">十一月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/10/"><span class="level-start"><span class="level-item">十月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/04/"><span class="level-start"><span class="level-item">四月 2023</span></span><span class="level-end"><span class="level-item tag">7</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/03/"><span class="level-start"><span class="level-item">三月 2023</span></span><span class="level-end"><span class="level-item tag">8</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/02/"><span class="level-start"><span class="level-item">二月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/12/"><span class="level-start"><span class="level-item">十二月 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a><p class="is-size-7"><span>&copy; 2024 Shawn Zong</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

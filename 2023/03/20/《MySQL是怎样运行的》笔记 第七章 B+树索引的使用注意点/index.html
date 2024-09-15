@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>《MySQL是怎样运行的》笔记 第七章 B+树索引的使用注意点 - Shawn Zong&#039;s Notes</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Shawn Zong&#039;s Notes"><meta name="msapplication-TileImage" content="/images/avatar.jpg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Shawn Zong&#039;s Notes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="7.1 索引的代价 索引虽然快，但在时间和空间上都有代价： 空间代价： B+树的每个节点都是一个数据页，一个页默认占用16KB，因此会有不少开销。   时间代价： 对数据进行增删改操作后，需要对每个索引进行维护。 建立的索引越多，维护的开销也越大。      7.2 B+树适用的条件（什么样的查询能够走索引） 简介： B+树并非万能，并不是所有的查询都可以走索引。 仅适用于几种特定的查询情况。"><meta property="og:type" content="blog"><meta property="og:title" content="《MySQL是怎样运行的》笔记 第七章 B+树索引的使用注意点"><meta property="og:url" content="http://shawnzong.cn/2023/03/20/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%83%E7%AB%A0%20B+%E6%A0%91%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E7%82%B9/"><meta property="og:site_name" content="Shawn Zong&#039;s Notes"><meta property="og:description" content="7.1 索引的代价 索引虽然快，但在时间和空间上都有代价： 空间代价： B+树的每个节点都是一个数据页，一个页默认占用16KB，因此会有不少开销。   时间代价： 对数据进行增删改操作后，需要对每个索引进行维护。 建立的索引越多，维护的开销也越大。      7.2 B+树适用的条件（什么样的查询能够走索引） 简介： B+树并非万能，并不是所有的查询都可以走索引。 仅适用于几种特定的查询情况。"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://shawnzong.cn/img/og_image.png"><meta property="article:published_time" content="2023-03-20T08:00:00.000Z"><meta property="article:modified_time" content="2024-09-15T13:54:53.587Z"><meta property="article:author" content="Shawn Zong"><meta property="article:tag" content="数据库"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://shawnzong.cn/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://shawnzong.cn/2023/03/20/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%83%E7%AB%A0%20B+%E6%A0%91%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E7%82%B9/"},"headline":"《MySQL是怎样运行的》笔记 第七章 B+树索引的使用注意点","image":["http://shawnzong.cn/img/og_image.png"],"datePublished":"2023-03-20T08:00:00.000Z","dateModified":"2024-09-15T13:54:53.587Z","author":{"@type":"Person","name":"Shawn Zong"},"publisher":{"@type":"Organization","name":"Shawn Zong's Notes","logo":{"@type":"ImageObject","url":"http://shawnzong.cn/images/avatar.jpg"}},"description":"7.1 索引的代价 索引虽然快，但在时间和空间上都有代价： 空间代价： B+树的每个节点都是一个数据页，一个页默认占用16KB，因此会有不少开销。   时间代价： 对数据进行增删改操作后，需要对每个索引进行维护。 建立的索引越多，维护的开销也越大。      7.2 B+树适用的条件（什么样的查询能够走索引） 简介： B+树并非万能，并不是所有的查询都可以走索引。 仅适用于几种特定的查询情况。"}</script><link rel="canonical" href="http://shawnzong.cn/2023/03/20/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%83%E7%AB%A0%20B+%E6%A0%91%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E7%82%B9/"><link rel="icon" href="/images/avatar.jpg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const $tabMenu = document.querySelector(`a[href="${location.hash}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(location.hash);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/tags">标签</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-20T08:00:00.000Z" title="3/20/2023, 4:00:00 PM">2023-03-20</time>发表</span><span class="level-item"><time dateTime="2024-09-15T13:54:53.587Z" title="9/15/2024, 9:54:53 PM">2024-09-15</time>更新</span><span class="level-item">10 分钟读完 (大约1444个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">《MySQL是怎样运行的》笔记 第七章 B+树索引的使用注意点</h1><div class="content"><h2 id="7-1-索引的代价"><a href="#7-1-索引的代价" class="headerlink" title="7.1 索引的代价"></a>7.1 索引的代价</h2><ol>
+<li><strong>索引虽然快，但在时间和空间上都有代价</strong>：<ul>
+<li><strong>空间代价</strong>：<ol>
+<li>B+树的每个节点都是一个数据页，一个页默认占用16KB，因此会有不少开销。</li>
+</ol>
+</li>
+<li><strong>时间代价</strong>：<ol>
+<li>对数据进行增删改操作后，需要对每个索引进行维护。</li>
+<li>建立的索引越多，维护的开销也越大。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="7-2-B-树适用的条件（什么样的查询能够走索引）"><a href="#7-2-B-树适用的条件（什么样的查询能够走索引）" class="headerlink" title="7.2 B+树适用的条件（什么样的查询能够走索引）"></a>7.2 B+树适用的条件（什么样的查询能够走索引）</h2><ol>
+<li><strong>简介</strong>：<ul>
+<li>B+树并非万能，并不是所有的查询都可以走索引。</li>
+<li>仅适用于几种特定的查询情况。 <span id="more"></span></li>
+</ul>
+</li>
+<li><strong>全值匹配</strong>：<ul>
+<li><strong>介绍</strong>：<ol>
+<li>如果搜索条件中使用的字段与索引用到的字段完全一致，就是全值匹配。</li>
+<li>对于联合索引，搜索时需要用到所有联合索引的字段。</li>
+</ol>
+</li>
+<li><strong>问题</strong>：<ol>
+<li>字段的顺序对查询是否有影响？<ul>
+<li>无影响，查询优化器会自动优化，调整为联合索引的顺序。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>匹配左边的列</strong>：<ul>
+<li>当使用联合索引进行查询时，可以使用索引左边连续的几个字段，仍能走索引。</li>
+<li>如果跳过左边的字段，只用右边字段查询，则无法走索引。</li>
+</ul>
+</li>
+<li><strong>匹配列前缀</strong>：<ul>
+<li>对于字符串类型的字段，可以用前缀进行查询。</li>
+<li>例如：<code>SELECT * FROM person_info WHERE name LIKE &#39;As%&#39;;</code>，因为字符串是按字典序排序的，所以可以走索引。</li>
+<li><strong>中缀和后缀匹配无法走索引</strong>，只能全表扫描。例如：<code>SELECT * FROM person_info WHERE name LIKE &#39;%As%&#39;;</code>。</li>
+<li><strong>后缀匹配想用索引</strong>的话，可以将所有数据逆序存储，使后缀变为前缀。</li>
+</ul>
+</li>
+<li><strong>匹配范围值</strong>：<ul>
+<li>B+树索引的记录是按索引字段排序的，可以轻松实现范围查询。</li>
+<li><strong>联合索引范围查询</strong>时，只能使用最左边的字段走索引，其他字段需要逐个过滤。</li>
+</ul>
+</li>
+<li><strong>精确匹配某一列并范围匹配另一列</strong>：<ul>
+<li>对联合索引使用范围查询时，如果左边字段相同，右边字段可以走索引。</li>
+</ul>
+</li>
+<li><strong>用于排序</strong>：<ul>
+<li><strong>介绍</strong>：<ol>
+<li>查询时如果使用 <code>ORDER BY</code> 子句，需要对指定字段排序。</li>
+<li>如果 <code>ORDER BY</code> 使用的是索引字段，则可以省去排序过程。</li>
+</ol>
+</li>
+<li><strong>联合索引排序注意事项</strong>：<ol>
+<li><code>ORDER BY</code> 字段顺序必须与联合索引的字段顺序一致，否则无法走索引。</li>
+<li>如果 <code>ORDER BY</code> 中混用了 <code>ASC</code> 和 <code>DESC</code>，则无法使用索引。</li>
+<li><code>WHERE</code> 子句中的字段必须包含在索引字段中，否则也无法走索引。</li>
+</ol>
+</li>
+<li><strong>无法使用索引进行排序的情况</strong>：<ol>
+<li><code>ORDER BY</code> 中的字段属于不同索引。</li>
+<li><code>ORDER BY</code> 中的字段使用了复杂表达式，例如：<code>SELECT * FROM person_info ORDER BY UPPER(name) LIMIT 10;</code>。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>用于分组</strong>：<ul>
+<li>如果 <code>GROUP BY</code> 使用的字段与索引字段一致，分组查询时相当于已经分好组。例如：<code>SELECT name, birthday, phone_number, COUNT(*) FROM person_info GROUP BY name, birthday, phone_number;</code>。</li>
+</ul>
+</li>
+</ol>
+<h2 id="7-3-回表的代价"><a href="#7-3-回表的代价" class="headerlink" title="7.3 回表的代价"></a>7.3 回表的代价</h2><ol>
+<li><strong>二级索引范围查找</strong>：<ul>
+<li>二级索引查找后得到一系列主键，需要通过主键到聚集索引查找完整用户记录。</li>
+<li><strong>顺序IO</strong>：二级索引查找时使用，速度较快。</li>
+<li><strong>随机IO</strong>：聚集索引查找时使用，速度较慢。</li>
+</ul>
+</li>
+<li><strong>回表记录越多，二级索引效率越低</strong>：<ul>
+<li>当回表记录多时，二级索引效率不如直接全表扫描。</li>
+</ul>
+</li>
+<li><strong>查询优化器的选择</strong>：<ul>
+<li>查询的记录较少时，使用二级索引+回表。</li>
+<li>记录较多时，直接全表扫描。</li>
+</ul>
+</li>
+<li><strong>覆盖索引</strong>：<ul>
+<li>在 <code>SELECT</code> 子句中只使用索引字段，可以避免回表操作。</li>
+</ul>
+</li>
+</ol>
+<h2 id="7-4-如何挑选索引"><a href="#7-4-如何挑选索引" class="headerlink" title="7.4 如何挑选索引"></a>7.4 如何挑选索引</h2><ol>
+<li>只为用于搜索、排序、分组的字段建立索引。<ul>
+<li><code>WHERE</code> 子句、<code>ORDER BY</code> 子句和 <code>GROUP BY</code> 子句中的字段需要建立索引，<code>SELECT</code> 子句中的字段不需要建立索引。</li>
+</ul>
+</li>
+<li><strong>考虑列的基数</strong>：<ul>
+<li>列的基数指的是不重复数据的数量。</li>
+<li>基数大的字段适合建立索引，因为基数小的字段重复值较多，建立索引意义不大。</li>
+</ul>
+</li>
+<li><strong>索引字段的类型尽量小</strong>：<ul>
+<li>能用 <code>INT</code> 就不要用 <code>BIGINT</code>，因为：<ol>
+<li>数据类型小，比较操作更快。</li>
+<li>数据类型小，索引占用空间更少，读取的记录更多。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>索引字符串的前缀</strong>：<ul>
+<li>针对字符串类型的字段，可以只使用前缀建立索引。</li>
+<li><strong>前缀索引的缺点</strong>：字段不完全有序，<code>ORDER BY</code> 只能使用文件排序。</li>
+</ul>
+</li>
+<li><strong>索引字段必须单独出现在比较表达式中</strong>：<ul>
+<li>例如：<ul>
+<li><code>WHERE my_col * 2 &lt; 4</code> 无法走索引。</li>
+<li><code>WHERE my_col &lt; 4 / 2</code> 可以走索引。</li>
+</ul>
+</li>
+<li><strong>结论</strong>：索引字段必须单独出现在表达式中，不能使用嵌套表达式或函数调用。</li>
+</ul>
+</li>
+<li><strong>主键插入顺序</strong>：<ul>
+<li>新插入的记录如果主键不是最大的，会导致页面分裂和记录移位，从而影响性能。</li>
+<li><strong>解决办法</strong>：使用自增主键，在字段后加 <code>AUTO_INCREMENT</code>。</li>
+</ul>
+</li>
+<li><strong>避免冗余和重复索引</strong>：<ul>
+<li>不要给同一个字段建立多个索引，例如 <code>UNIQUE</code> 关键字会自动建立索引。</li>
+</ul>
+</li>
+</ol>
+</div><div class="article-licensing box"><div class="licensing-title"><p>《MySQL是怎样运行的》笔记 第七章 B+树索引的使用注意点</p><p><a href="http://shawnzong.cn/2023/03/20/《MySQL是怎样运行的》笔记 第七章 B+树索引的使用注意点/">http://shawnzong.cn/2023/03/20/《MySQL是怎样运行的》笔记 第七章 B+树索引的使用注意点/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Shawn Zong</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-03-20</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-09-15</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2023/03/21/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%85%AB%E7%AB%A0%20%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">《MySQL是怎样运行的》笔记 第八章 数据目录</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/03/19/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%85%AD%E7%AB%A0%20B+%E6%A0%91%E7%B4%A2%E5%BC%95/"><span class="level-item">《MySQL是怎样运行的》笔记 第六章 B+树索引</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="disqus_thread"><noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div><script>var disqus_config = function () {
+            this.page.url = 'http://shawnzong.cn/2023/03/20/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%83%E7%AB%A0%20B+%E6%A0%91%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E7%82%B9/';
+            this.page.identifier = '2023/03/20/《MySQL是怎样运行的》笔记 第七章 B+树索引的使用注意点/';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');  
+            s.src = '//' + 'Shawn' + '.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#7-1-索引的代价"><span class="level-left"><span class="level-item">1</span><span class="level-item">7.1 索引的代价</span></span></a></li><li><a class="level is-mobile" href="#7-2-B-树适用的条件（什么样的查询能够走索引）"><span class="level-left"><span class="level-item">2</span><span class="level-item">7.2 B+树适用的条件（什么样的查询能够走索引）</span></span></a></li><li><a class="level is-mobile" href="#7-3-回表的代价"><span class="level-left"><span class="level-item">3</span><span class="level-item">7.3 回表的代价</span></span></a></li><li><a class="level is-mobile" href="#7-4-如何挑选索引"><span class="level-left"><span class="level-item">4</span><span class="level-item">7.4 如何挑选索引</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.jpg" alt="Shawn Zong"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Shawn Zong</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">21</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">6</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/PokeHA" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="hhttps://github.com/PokeHA"><i class="fab fa-github"></i></a></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-26T03:22:28.000Z">2023-11-26</time></p><p class="title"><a href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第10章 进程管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-12T03:22:28.000Z">2023-11-12</time></p><p class="title"><a href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">《Linux从入门到精通》笔记 第5章 Shell基本命令</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-25T03:42:28.000Z">2023-10-25</time></p><p class="title"><a href="/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/">《人件 Peopleware》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-09T03:42:28.000Z">2023-10-09</time></p><p class="title"><a href="/2023/10/09/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%20The%20Mythical%20Man-Month%E3%80%8B%E7%AC%94%E8%AE%B0/">《人月神话 The Mythical Man-Month》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-07T08:00:00.000Z">2023-04-07</time></p><p class="title"><a href="/2023/04/07/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%BA%94%E7%AB%A0%20%E9%94%81/">《MySQL是怎样运行的》笔记 第二十五章 锁</a></p></div></article></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BF%9D%E7%A0%94/"><span class="tag">保研</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%A0%E6%83%AF/"><span class="tag">学习习惯</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="tag">操作系统</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><span class="tag">项目管理</span><span class="tag">2</span></a></div></div></div></div></div><!--!--></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a><p class="is-size-7"><span>&copy; 2024 Shawn Zong</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>《MySQL是怎样运行的》笔记 第二十四章 隔离级别与MVCC - Shawn Zong&#039;s Notes</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Shawn Zong&#039;s Notes"><meta name="msapplication-TileImage" content="/images/avatar.jpg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Shawn Zong&#039;s Notes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="事前准备   创建一个表并插入数据，准备测试事务的隔离级别与MVCC机制。   事务隔离级别   数据库支持并发执行事务，但会产生一些问题，需要通过隔离性来解决。隔离性越高，并发性就越差。   事务并发执行遇到的问题   脏写 Dirty Write   一个事务修改了另一个未提交事务修改过的数据。如果第一个事务回滚了，就会导致第二个事务的数据更新失败。   脏读 Dirty Read   一个"><meta property="og:type" content="blog"><meta property="og:title" content="《MySQL是怎样运行的》笔记 第二十四章 隔离级别与MVCC"><meta property="og:url" content="http://shawnzong.cn/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E5%9B%9B%E7%AB%A0%20%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E4%B8%8EMVCC/"><meta property="og:site_name" content="Shawn Zong&#039;s Notes"><meta property="og:description" content="事前准备   创建一个表并插入数据，准备测试事务的隔离级别与MVCC机制。   事务隔离级别   数据库支持并发执行事务，但会产生一些问题，需要通过隔离性来解决。隔离性越高，并发性就越差。   事务并发执行遇到的问题   脏写 Dirty Write   一个事务修改了另一个未提交事务修改过的数据。如果第一个事务回滚了，就会导致第二个事务的数据更新失败。   脏读 Dirty Read   一个"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://shawnzong.cn/img/og_image.png"><meta property="article:published_time" content="2023-04-06T08:00:00.000Z"><meta property="article:modified_time" content="2024-09-15T13:54:53.591Z"><meta property="article:author" content="Shawn Zong"><meta property="article:tag" content="数据库"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://shawnzong.cn/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://shawnzong.cn/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E5%9B%9B%E7%AB%A0%20%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E4%B8%8EMVCC/"},"headline":"《MySQL是怎样运行的》笔记 第二十四章 隔离级别与MVCC","image":["http://shawnzong.cn/img/og_image.png"],"datePublished":"2023-04-06T08:00:00.000Z","dateModified":"2024-09-15T13:54:53.591Z","author":{"@type":"Person","name":"Shawn Zong"},"publisher":{"@type":"Organization","name":"Shawn Zong's Notes","logo":{"@type":"ImageObject","url":"http://shawnzong.cn/images/avatar.jpg"}},"description":"事前准备   创建一个表并插入数据，准备测试事务的隔离级别与MVCC机制。   事务隔离级别   数据库支持并发执行事务，但会产生一些问题，需要通过隔离性来解决。隔离性越高，并发性就越差。   事务并发执行遇到的问题   脏写 Dirty Write   一个事务修改了另一个未提交事务修改过的数据。如果第一个事务回滚了，就会导致第二个事务的数据更新失败。   脏读 Dirty Read   一个"}</script><link rel="canonical" href="http://shawnzong.cn/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E5%9B%9B%E7%AB%A0%20%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E4%B8%8EMVCC/"><link rel="icon" href="/images/avatar.jpg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const $tabMenu = document.querySelector(`a[href="${location.hash}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(location.hash);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/tags">标签</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-04-06T08:00:00.000Z" title="4/6/2023, 4:00:00 PM">2023-04-06</time>发表</span><span class="level-item"><time dateTime="2024-09-15T13:54:53.591Z" title="9/15/2024, 9:54:53 PM">2024-09-15</time>更新</span><span class="level-item">8 分钟读完 (大约1142个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">《MySQL是怎样运行的》笔记 第二十四章 隔离级别与MVCC</h1><div class="content"><ol>
+<li><strong>事前准备</strong>  <ul>
+<li>创建一个表并插入数据，准备测试事务的隔离级别与MVCC机制。</li>
+</ul>
+</li>
+<li><strong>事务隔离级别</strong>  <ul>
+<li>数据库支持并发执行事务，但会产生一些问题，需要通过隔离性来解决。隔离性越高，并发性就越差。</li>
+</ul>
+<ol>
+<li><strong>事务并发执行遇到的问题</strong>  <ol>
+<li><strong>脏写 Dirty Write</strong>  <ul>
+<li>一个事务修改了另一个未提交事务修改过的数据。如果第一个事务回滚了，就会导致第二个事务的数据更新失败。</li>
+</ul>
+</li>
+<li><strong>脏读 Dirty Read</strong>  <ul>
+<li>一个事务读取了另一个未提交事务修改过的数据。如果第二个事务回滚了，第一个事务读取到的就是不存在的数据。</li>
+</ul>
+</li>
+<li><strong>不可重复读 Non Repeatable Read</strong>  <ul>
+<li>在同一事务中，多次读取同一数据，读取结果不一致。</li>
+</ul>
+</li>
+<li><strong>幻读 Phantom</strong>  <ul>
+<li>在一个事务中，两次以同一查询条件查询数据，第二次查询时读取到了之前没有见过的记录，通常是有新记录插入。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><strong>SQL标准中的四种隔离级别</strong>  <ul>
+<li>脏写 &gt; 脏读 &gt; 不可重复读 &gt; 幻读（问题严重性递减）  </li>
+<li>四种隔离级别：  <ol>
+<li>读未提交  </li>
+<li>读提交  </li>
+<li>可重复读  </li>
+<li>串行化</li>
+</ol>
+</li>
+<li>脏写问题在每一种隔离级别中都被解决。</li>
+</ul>
+</li>
+<li><strong>MySQL支持的四种隔离级别</strong>  <ul>
+<li>MySQL支持四种隔离级别，默认隔离级别为可重复读（MySQL的可重复读能够解决幻读）。  </li>
+<li>设置事务隔离级别的语法：  <pre><code class="sql">SET [GLOBAL|SESSION] TRANSACTION ISOLATION LEVEL level;
+</code></pre>
+</li>
+<li>作用域：  <ol>
+<li><code>global</code>：全局有效。  </li>
+<li><code>session</code>：当前会话有效。  </li>
+<li>省略作用域：仅对下一条事务有效。</li>
+</ol>
+</li>
+<li>也可以通过启动参数更改默认隔离级别：  <pre><code class="bash">--transaction-isolation=SERIALIZABLE
+</code></pre>
+  <span id="more"></span></li>
+</ul>
+</li>
+</ol>
+</li>
+<li><strong>MVCC原理</strong>  <ul>
+<li>MVCC（Multi-Version Concurrency Control，多版本并发控制）用于处理并发访问，解决读写冲突问题。</li>
+</ul>
+<ol>
+<li><strong>版本链</strong>  <ul>
+<li>版本链由<code>undo</code>日志组成的链表，每条<code>undo</code>日志都是该用户记录的一个旧版本，头节点是最新版本。  </li>
+<li>聚集索引中有两个隐藏字段：  <ol>
+<li><strong>trx_id</strong>：每当事务修改记录时，会将事务的<code>trx_id</code>赋值给该记录。  </li>
+<li><strong>roll_pointer</strong>：每当记录被修改，旧版本写入<code>undo</code>日志，通过<code>roll_pointer</code>找到旧版本。</li>
+</ol>
+</li>
+<li><code>undo</code>日志也有<code>trx_id</code>和<code>roll_pointer</code>，组成链表，称为版本链。</li>
+</ul>
+</li>
+<li><strong>ReadView</strong>  <ul>
+<li><code>ReadView</code>用于判断版本链中哪个版本对当前事务可见。  </li>
+<li>主要包括四个内容：  <ol>
+<li><strong>m_ids</strong>：系统中活跃的读写事务的<code>id</code>列表。  </li>
+<li><strong>min_trx_id</strong>：<code>m_ids</code>中的最小值。  </li>
+<li><strong>max_trx_id</strong>：系统将要分配给下一个事务的<code>id</code>。  </li>
+<li><strong>creator_trx_id</strong>：创建该<code>ReadView</code>的事务的<code>id</code>。</li>
+</ol>
+</li>
+<li><strong>ReadView判断版本可见性的步骤</strong>：  <ol>
+<li>如果版本的<code>trx_id</code>与<code>creator_trx_id</code>相同，表示该事务在访问自己修改的记录，因此可见。  </li>
+<li>如果<code>trx_id</code>小于<code>min_trx_id</code>，表示生成该版本的事务已提交，因此可见。  </li>
+<li>如果<code>trx_id</code>大于<code>max_trx_id</code>，表示该版本由生成<code>ReadView</code>之后的事务创建，因此不可见。  </li>
+<li>如果<code>trx_id</code>在<code>min_trx_id</code>和<code>max_trx_id</code>之间，检查是否在<code>m_ids</code>列表中：  <ul>
+<li>在<code>m_ids</code>中表示活跃事务，不可见。  </li>
+<li>不在<code>m_ids</code>中表示已提交事务，因此可见。</li>
+</ul>
+</li>
+<li>如果当前版本不可见，继续在版本链中找下一个版本。</li>
+</ol>
+</li>
+<li><strong>读提交和可重复读生成<code>ReadView</code>的时机不同</strong>：  <ol>
+<li><strong>读提交</strong>：每次读取数据前生成<code>ReadView</code>。  </li>
+<li><strong>可重复读</strong>：第一次读取数据时生成<code>ReadView</code>。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>MVCC小结</strong>  <ul>
+<li>MVCC在读提交和可重复读隔离级别下，通过生成<code>ReadView</code>来判断记录版本链中的版本是否可见。  </li>
+<li>删除用户记录时使用<code>delete_mask</code>，保留版本链支持MVCC。</li>
+</ul>
+</li>
+<li><strong>关于Purge</strong>  <ul>
+<li><code>insert undo</code>在事务提交后可以释放，但<code>update undo</code>由于支持MVCC不能立即删除。  </li>
+<li><code>delete mark</code>操作仅是打标记而未实际删除，保留版本链支持MVCC。  </li>
+<li>当系统判断<code>delete_mask</code>标记的记录或<code>update undo</code>日志不会被访问后，使用<code>purge</code>线程删除它们。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</div><div class="article-licensing box"><div class="licensing-title"><p>《MySQL是怎样运行的》笔记 第二十四章 隔离级别与MVCC</p><p><a href="http://shawnzong.cn/2023/04/06/《MySQL是怎样运行的》笔记 第二十四章 隔离级别与MVCC/">http://shawnzong.cn/2023/04/06/《MySQL是怎样运行的》笔记 第二十四章 隔离级别与MVCC/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Shawn Zong</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-04-06</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-09-15</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2023/04/07/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%BA%94%E7%AB%A0%20%E9%94%81/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">《MySQL是怎样运行的》笔记 第二十五章 锁</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%B9%9D%E7%AB%A0%20%E4%BA%8B%E5%8A%A1%E7%AE%80%E4%BB%8B/"><span class="level-item">《MySQL是怎样运行的》笔记 第十九章 事务简介</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="disqus_thread"><noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div><script>var disqus_config = function () {
+            this.page.url = 'http://shawnzong.cn/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E5%9B%9B%E7%AB%A0%20%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E4%B8%8EMVCC/';
+            this.page.identifier = '2023/04/06/《MySQL是怎样运行的》笔记 第二十四章 隔离级别与MVCC/';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');  
+            s.src = '//' + 'Shawn' + '.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1 is-sticky"><!--!--><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.jpg" alt="Shawn Zong"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Shawn Zong</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">21</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">6</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/PokeHA" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="hhttps://github.com/PokeHA"><i class="fab fa-github"></i></a></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-26T03:22:28.000Z">2023-11-26</time></p><p class="title"><a href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第10章 进程管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-12T03:22:28.000Z">2023-11-12</time></p><p class="title"><a href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">《Linux从入门到精通》笔记 第5章 Shell基本命令</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-25T03:42:28.000Z">2023-10-25</time></p><p class="title"><a href="/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/">《人件 Peopleware》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-09T03:42:28.000Z">2023-10-09</time></p><p class="title"><a href="/2023/10/09/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%20The%20Mythical%20Man-Month%E3%80%8B%E7%AC%94%E8%AE%B0/">《人月神话 The Mythical Man-Month》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-07T08:00:00.000Z">2023-04-07</time></p><p class="title"><a href="/2023/04/07/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%BA%94%E7%AB%A0%20%E9%94%81/">《MySQL是怎样运行的》笔记 第二十五章 锁</a></p></div></article></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BF%9D%E7%A0%94/"><span class="tag">保研</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%A0%E6%83%AF/"><span class="tag">学习习惯</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="tag">操作系统</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><span class="tag">项目管理</span><span class="tag">2</span></a></div></div></div></div></div><!--!--></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a><p class="is-size-7"><span>&copy; 2024 Shawn Zong</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

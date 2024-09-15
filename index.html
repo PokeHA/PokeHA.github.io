@@ -141,139 +141,304 @@
 <li><p><strong>目标读者和应用场景</strong></p>
 <p>  本书适合所有软件工程师、项目经理、软件开发者、软件工程专业学生等正在或者将要从事软件开发的人员阅读。</p>
 </li>
-</ul></div><a class="article-more button is-small is-size-7" href="/2023/10/09/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%20The%20Mythical%20Man-Month%E3%80%8B%E7%AC%94%E8%AE%B0/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-18T07:59:28.000Z" title="3/18/2023, 3:59:28 PM">2023-03-18</time>发表</span><span class="level-item"><time dateTime="2024-03-05T14:04:45.996Z" title="3/5/2024, 10:04:45 PM">2024-03-05</time>更新</span><span class="level-item">9 分钟读完 (大约1285个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/">《MySQL是怎样运行的》笔记 第五章 InnoDB数据页结构</a></h1><div class="content"><ol>
-<li><p><strong>不同类型的页简介</strong></p>
-<ul>
-<li>页是InnoDB管理空间的基本单位</li>
-<li>一个页的大小一般是16KB</li>
-<li>InnoDB中有多种页<ul>
-<li>存放Insert Buffer信息的页</li>
-<li>存放INODE信息的页</li>
-<li>存放undo信息的页</li>
-<li>索引页INDEX<ul>
-<li>这个就是用来存放记录的页</li>
-<li>也称为数据页</li>
+</ul></div><a class="article-more button is-small is-size-7" href="/2023/10/09/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%20The%20Mythical%20Man-Month%E3%80%8B%E7%AC%94%E8%AE%B0/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-04-07T08:00:00.000Z" title="4/7/2023, 4:00:00 PM">2023-04-07</time>发表</span><span class="level-item"><time dateTime="2024-09-15T13:54:53.591Z" title="9/15/2024, 9:54:53 PM">2024-09-15</time>更新</span><span class="level-item">13 分钟读完 (大约1890个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/04/07/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%BA%94%E7%AB%A0%20%E9%94%81/">《MySQL是怎样运行的》笔记 第二十五章 锁</a></h1><div class="content"><ol>
+<li><strong>解决并发事务带来问题的两种基本方式</strong>  <ol>
+<li><strong>并发事务带来的问题</strong>  <ul>
+<li>大致分为三种：  <ol>
+<li><strong>读读</strong>  <ul>
+<li>多个并发事务读取相同的数据，这种情况不会产生问题。</li>
 </ul>
 </li>
+<li><strong>写写</strong>  <ul>
+<li>简介：  <ul>
+<li>多个并发事务对相同记录进行修改，会产生<strong>脏写</strong>问题，这是很严重的。  </li>
+<li>脏写在所有隔离级别下都不允许发生。</li>
 </ul>
 </li>
+<li><strong>脏写的解决办法</strong>：  <ul>
+<li>加锁，使多个事务对于同一记录的写操作排队执行。</li>
 </ul>
 </li>
-<li><p><strong>数据页结构的快速浏览</strong></p>
-<ul>
-<li>数据页被划分为多个部分 如图<br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-8.png"></li>
-<li>总共分7个部分，简介如下：<br>   <img src="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/image-9.png"></div><a class="article-more button is-small is-size-7" href="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-17T07:59:28.000Z" title="3/17/2023, 3:59:28 PM">2023-03-17</time>发表</span><span class="level-item"><time dateTime="2024-03-05T14:04:50.416Z" title="3/5/2024, 10:04:50 PM">2024-03-05</time>更新</span><span class="level-item">7 分钟读完 (大约1069个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/">《MySQL是怎样运行的》笔记 第四章 InnoDB记录结构</a></h1><div class="content"><ol>
-<li><p><strong>准备工作</strong></p>
-<ul>
-<li>不同存储引擎对于数据的存储格式都是不同的</li>
-<li>这本书主要讲的是InnoDB的格式</li>
+<li><strong>加锁解锁的过程</strong>：  <ol>
+<li>加锁：  <ul>
+<li>创建一个锁结构，<code>trx_id</code>设置为当前事务的ID。  </li>
+<li>如果该记录已有其他锁，<code>is_waiting</code>设置为<code>true</code>，表示正在等待获取锁；否则<code>is_waiting</code>设置为<code>false</code>，表示成功获取锁。</li>
 </ul>
 </li>
-<li><p><strong>InnoDB页简介</strong></p>
-<ul>
-<li>InnoDB会把数据划分为多个页</li>
-<li>以页作为磁盘和内存之间交互的基本单位</li>
-<li>页的大小一般为16KB</li>
-<li>一次至少读取16KB内容的数据到内存<ul>
-<li>同样的，一次最少刷新16KB的数据到磁盘</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>InnoDB行格式</strong></p>
-<ul>
-<li><p><strong>简介</strong></p>
-<ul>
-<li>我们以记录为单位往表中存储数据</li>
-<li>每一条记录在磁盘上的存储方式就被称为 行格式 或者 记录格式</li>
-<li>InnoDB有四种不同的行格式<ol>
-<li>Compact</li>
-<li>Redundant</li>
-<li>Dynamic</li>
-<li>Compressed</div><a class="article-more button is-small is-size-7" href="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-16T14:59:28.000Z" title="3/16/2023, 10:59:28 PM">2023-03-16</time>发表</span><span class="level-item"><time dateTime="2024-03-05T13:11:12.138Z" title="3/5/2024, 9:11:12 PM">2024-03-05</time>更新</span><span class="level-item">4 分钟读完 (大约534个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E5%AD%97%E7%AC%A6%E9%9B%86%E5%92%8C%E6%AF%94%E8%BE%83%E8%A7%84%E5%88%99/">《MySQL是怎样运行的》笔记 第三章 字符集和比较规则</a></h1><div class="content"><ol>
-<li><p><strong>字符集和比较规则简介</strong></p>
-<ul>
-<li><strong>字符集简介</strong><ul>
-<li>字符集负责处理字符与二进制数据的存储关系</li>
-</ul>
-</li>
-<li><strong>比较规则</strong><ul>
-<li>字典序也就是比较他们二进制的大小</li>
-<li>除了字典序外也有其他的比较规则</li>
-</ul>
-</li>
-<li><strong>重要的字符集</strong><ul>
-<li><strong>ASCII</strong><ol>
-<li>128个字符，包括数字、大小写字母、空格等等</li>
-<li>每个字符一个字节</li>
-</ol>
-</li>
-<li><strong>GB2132</strong><ol>
-<li>包括中文和其他国家的字符</li>
-<li>存在于ASCII中的字符用1个字节存储</li>
-<li>其余的字符用2个字节存储</li>
-<li>也就是变长存储方式</li>
-</ol>
-</li>
-<li><strong>GBK</strong><ol>
-<li>对于GB2132的字符收集范围做了补充，其余一样</li>
-</ol>
-</li>
-<li><strong>Unicode系列</strong><ol>
-<li>对地球上所有的字符进行了收录，同样是变长编码</li>
-<li><strong>utf-8</strong><ul>
-<li>1-4个字节存储字符</li>
-</ul>
-</li>
-<li><strong>utf-16</strong><ul>
-<li>2或4个字节存储字符</li>
-</ul>
-</li>
-<li><strong>utf-32</strong><ul>
-<li>全用4字节存</li>
+<li>解锁：  <ul>
+<li>事务提交后，释放当前锁结构，并选择下一个等待该锁的锁结构，将<code>is_waiting</code>设置为<code>false</code>，唤醒对应事务的线程。</li>
 </ul>
 </li>
 </ol>
 </li>
 </ul>
 </li>
+<li><strong>读写和写读</strong>  <ul>
+<li>简介：  <ul>
+<li>多个并发事务，一个读，一个写，会产生<strong>脏读</strong>、<strong>不可重复读</strong>、<strong>幻读</strong>的问题。</li>
 </ul>
 </li>
-<li><p><strong>MySQL支持的字符集</strong></p></div><a class="article-more button is-small is-size-7" href="/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E5%AD%97%E7%AC%A6%E9%9B%86%E5%92%8C%E6%AF%94%E8%BE%83%E8%A7%84%E5%88%99/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-16T03:42:28.000Z" title="3/16/2023, 11:42:28 AM">2023-03-16</time>发表</span><span class="level-item"><time dateTime="2024-03-05T12:18:31.841Z" title="3/5/2024, 8:18:31 PM">2024-03-05</time>更新</span><span class="level-item">9 分钟读完 (大约1299个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86MySQL/">《MySQL是怎样运行的》笔记 第一章</a></h1><div class="content"><h1 id="重新认识MySQL"><a href="#重新认识MySQL" class="headerlink" title="重新认识MySQL"></a><strong>重新认识MySQL</strong></h1><pre><code>1 MySQL的客户端/服务器架构
-    a. 服务器处理存储的数据，客户端发出增删改查的请求
-    b. 服务器进程的名称为mysqld
-    c. 客户端进程的名称为mysql
-2. MySQL的安装
-    a. bin目录下的可执行文件
-        i. MySQL的安装目录下有一个bin文件夹，有很多可执行文件
-    b. 运行bin目录下的mysqld就可以开启mysql服务器
-        i. 环境变量PATH
-            1) 环境变量是一系列地址的集合，通过冒号隔开
-            2) 指定了环境变量之后，输入命令的时候就会从环境变量的地址中找有没有这个命令
-            3) 就不需要每次都到MySQL的目录下去执行命令了
-</code></pre></div><a class="article-more button is-small is-size-7" href="/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86MySQL/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-02-09T03:42:28.000Z" title="2/9/2023, 11:42:28 AM">2023-02-09</time>发表</span><span class="level-item"><time dateTime="2023-11-12T08:53:19.151Z" title="11/12/2023, 4:53:19 PM">2023-11-12</time>更新</span><span class="level-item">10 分钟读完 (大约1559个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/02/09/%E3%80%8A%E5%8E%9F%E5%AD%90%E4%B9%A0%E6%83%AF%20Atomic%20Habits%E3%80%8B%E7%AC%AC%E4%B8%80%E7%AB%A0&amp;%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E7%AC%94%E8%AE%B0/">《原子习惯 Atomic Habits》第一章&amp;第二章 笔记</a></h1><div class="content"><h1 id="一、原子习惯的力量"><a href="#一、原子习惯的力量" class="headerlink" title="一、原子习惯的力量"></a><strong>一、原子习惯的力量</strong></h1><h2 id="小习惯大作用"><a href="#小习惯大作用" class="headerlink" title="小习惯大作用"></a><strong>小习惯大作用</strong></h2><p>日常习惯产生的微小改变很重要。</p>
-<p>成功是日常习惯产生的结果，而不是千载难逢的转变。</p>
-<p>同时，你目前的成功与否无关紧要，重要的是你目前的习惯是否正在把你推向成功。需要更注重于当前的过程，而不是已经拥有的结果。</p>
-<h2 id="习惯的正面积累和负面积累"><a href="#习惯的正面积累和负面积累" class="headerlink" title="习惯的正面积累和负面积累"></a><strong>习惯的正面积累和负面积累</strong></h2><p>正面积累：</p>
-<ul>
-<li>生产力 -每天多完成一点额外工作会给你更多的余裕</li>
-<li>知识 </li>
-<li>人际关系 -对别人更好一点会更容易得到帮助</li>
+<li><strong>解决读写问题的两种方案</strong>：  <ol>
+<li><strong>方案一：使用MVCC</strong>  <ul>
+<li>MVCC可以解决幻读问题，因为写操作针对的是最新版本，而读操作读取的是旧版本，因此不会产生读写冲突。</li>
 </ul>
-<p>负面积累：</p>
-<ul>
-<li>压力</li>
-<li>负面想法</li>
-<li>愤怒</li>
-</ul></div><a class="article-more button is-small is-size-7" href="/2023/02/09/%E3%80%8A%E5%8E%9F%E5%AD%90%E4%B9%A0%E6%83%AF%20Atomic%20Habits%E3%80%8B%E7%AC%AC%E4%B8%80%E7%AB%A0&amp;%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E7%AC%94%E8%AE%B0/#more">阅读更多</a></article></div><div class="card"><div class="card-image"><a class="image is-7by3" href="/2022/12/02/2022%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BF%9D%E7%A0%94%E7%BB%8F%E5%8E%86%EF%BC%9A%E6%9C%AB%E4%B9%9D6-%E7%9A%84%E5%A4%B4%E9%93%81%E4%B9%8B%E8%B7%AF%EF%BC%88%E5%8D%97%E5%A4%A7%E8%BD%AF%E9%99%A2%E3%80%81%E6%B5%99%E5%A4%A7%E8%BD%AF%E9%99%A2%E3%80%81%E6%AD%A6%E5%A4%A7%E8%AE%A1%E7%AE%97%E6%9C%BA%E3%80%81%E4%B8%AD%E7%A7%91%E5%A4%A7%E5%85%88%E7%A0%94%E9%99%A2%E3%80%81%E8%A5%BF%E4%BA%A4%E8%BD%AF%E9%99%A2%EF%BC%89/"><img class="fill" src="/covers/cover.jpg" alt="2022计算机保研经历：末九6%的头铁之路（南大软院、浙大软院、武大计算机、中科大先研院、西交软院）"></a></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2022-12-02T03:42:28.000Z" title="12/2/2022, 11:42:28 AM">2022-12-02</time>发表</span><span class="level-item"><time dateTime="2022-12-02T04:27:22.604Z" title="12/2/2022, 12:27:22 PM">2022-12-02</time>更新</span><span class="level-item">27 分钟读完 (大约4016个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2022/12/02/2022%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BF%9D%E7%A0%94%E7%BB%8F%E5%8E%86%EF%BC%9A%E6%9C%AB%E4%B9%9D6-%E7%9A%84%E5%A4%B4%E9%93%81%E4%B9%8B%E8%B7%AF%EF%BC%88%E5%8D%97%E5%A4%A7%E8%BD%AF%E9%99%A2%E3%80%81%E6%B5%99%E5%A4%A7%E8%BD%AF%E9%99%A2%E3%80%81%E6%AD%A6%E5%A4%A7%E8%AE%A1%E7%AE%97%E6%9C%BA%E3%80%81%E4%B8%AD%E7%A7%91%E5%A4%A7%E5%85%88%E7%A0%94%E9%99%A2%E3%80%81%E8%A5%BF%E4%BA%A4%E8%BD%AF%E9%99%A2%EF%BC%89/">2022计算机保研经历：末九6%的头铁之路（南大软院、浙大软院、武大计算机、中科大先研院、西交软院）</a></h1><div class="content"><h1 id="Prelude"><a href="#Prelude" class="headerlink" title="Prelude"></a><strong>Prelude</strong></h1><p>上岸躺平了好长时间了，还是决定写点东西记录一下</p>
-<p>我的保研经历总的来说就是头铁+狗屎运，希望大家引以为戒，警钟撅烂(</p>
-<h1 id="个人情况"><a href="#个人情况" class="headerlink" title="个人情况"></a><strong>个人情况</strong></h1><h2 id="学术背景"><a href="#学术背景" class="headerlink" title="学术背景"></a><strong>学术背景</strong></h2><p><strong>学校</strong>：真末流985</p>
-<p><strong>专业</strong>：软件工程</p>
-<p><strong>排名</strong>：6%</p>
-<p><strong>外语</strong>：CET4 600多 CET6 550多</p>
-<p><strong>科研</strong>：无，没找过导师做东西</p>
-<p><strong>项目</strong>：全是课设，其中有一个老师给了很大的发挥空间，做了点有用的东西出来</p>
-<p><strong>竞赛</strong>：蓝桥杯国三+省一、建模国赛省一，其余都是一些水赛</p></div><a class="article-more button is-small is-size-7" href="/2022/12/02/2022%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BF%9D%E7%A0%94%E7%BB%8F%E5%8E%86%EF%BC%9A%E6%9C%AB%E4%B9%9D6-%E7%9A%84%E5%A4%B4%E9%93%81%E4%B9%8B%E8%B7%AF%EF%BC%88%E5%8D%97%E5%A4%A7%E8%BD%AF%E9%99%A2%E3%80%81%E6%B5%99%E5%A4%A7%E8%BD%AF%E9%99%A2%E3%80%81%E6%AD%A6%E5%A4%A7%E8%AE%A1%E7%AE%97%E6%9C%BA%E3%80%81%E4%B8%AD%E7%A7%91%E5%A4%A7%E5%85%88%E7%A0%94%E9%99%A2%E3%80%81%E8%A5%BF%E4%BA%A4%E8%BD%AF%E9%99%A2%EF%BC%89/#more">阅读更多</a></article></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.jpg" alt="Shawn Zong"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Shawn Zong</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">10</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">6</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/PokeHA" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/PokeHA"><i class="fab fa-github"></i></a></div></div></div><!--!--><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BF%9D%E7%A0%94/"><span class="tag">保研</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%A0%E6%83%AF/"><span class="tag">学习习惯</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="tag">操作系统</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><span class="tag">项目管理</span><span class="tag">2</span></a></div></div></div></div></div><!--!--><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-26T03:22:28.000Z">2023-11-26</time></p><p class="title"><a href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第10章 进程管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-12T03:22:28.000Z">2023-11-12</time></p><p class="title"><a href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">《Linux从入门到精通》笔记 第5章 Shell基本命令</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-25T03:42:28.000Z">2023-10-25</time></p><p class="title"><a href="/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/">《人件 Peopleware》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-09T03:42:28.000Z">2023-10-09</time></p><p class="title"><a href="/2023/10/09/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%20The%20Mythical%20Man-Month%E3%80%8B%E7%AC%94%E8%AE%B0/">《人月神话 The Mythical Man-Month》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-03-18T07:59:28.000Z">2023-03-18</time></p><p class="title"><a href="/2023/03/18/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%94%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/">《MySQL是怎样运行的》笔记 第五章 InnoDB数据页结构</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2023/11/"><span class="level-start"><span class="level-item">十一月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/10/"><span class="level-start"><span class="level-item">十月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/03/"><span class="level-start"><span class="level-item">三月 2023</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/02/"><span class="level-start"><span class="level-item">二月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/12/"><span class="level-start"><span class="level-item">十二月 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a><p class="is-size-7"><span>&copy; 2024 Shawn Zong</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+</li>
+<li><strong>方案二：读写操作都使用加锁</strong>  <ul>
+<li>对于时效性要求高的场景，比如读取账户余额，希望每次读取到的都是最新版本的记录，这时需要对读、写操作都加锁。  </li>
+<li>加锁可以解决脏读和不可重复读问题，但对于幻读问题比较麻烦，因为没法对不存在的记录加锁。  </li>
+<li>解决脏读：对写操作加锁，事务提交后释放锁。  </li>
+<li>解决不可重复读：对读操作加锁，防止其他事务修改该记录。</div><a class="article-more button is-small is-size-7" href="/2023/04/07/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%BA%94%E7%AB%A0%20%E9%94%81/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-04-06T08:00:00.000Z" title="4/6/2023, 4:00:00 PM">2023-04-06</time>发表</span><span class="level-item"><time dateTime="2024-09-15T13:54:53.591Z" title="9/15/2024, 9:54:53 PM">2024-09-15</time>更新</span><span class="level-item">8 分钟读完 (大约1142个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E5%9B%9B%E7%AB%A0%20%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E4%B8%8EMVCC/">《MySQL是怎样运行的》笔记 第二十四章 隔离级别与MVCC</a></h1><div class="content"><ol>
+<li><strong>事前准备</strong>  <ul>
+<li>创建一个表并插入数据，准备测试事务的隔离级别与MVCC机制。</li>
+</ul>
+</li>
+<li><strong>事务隔离级别</strong>  <ul>
+<li>数据库支持并发执行事务，但会产生一些问题，需要通过隔离性来解决。隔离性越高，并发性就越差。</li>
+</ul>
+<ol>
+<li><strong>事务并发执行遇到的问题</strong>  <ol>
+<li><strong>脏写 Dirty Write</strong>  <ul>
+<li>一个事务修改了另一个未提交事务修改过的数据。如果第一个事务回滚了，就会导致第二个事务的数据更新失败。</li>
+</ul>
+</li>
+<li><strong>脏读 Dirty Read</strong>  <ul>
+<li>一个事务读取了另一个未提交事务修改过的数据。如果第二个事务回滚了，第一个事务读取到的就是不存在的数据。</li>
+</ul>
+</li>
+<li><strong>不可重复读 Non Repeatable Read</strong>  <ul>
+<li>在同一事务中，多次读取同一数据，读取结果不一致。</li>
+</ul>
+</li>
+<li><strong>幻读 Phantom</strong>  <ul>
+<li>在一个事务中，两次以同一查询条件查询数据，第二次查询时读取到了之前没有见过的记录，通常是有新记录插入。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><strong>SQL标准中的四种隔离级别</strong>  <ul>
+<li>脏写 &gt; 脏读 &gt; 不可重复读 &gt; 幻读（问题严重性递减）  </li>
+<li>四种隔离级别：  <ol>
+<li>读未提交  </li>
+<li>读提交  </li>
+<li>可重复读  </li>
+<li>串行化</li>
+</ol>
+</li>
+<li>脏写问题在每一种隔离级别中都被解决。</li>
+</ul>
+</li>
+<li><strong>MySQL支持的四种隔离级别</strong>  <ul>
+<li>MySQL支持四种隔离级别，默认隔离级别为可重复读（MySQL的可重复读能够解决幻读）。  </li>
+<li>设置事务隔离级别的语法：  <pre><code class="sql">SET [GLOBAL|SESSION] TRANSACTION ISOLATION LEVEL level;
+</code></pre>
+</li>
+<li>作用域：  <ol>
+<li><code>global</code>：全局有效。  </li>
+<li><code>session</code>：当前会话有效。  </li>
+<li>省略作用域：仅对下一条事务有效。</li>
+</ol>
+</li>
+<li>也可以通过启动参数更改默认隔离级别：  <pre><code class="bash">--transaction-isolation=SERIALIZABLE
+</code></pre></div><a class="article-more button is-small is-size-7" href="/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E5%9B%9B%E7%AB%A0%20%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E4%B8%8EMVCC/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-04-06T08:00:00.000Z" title="4/6/2023, 4:00:00 PM">2023-04-06</time>发表</span><span class="level-item"><time dateTime="2024-09-15T13:54:53.587Z" title="9/15/2024, 9:54:53 PM">2024-09-15</time>更新</span><span class="level-item">5 分钟读完 (大约756个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%B9%9D%E7%AB%A0%20%E4%BA%8B%E5%8A%A1%E7%AE%80%E4%BB%8B/">《MySQL是怎样运行的》笔记 第十九章 事务简介</a></h1><div class="content"><ol>
+<li><strong>事务的起源</strong>  <ul>
+<li>事务就是一组对于数据存储操作的集合。比如转账就包括给一个账户扣钱，再给另一个账户增加钱。  </li>
+<li>事务的四大特性：  <ol>
+<li><strong>原子性</strong>  <ul>
+<li>事务中的操作，要么全部执行，要么全部不执行，也就是回滚。</li>
+</ul>
+</li>
+<li><strong>隔离性</strong>  <ul>
+<li>多个事务同时执行时，不能相互产生影响。</li>
+</ul>
+</li>
+<li><strong>一致性</strong>  <ul>
+<li>数据库中的数据需要满足一致性。  </li>
+<li>例如转账操作，转账前后所有账户的总金额应保持不变。  </li>
+<li>一致性可以通过触发器实现。</li>
+</ul>
+</li>
+<li><strong>持久性</strong>  <ul>
+<li>事务的执行结果应该被永久保留。  </li>
+<li>例如InnoDB通过<code>redo log</code>实现持久性。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>事务的概念</strong>  <ol>
+<li><strong>定义</strong>  <ul>
+<li>事务就是一组数据库操作。</li>
+</ul>
+</li>
+<li><strong>事务的5个状态</strong>  <ol>
+<li><strong>active</strong>  <ul>
+<li>正在执行。</li>
+</ul>
+</li>
+<li><strong>partially committed</strong>  <ul>
+<li>完成了所有操作，但是更改还没有刷回外存。</li>
+</ul>
+</li>
+<li><strong>failed</strong>  <ul>
+<li>如果在<code>active</code>或<code>partially committed</code>状态时遇到错误，就会进入<code>failed</code>状态。</li>
+</ul>
+</li>
+<li><strong>aborted</strong>  <ul>
+<li>当事务处于<code>failed</code>状态时，需要进行回滚，回滚后为<code>aborted</code>状态。</li>
+</ul>
+</li>
+<li><strong>committed</strong>  <ul>
+<li>事务成功执行，且更改同步到外存。</div><a class="article-more button is-small is-size-7" href="/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%B9%9D%E7%AB%A0%20%E4%BA%8B%E5%8A%A1%E7%AE%80%E4%BB%8B/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-04-06T08:00:00.000Z" title="4/6/2023, 4:00:00 PM">2023-04-06</time>发表</span><span class="level-item"><time dateTime="2024-09-15T13:54:53.591Z" title="9/15/2024, 9:54:53 PM">2024-09-15</time>更新</span><span class="level-item">8 分钟读完 (大约1146个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%20Explain%E8%AF%A6%E8%A7%A3/">《MySQL是怎样运行的》笔记 第十五章 Explain详解</a></h1><div class="content"><ol>
+<li><strong>简介</strong>  <ul>
+<li>MySQL在进行基于规则的优化和基于成本的优化之后，会生成最终的执行计划。  </li>
+<li>执行计划记录了最终执行查询的步骤，比如多表连接的顺序，每个表采用什么访问方法等。  </li>
+<li>使用<code>EXPLAIN</code>关键字可以查看一个查询语句的具体执行计划。</li>
+</ul>
+</li>
+<li><strong>执行计划中的各列详解</strong>  <ol>
+<li><strong>table</strong>  <ul>
+<li>不管查询语句多么复杂，最后都是单表访问。  </li>
+<li>所以执行计划中的每一条记录都对应一个单表，记录了对于该单表怎么执行（如访问方法<code>const</code>、<code>ref</code>、<code>range</code>等）。  </li>
+<li>这些记录的顺序就是表的连接顺序。  </li>
+<li><code>table</code>指的是该条记录对应的表名。</li>
+</ul>
+</li>
+<li><strong>id</strong>  <ul>
+<li><code>id</code>是<code>SELECT</code>关键字的id。  </li>
+<li>每使用一个<code>SELECT</code>关键字，就会分配一个<code>id</code>。  </li>
+<li>进行连接查询的表拥有同一个<code>id</code>。  </li>
+<li>子查询则会使用另一个<code>id</code>。  </li>
+<li>如果子查询被转换为连接查询，也会拥有相同的<code>id</code>。  </li>
+<li><code>id</code>为<code>NULL</code>表示这是一个临时表。</li>
+</ul>
+</li>
+<li><strong>select_type</strong>  <ul>
+<li>每个<code>SELECT</code>语句代表一个小查询，会被分配一个<code>id</code>。  </li>
+<li><code>select_type</code>表示这个<code>SELECT</code>关键字对应的小查询的类型。  </li>
+<li>常见的<code>select_type</code>：  <ol>
+<li><strong>simple</strong>：表示查询不包括子查询或<code>UNION</code>操作，常见于单表查询和连接查询。  </li>
+<li><strong>primary</strong>：表示该查询是一个大查询，由几个小查询组成。使用了<code>UNION</code>或子查询的查询就是<code>primary</code>。  </li>
+<li><strong>union</strong>：用于<code>UNION</code>查询，第一个小查询的类型是<code>primary</code>，其余的小查询类型是<code>union</code>。  </li>
+<li><strong>union result</strong>：表示该表是一个用于<code>UNION</code>的临时表，并且这表没有<code>id</code>。  </li>
+<li><strong>subquery</strong>：表示该查询是未转换为半连接的不相关子查询，并使用物化方式执行。  </li>
+<li><strong>dependent subquery</strong>：表示这是未转换为半连接的相关子查询，会执行多遍。  </li>
+<li><strong>dependent union</strong>：子查询中的<code>UNION</code>查询，依赖于外层查询。  </li>
+<li><strong>drived</strong>：表示用物化表的方式执行派生表查询。  </li>
+<li><strong>materialized</strong>：子查询物化后与外层查询进行连接查询。</div><a class="article-more button is-small is-size-7" href="/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%20Explain%E8%AF%A6%E8%A7%A3/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-04-05T08:00:00.000Z" title="4/5/2023, 4:00:00 PM">2023-04-05</time>发表</span><span class="level-item"><time dateTime="2024-09-15T13:54:53.587Z" title="9/15/2024, 9:54:53 PM">2024-09-15</time>更新</span><span class="level-item">18 分钟读完 (大约2708个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/04/05/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0%20MySQL%E5%9F%BA%E4%BA%8E%E6%88%90%E6%9C%AC%E7%9A%84%E4%BC%98%E5%8C%96/">《MySQL是怎样运行的》笔记 第十二章 MySQL基于成本的优化</a></h1><div class="content"><ol>
+<li><strong>什么是成本</strong>  <ul>
+<li>同一查询会有多个执行方案，MySQL会自动选择成本最低的方案去进行查询。  </li>
+<li>成本主要由两个方面组成：<ol>
+<li><strong>IO成本</strong>  <ul>
+<li>当我们想查询数据时，需要先把数据从磁盘里加载到内存里之后才可以查询。  </li>
+<li>从外存加载到内存的时间损耗就可以称为IO成本。</li>
+</ul>
+</li>
+<li><strong>CPU成本</strong>  <ul>
+<li>检测记录是否满足查询条件、对结果集进行排序等等，就称为CPU成本。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>读取一个页面的成本是1.0，读取和检测一条记录是否满足查询条件的成本是0.2，这些数字叫成本常数。  </li>
+<li>对一条记录光读取不匹配的成本也是0.2。</li>
+</ul>
+</li>
+<li><strong>单表查询成本</strong>  <ul>
+<li><strong>准备工作</strong>  <ul>
+<li>创建一个表。</li>
+</ul>
+</li>
+<li><strong>基于成本的优化步骤</strong>  <ul>
+<li><strong>简介</strong>  <ul>
+<li><strong>流程简介</strong>：  <ol>
+<li>在执行一条单表查询条件时，查询优化器会找出可行的执行方案。  </li>
+<li>然后比对所有执行方案的代价。  </li>
+<li>选择代价最低的执行方案进行执行。</li>
+</ol>
+</li>
+<li><strong>更具体的流程</strong>：  <ol>
+<li>根据搜索条件，找出所有可用的索引。  </li>
+<li>然后计算全表扫描的代价。  </li>
+<li>计算使用不同索引执行查询的代价。  </li>
+<li>选择代价最低的执行计划进行查询。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>查询语句如下</strong>：<br>  <img src="/2023/04/05/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0%20MySQL%E5%9F%BA%E4%BA%8E%E6%88%90%E6%9C%AC%E7%9A%84%E4%BC%98%E5%8C%96/image.png" alt="alt text"></li>
+<li><strong>先分析可用的索引 possible keys</strong>：<br>  <img src="/2023/04/05/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0%20MySQL%E5%9F%BA%E4%BA%8E%E6%88%90%E6%9C%AC%E7%9A%84%E4%BC%98%E5%8C%96/image-1.png" alt="alt text"><ul>
+<li>发现possible keys 只有 idx_key1 和 idx_key2。</li>
+</ul>
+</li>
+<li><strong>计算全表扫描的代价</strong>：  <ul>
+<li>查询成本&#x3D;IO成本+CPU成本，所以计算全表扫描的代价主要看两个部分：  <ol>
+<li>聚集索引占用的页面数量。  </li>
+<li>表中的记录总数。</li>
+</ol>
+</li>
+<li>这些信息可以通过表的统计数据获取：  <ol>
+<li>使用 <code>SHOW TABLE STATUS LIKE &#39;single_table&#39;</code>。  </li>
+<li>这些信息由MySQL负责收集。</li>
+</ol>
+</li>
+<li>我们主要看Rows和Data_Length：  <ol>
+<li><strong>Rows</strong>：  <ul>
+<li>本选项表示表中的记录条数。对于使用 MyISAM 存储引擎的表来说，该值是准确的，对于使用 InnoDB 存储引擎的表来说，该值是一个估计值。</li>
+</ul>
+</li>
+<li><strong>Data_length</strong>：  <ul>
+<li>表示表占用的存储空间字节数。使用 MyISAM 存储引擎的表来说，该值就是数据文件的大小，对于使用 InnoDB 存储引擎的表来说，该值就相当于聚簇索引占用的存储空间大小。  </li>
+<li>所以聚簇索引的页面数量 &#x3D; 1589248 ÷ 16 ÷ 1024 &#x3D; 97。</div><a class="article-more button is-small is-size-7" href="/2023/04/05/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0%20MySQL%E5%9F%BA%E4%BA%8E%E6%88%90%E6%9C%AC%E7%9A%84%E4%BC%98%E5%8C%96/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-04-05T08:00:00.000Z" title="4/5/2023, 4:00:00 PM">2023-04-05</time>发表</span><span class="level-item"><time dateTime="2024-09-15T13:54:53.587Z" title="9/15/2024, 9:54:53 PM">2024-09-15</time>更新</span><span class="level-item">9 分钟读完 (大约1296个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/04/05/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0%20MySQL%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84%E4%BC%98%E5%8C%96/">《MySQL是怎样运行的》笔记 第十四章 MySQL基于规则的优化</a></h1><div class="content"><ol>
+<li><strong>简介</strong>  <ul>
+<li>查询优化器除了会根据查询成本进行优化之外，还会使用特定规则查询语句进行重写，优化查询性能。</li>
+</ul>
+</li>
+<li><strong>条件化简</strong>  <ul>
+<li>条件化简会对查询语句进行简化：  <ol>
+<li>移除不必要的括号。  </li>
+<li><strong>常量传递</strong>  <ul>
+<li>当查询条件使用<code>AND</code>连接时，可以将 <code>a = 5 AND b &gt; a</code> 替换为 <code>a = 5 AND b &gt; 5</code>。</li>
+</ul>
+</li>
+<li><strong>等值传递</strong>  <ul>
+<li><code>a = b AND b = c AND c = 5</code> 替换为 <code>a = 5 AND b = 5 AND c = 5</code>。</li>
+</ul>
+</li>
+<li><strong>移除没用的条件</strong>  <ul>
+<li>移除永真或者永假的表达式。</li>
+</ul>
+</li>
+<li><strong>表达式计算</strong>  <ul>
+<li>对只包含常量的表达式进行提前计算，<code>a = 5 + 1</code> 替换为 <code>a = 6</code>。  </li>
+<li>注意不会对涉及字段的表达式进行化简，所以不要对索引字段使用表达式或函数。</li>
+</ul>
+</li>
+<li><strong><code>HAVING</code>子句和<code>WHERE</code>子句合并</strong>  <ul>
+<li>如果查询语句里没有聚集函数以及<code>GROUP BY</code>子句，就把<code>HAVING</code>子句和<code>WHERE</code>子句合并起来。</li>
+</ul>
+</li>
+<li><strong>常量表检测</strong>  <ul>
+<li>满足常量表查询有两种条件：  <ol>
+<li>查询的表中没有记录，或者只有一条记录。  </li>
+<li>使用<code>const</code>访问方法进行查询（对主键或者唯一二级索引进行等值匹配）。</li>
+</ol>
+</li>
+<li>当查询优化器发现可以执行常量表查询时，就会跳过查询成本分析，直接查询。  <ol>
+<li>然后把涉及到该表的查询条件全部替换为常数。  </li>
+<li>最后再分析剩下的表的查询成本。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>外连接消除</strong>  <ul>
+<li>因为内连接可以交换连接顺序，有更多执行方案，所以比起外连接有更多优化空间。  </li>
+<li>可以在进行外连接时，在<code>WHERE</code>子句里指定被驱动表的字段不为<code>NULL</code>，这种方法叫做<strong>空值拒绝</strong>。  <ol>
+<li>相当于把外连接转换为内连接，查询优化器也可以交换连接顺序了。</div><a class="article-more button is-small is-size-7" href="/2023/04/05/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0%20MySQL%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84%E4%BC%98%E5%8C%96/#more">阅读更多</a></article></div><nav class="pagination" role="navigation" aria-label="pagination"><div class="pagination-previous is-invisible is-hidden-mobile"><a href="/page/0/">上一页</a></div><div class="pagination-next"><a href="/page/2/">下一页</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link is-current" href="/">1</a></li><li><a class="pagination-link" href="/page/2/">2</a></li><li><a class="pagination-link" href="/page/3/">3</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.jpg" alt="Shawn Zong"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Shawn Zong</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">21</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">6</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/PokeHA" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/PokeHA"><i class="fab fa-github"></i></a></div></div></div><!--!--><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BF%9D%E7%A0%94/"><span class="tag">保研</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%A0%E6%83%AF/"><span class="tag">学习习惯</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="tag">操作系统</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><span class="tag">项目管理</span><span class="tag">2</span></a></div></div></div></div></div><!--!--><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-26T03:22:28.000Z">2023-11-26</time></p><p class="title"><a href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第10章 进程管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-12T03:22:28.000Z">2023-11-12</time></p><p class="title"><a href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">《Linux从入门到精通》笔记 第5章 Shell基本命令</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-25T03:42:28.000Z">2023-10-25</time></p><p class="title"><a href="/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/">《人件 Peopleware》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-09T03:42:28.000Z">2023-10-09</time></p><p class="title"><a href="/2023/10/09/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%20The%20Mythical%20Man-Month%E3%80%8B%E7%AC%94%E8%AE%B0/">《人月神话 The Mythical Man-Month》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-07T08:00:00.000Z">2023-04-07</time></p><p class="title"><a href="/2023/04/07/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%BA%94%E7%AB%A0%20%E9%94%81/">《MySQL是怎样运行的》笔记 第二十五章 锁</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2023/11/"><span class="level-start"><span class="level-item">十一月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/10/"><span class="level-start"><span class="level-item">十月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/04/"><span class="level-start"><span class="level-item">四月 2023</span></span><span class="level-end"><span class="level-item tag">7</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/03/"><span class="level-start"><span class="level-item">三月 2023</span></span><span class="level-end"><span class="level-item tag">8</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/02/"><span class="level-start"><span class="level-item">二月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/12/"><span class="level-start"><span class="level-item">十二月 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a><p class="is-size-7"><span>&copy; 2024 Shawn Zong</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
             article: {
                 highlight: {
                     clipboard: true,
