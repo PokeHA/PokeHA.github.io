@@ -432,7 +432,7 @@
   </entry>
   <entry>
     <title>《Linux从入门到精通》笔记 第15章 远程登录</title>
-    <url>/2022/11/28/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC15%E7%AB%A0%20%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95/</url>
+    <url>/2023/11/28/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC15%E7%AB%A0%20%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95/</url>
     <content><![CDATA[<p><strong>15.1 快速上手，搭建实验环境</strong></p>
 <ol>
 <li>VPS还是虚拟机<ul>
@@ -901,7 +901,7 @@
   </entry>
   <entry>
     <title>《Linux从入门到精通》笔记 第6章 文件目录管理</title>
-    <url>/2022/11/18/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC6%E7%AB%A0%20%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86/</url>
+    <url>/2023/11/18/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC6%E7%AB%A0%20%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86/</url>
     <content><![CDATA[<p><strong>6.1 Linux文件系统的架构</strong></p>
 <ul>
 <li>Linux没有盘符，也就是C盘D盘。</li>
@@ -1140,117 +1140,6 @@
       </tags>
   </entry>
   <entry>
-    <title>《Linux从入门到精通》笔记 第7章 软件包管理</title>
-    <url>/2022/11/24/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC7%E7%AB%A0%20%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[<p><strong>7.2 软件包管理系统简述</strong></p>
-<ul>
-<li>软件包管理系统可以自动安装软件包，以及它们所需的依赖。</li>
-<li>软件包格式有两种：<ul>
-<li>RPM，由Red Hat开发。</li>
-<li><code>.deb</code>，由Debian和Ubuntu使用。</li>
-</ul>
-</li>
-<li>软件包管理工具有 <code>APT</code> 和 <code>yum</code>（只能用于RPM格式）。</li>
-<li>还有 <code>dpkg</code> 和 <code>rpm</code> 两个低级软件包管理工具。</li>
-</ul>
-<p><strong>7.3 管理.deb软件包：dpkg</strong></p>
-<p>简介：<code>dpkg</code> 主要用于Debian和Ubuntu的软件包管理。</p>
-<ol>
-<li>安装软件包：<ul>
-<li><code>dpkg -i</code> 软件名 或 <code>dpkg --install</code> 软件名。</li>
-</ul>
-</li>
-<li>查看已安装的软件包：<ul>
-<li><code>dpkg -l</code>：<ul>
-<li>查看所有安装的软件包。</li>
-</ul>
-</li>
-<li><code>dpkg -l | grep firefox</code>：<ul>
-<li>在 <code>dpkg</code> 的输出中搜索含有 <code>firefox</code> 关键字的行。</li>
-<li>显示当前安装的 <code>firefox</code> 软件包信息。</li>
-<li>使用了管道 <code>|</code>。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>卸载软件包：<ul>
-<li><code>sudo dpkg -r</code> 软件名。</li>
-<li><code>sudo dpkg --remove</code> 软件名。<span id="more"></span>
-<strong>7.4 管理RPM软件包：rpm</strong></li>
-</ul>
-</li>
-</ol>
-<p>简介：<code>rpm</code> 主要用于 <code>.rpm</code> 格式的软件包，适用于 OpenSUSE 和 Red Hat，不适用于 Debian 和 Ubuntu。</p>
-<p><strong>7.5 高级软件包工具：APT</strong></p>
-<p>简介：<code>rpm</code> 和 <code>dpkg</code> 是低级软件包管理器，无法自动解决依赖问题，<code>APT</code> 和 <code>yum</code> 是高级软件包工具。</p>
-<ol>
-<li>APT简介：<ul>
-<li>APT 全称 Advanced Package Tool。</li>
-<li>能自动检测和解决软件依赖。</li>
-<li>支持 <code>.deb</code> 和 <code>.rpm</code> 两种软件包格式。</li>
-<li>APT 常用的两个命令：<ul>
-<li><code>apt-get</code>：安装软件包。</li>
-<li><code>apt-cache</code>：查找软件包的相关信息。</li>
-</ul>
-</li>
-<li>APT 也有图形化工具。</li>
-</ul>
-</li>
-<li>下载和安装软件包：<ul>
-<li>使用 <code>apt-get install</code> 之前，先执行 <code>sudo apt-get update</code> 更新 <code>apt-get</code> 缓存中的软件包信息，确保将要下载的软件是最新版本。<ul>
-<li>之前用 <code>apt-get</code> 下载 <code>node</code> 不是最新版，可能是因为没有执行 <code>apt-get update</code>。</li>
-</ul>
-</li>
-<li><code>apt-get</code> 的常用命令：<ul>
-<li>使用 <code>apt-get -h</code> 可以列出 <code>apt-get</code> 的完整用法。</li>
-<li>也可以使用 <code>man apt-get</code> 查看详细信息。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>查询软件包信息：<ul>
-<li><code>apt-cache search flight</code>：<ul>
-<li>搜索带有 <code>flight</code> 字样的软件包，根据名字下载。</li>
-</ul>
-</li>
-<li><code>apt-cache depends flightgear</code>：<ul>
-<li>显示 <code>flightgear</code> 软件包的依赖关系。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>配置 <code>apt-get</code>：<ul>
-<li><code>apt-get</code> 的安装源在 <code>/etc/apt/sources.list</code> 文件中。<ul>
-<li>文件格式：<ul>
-<li><code>deb</code> 表示 <code>.deb</code> 软件包的源地址。</li>
-<li><code>deb-src</code> 表示源代码的源地址。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>使用图形化的 APT：<ul>
-<li>没有看到详细内容。</li>
-</ul>
-</li>
-</ol>
-<p><strong>7.7 小结</strong></p>
-<ol>
-<li>软件包是对应用程序的打包，使用软件包管理系统可以方便地安装和卸载软件。</li>
-<li>Linux 的软件格式分为 <code>.deb</code> 和 <code>.rpm</code>。</li>
-<li>普通软件包管理工具有 <code>dpkg</code> 和 <code>rpm</code>。</li>
-<li>高级软件包管理工具有 <code>APT</code> 和 <code>yum</code>。</li>
-<li><code>apt-get</code> 和 <code>apt-cache</code> 是常用命令。</li>
-<li><code>/etc/apt/sources.list</code> 可以修改 <code>apt</code> 的安装源。</li>
-<li><code>apt-get update</code> 用于更新软件包信息。</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>《MySQL是怎样运行的》笔记 第一章</title>
     <url>/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86MySQL/</url>
     <content><![CDATA[<h1 id="重新认识MySQL"><a href="#重新认识MySQL" class="headerlink" title="重新认识MySQL"></a><strong>重新认识MySQL</strong></h1><pre><code>1 MySQL的客户端/服务器架构
@@ -1369,6 +1258,119 @@
 ]]></content>
       <tags>
         <tag>数据库</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《Linux从入门到精通》笔记 第7章 软件包管理</title>
+    <url>/2023/11/24/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC7%E7%AB%A0%20%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<p><strong>7.2 软件包管理系统简述</strong></p>
+<ul>
+<li>软件包管理系统可以自动安装软件包，以及它们所需的依赖。</li>
+<li>软件包格式有两种：<ul>
+<li>RPM，由Red Hat开发。</li>
+<li><code>.deb</code>，由Debian和Ubuntu使用。</li>
+</ul>
+</li>
+<li>软件包管理工具有 <code>APT</code> 和 <code>yum</code>（只能用于RPM格式）。</li>
+<li>还有 <code>dpkg</code> 和 <code>rpm</code> 两个低级软件包管理工具。</li>
+</ul>
+<p><strong>7.3 管理.deb软件包：dpkg</strong></p>
+<p>简介：<code>dpkg</code> 主要用于Debian和Ubuntu的软件包管理。</p>
+<ol>
+<li>安装软件包：<ul>
+<li><code>dpkg -i</code> 软件名 或 <code>dpkg --install</code> 软件名。</li>
+</ul>
+</li>
+<li>查看已安装的软件包：<ul>
+<li><code>dpkg -l</code>：<ul>
+<li>查看所有安装的软件包。</li>
+</ul>
+</li>
+<li><code>dpkg -l | grep firefox</code>：<ul>
+<li>在 <code>dpkg</code> 的输出中搜索含有 <code>firefox</code> 关键字的行。</li>
+<li>显示当前安装的 <code>firefox</code> 软件包信息。</li>
+<li>使用了管道 <code>|</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>卸载软件包：<ul>
+<li><code>sudo dpkg -r</code> 软件名。</li>
+<li><code>sudo dpkg --remove</code> 软件名。</li>
+</ul>
+</li>
+</ol>
+<span id="more"></span>
+
+<p><strong>7.4 管理RPM软件包：rpm</strong></p>
+<p>简介：<code>rpm</code> 主要用于 <code>.rpm</code> 格式的软件包，适用于 OpenSUSE 和 Red Hat，不适用于 Debian 和 Ubuntu。</p>
+<p><strong>7.5 高级软件包工具：APT</strong></p>
+<p>简介：<code>rpm</code> 和 <code>dpkg</code> 是低级软件包管理器，无法自动解决依赖问题，<code>APT</code> 和 <code>yum</code> 是高级软件包工具。</p>
+<ol>
+<li>APT简介：<ul>
+<li>APT 全称 Advanced Package Tool。</li>
+<li>能自动检测和解决软件依赖。</li>
+<li>支持 <code>.deb</code> 和 <code>.rpm</code> 两种软件包格式。</li>
+<li>APT 常用的两个命令：<ul>
+<li><code>apt-get</code>：安装软件包。</li>
+<li><code>apt-cache</code>：查找软件包的相关信息。</li>
+</ul>
+</li>
+<li>APT 也有图形化工具。</li>
+</ul>
+</li>
+<li>下载和安装软件包：<ul>
+<li>使用 <code>apt-get install</code> 之前，先执行 <code>sudo apt-get update</code> 更新 <code>apt-get</code> 缓存中的软件包信息，确保将要下载的软件是最新版本。<ul>
+<li>之前用 <code>apt-get</code> 下载 <code>node</code> 不是最新版，可能是因为没有执行 <code>apt-get update</code>。</li>
+</ul>
+</li>
+<li><code>apt-get</code> 的常用命令：<ul>
+<li>使用 <code>apt-get -h</code> 可以列出 <code>apt-get</code> 的完整用法。</li>
+<li>也可以使用 <code>man apt-get</code> 查看详细信息。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>查询软件包信息：<ul>
+<li><code>apt-cache search flight</code>：<ul>
+<li>搜索带有 <code>flight</code> 字样的软件包，根据名字下载。</li>
+</ul>
+</li>
+<li><code>apt-cache depends flightgear</code>：<ul>
+<li>显示 <code>flightgear</code> 软件包的依赖关系。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>配置 <code>apt-get</code>：<ul>
+<li><code>apt-get</code> 的安装源在 <code>/etc/apt/sources.list</code> 文件中。<ul>
+<li>文件格式：<ul>
+<li><code>deb</code> 表示 <code>.deb</code> 软件包的源地址。</li>
+<li><code>deb-src</code> 表示源代码的源地址。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>使用图形化的 APT：<ul>
+<li>没有看到详细内容。</li>
+</ul>
+</li>
+</ol>
+<p><strong>7.7 小结</strong></p>
+<ol>
+<li>软件包是对应用程序的打包，使用软件包管理系统可以方便地安装和卸载软件。</li>
+<li>Linux 的软件格式分为 <code>.deb</code> 和 <code>.rpm</code>。</li>
+<li>普通软件包管理工具有 <code>dpkg</code> 和 <code>rpm</code>。</li>
+<li>高级软件包管理工具有 <code>APT</code> 和 <code>yum</code>。</li>
+<li><code>apt-get</code> 和 <code>apt-cache</code> 是常用命令。</li>
+<li><code>/etc/apt/sources.list</code> 可以修改 <code>apt</code> 的安装源。</li>
+<li><code>apt-get update</code> 用于更新软件包信息。</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -2891,119 +2893,6 @@
       </tags>
   </entry>
   <entry>
-    <title>《MySQL是怎样运行的》笔记 第十五章 Explain详解</title>
-    <url>/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%20Explain%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<ol>
-<li><strong>简介</strong>  <ul>
-<li>MySQL在进行基于规则的优化和基于成本的优化之后，会生成最终的执行计划。  </li>
-<li>执行计划记录了最终执行查询的步骤，比如多表连接的顺序，每个表采用什么访问方法等。  </li>
-<li>使用<code>EXPLAIN</code>关键字可以查看一个查询语句的具体执行计划。</li>
-</ul>
-</li>
-<li><strong>执行计划中的各列详解</strong>  <ol>
-<li><strong>table</strong>  <ul>
-<li>不管查询语句多么复杂，最后都是单表访问。  </li>
-<li>所以执行计划中的每一条记录都对应一个单表，记录了对于该单表怎么执行（如访问方法<code>const</code>、<code>ref</code>、<code>range</code>等）。  </li>
-<li>这些记录的顺序就是表的连接顺序。  </li>
-<li><code>table</code>指的是该条记录对应的表名。</li>
-</ul>
-</li>
-<li><strong>id</strong>  <ul>
-<li><code>id</code>是<code>SELECT</code>关键字的id。  </li>
-<li>每使用一个<code>SELECT</code>关键字，就会分配一个<code>id</code>。  </li>
-<li>进行连接查询的表拥有同一个<code>id</code>。  </li>
-<li>子查询则会使用另一个<code>id</code>。  </li>
-<li>如果子查询被转换为连接查询，也会拥有相同的<code>id</code>。  </li>
-<li><code>id</code>为<code>NULL</code>表示这是一个临时表。</li>
-</ul>
-</li>
-<li><strong>select_type</strong>  <ul>
-<li>每个<code>SELECT</code>语句代表一个小查询，会被分配一个<code>id</code>。  </li>
-<li><code>select_type</code>表示这个<code>SELECT</code>关键字对应的小查询的类型。  </li>
-<li>常见的<code>select_type</code>：  <ol>
-<li><strong>simple</strong>：表示查询不包括子查询或<code>UNION</code>操作，常见于单表查询和连接查询。  </li>
-<li><strong>primary</strong>：表示该查询是一个大查询，由几个小查询组成。使用了<code>UNION</code>或子查询的查询就是<code>primary</code>。  </li>
-<li><strong>union</strong>：用于<code>UNION</code>查询，第一个小查询的类型是<code>primary</code>，其余的小查询类型是<code>union</code>。  </li>
-<li><strong>union result</strong>：表示该表是一个用于<code>UNION</code>的临时表，并且这表没有<code>id</code>。  </li>
-<li><strong>subquery</strong>：表示该查询是未转换为半连接的不相关子查询，并使用物化方式执行。  </li>
-<li><strong>dependent subquery</strong>：表示这是未转换为半连接的相关子查询，会执行多遍。  </li>
-<li><strong>dependent union</strong>：子查询中的<code>UNION</code>查询，依赖于外层查询。  </li>
-<li><strong>drived</strong>：表示用物化表的方式执行派生表查询。  </li>
-<li><strong>materialized</strong>：子查询物化后与外层查询进行连接查询。    <span id="more"></span></li>
-</ol>
-</li>
-</ul>
-</li>
-<li><strong>partitions</strong>  <ul>
-<li>跟分区相关，通常为<code>NULL</code>。</li>
-</ul>
-</li>
-<li><strong>type</strong>  <ul>
-<li>表示查询该表时使用的访问方法，如<code>system</code>、<code>const</code>、<code>eq_ref</code>、<code>ref</code>、<code>index_merge</code>、<code>range</code>、<code>index</code>、<code>all</code>等。  </li>
-<li>访问方法按效率从高到低排列：<code>system</code> &gt; <code>const</code> &gt; <code>eq_ref</code> &gt; <code>ref</code> &gt; <code>range</code> &gt; <code>index</code> &gt; <code>all</code>。  </li>
-<li>详细解释：  <ol>
-<li><strong>system</strong>：表中只有一条记录，用MyISAM或Memory存储引擎，表的统计信息是精确的。  </li>
-<li><strong>const</strong>：单表查询时，对主键或唯一二级索引字段进行常数等值匹配。  </li>
-<li><strong>eq_ref</strong>：连接查询时，对被驱动表的主键或唯一二级索引字段进行常数等值匹配。  </li>
-<li><strong>ref</strong>：对普通二级索引字段进行常量等值匹配。  </li>
-<li><strong>index_merge</strong>：索引合并，多个索引同时使用。  </li>
-<li><strong>range</strong>：单表查询时使用范围查询。  </li>
-<li><strong>index</strong>：使用覆盖索引，对二级索引进行扫描，不回表。  </li>
-<li><strong>all</strong>：对聚集索引进行全表扫描。</li>
-</ol>
-</li>
-</ul>
-</li>
-<li><strong>possible_keys和key</strong>  <ul>
-<li><code>possible_keys</code>表示可以使用的索引，<code>key</code>表示实际使用的索引。  </li>
-<li>注意：<code>possible_keys</code>并不是越多越好，可用索引越多，查询优化器就需要为更多的执行方案计算成本。</li>
-</ul>
-</li>
-<li><strong>key_len</strong>  <ul>
-<li>表示使用的索引字段的最大长度，主要功能是让我们知道使用联合索引时用到了几个字段。</li>
-</ul>
-</li>
-<li><strong>ref</strong>  <ul>
-<li><code>ref</code>表示对索引列进行等值匹配时，匹配的是什么类型。</li>
-</ul>
-</li>
-<li><strong>rows</strong>  <ul>
-<li>表示预计扫描的行数。</li>
-</ul>
-</li>
-<li><strong>filtered</strong>  <ul>
-<li>与<code>condition filtering</code>相关，用于计算<code>fanout</code>。  </li>
-<li><code>filtered</code>是一个百分比，用于估计扫描到的记录中有多少记录符合条件。</li>
-</ul>
-</li>
-</ol>
-</li>
-<li><strong>执行计划中剩下的字段</strong>  <ol>
-<li><strong>Extra</strong>  <ul>
-<li>提供一些额外的提示信息，如：  <ol>
-<li><strong>no tables used</strong>：<code>FROM</code>子句为空。  </li>
-<li><strong>impossible where</strong>：<code>WHERE</code>子句为永假式。</li>
-</ol>
-</li>
-</ul>
-</li>
-</ol>
-</li>
-<li><strong>JSON格式的执行计划</strong>  <ul>
-<li>使用<code>FORMAT=JSON</code>，可以将执行计划通过JSON格式输出。</li>
-</ul>
-</li>
-<li><strong>show warnings</strong>  <ul>
-<li>执行完<code>EXPLAIN</code>后，再调用<code>SHOW WARNINGS</code>，就可以看到查询优化器重写后的查询语句。</li>
-</ul>
-</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>数据库</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>《MySQL是怎样运行的》笔记 第十二章 MySQL基于成本的优化</title>
     <url>/2023/04/05/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0%20MySQL%E5%9F%BA%E4%BA%8E%E6%88%90%E6%9C%AC%E7%9A%84%E4%BC%98%E5%8C%96/</url>
     <content><![CDATA[<ol>
@@ -3318,6 +3207,119 @@
       </tags>
   </entry>
   <entry>
+    <title>《MySQL是怎样运行的》笔记 第十五章 Explain详解</title>
+    <url>/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%20Explain%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<ol>
+<li><strong>简介</strong>  <ul>
+<li>MySQL在进行基于规则的优化和基于成本的优化之后，会生成最终的执行计划。  </li>
+<li>执行计划记录了最终执行查询的步骤，比如多表连接的顺序，每个表采用什么访问方法等。  </li>
+<li>使用<code>EXPLAIN</code>关键字可以查看一个查询语句的具体执行计划。</li>
+</ul>
+</li>
+<li><strong>执行计划中的各列详解</strong>  <ol>
+<li><strong>table</strong>  <ul>
+<li>不管查询语句多么复杂，最后都是单表访问。  </li>
+<li>所以执行计划中的每一条记录都对应一个单表，记录了对于该单表怎么执行（如访问方法<code>const</code>、<code>ref</code>、<code>range</code>等）。  </li>
+<li>这些记录的顺序就是表的连接顺序。  </li>
+<li><code>table</code>指的是该条记录对应的表名。</li>
+</ul>
+</li>
+<li><strong>id</strong>  <ul>
+<li><code>id</code>是<code>SELECT</code>关键字的id。  </li>
+<li>每使用一个<code>SELECT</code>关键字，就会分配一个<code>id</code>。  </li>
+<li>进行连接查询的表拥有同一个<code>id</code>。  </li>
+<li>子查询则会使用另一个<code>id</code>。  </li>
+<li>如果子查询被转换为连接查询，也会拥有相同的<code>id</code>。  </li>
+<li><code>id</code>为<code>NULL</code>表示这是一个临时表。</li>
+</ul>
+</li>
+<li><strong>select_type</strong>  <ul>
+<li>每个<code>SELECT</code>语句代表一个小查询，会被分配一个<code>id</code>。  </li>
+<li><code>select_type</code>表示这个<code>SELECT</code>关键字对应的小查询的类型。  </li>
+<li>常见的<code>select_type</code>：  <ol>
+<li><strong>simple</strong>：表示查询不包括子查询或<code>UNION</code>操作，常见于单表查询和连接查询。  </li>
+<li><strong>primary</strong>：表示该查询是一个大查询，由几个小查询组成。使用了<code>UNION</code>或子查询的查询就是<code>primary</code>。  </li>
+<li><strong>union</strong>：用于<code>UNION</code>查询，第一个小查询的类型是<code>primary</code>，其余的小查询类型是<code>union</code>。  </li>
+<li><strong>union result</strong>：表示该表是一个用于<code>UNION</code>的临时表，并且这表没有<code>id</code>。  </li>
+<li><strong>subquery</strong>：表示该查询是未转换为半连接的不相关子查询，并使用物化方式执行。  </li>
+<li><strong>dependent subquery</strong>：表示这是未转换为半连接的相关子查询，会执行多遍。  </li>
+<li><strong>dependent union</strong>：子查询中的<code>UNION</code>查询，依赖于外层查询。  </li>
+<li><strong>drived</strong>：表示用物化表的方式执行派生表查询。  </li>
+<li><strong>materialized</strong>：子查询物化后与外层查询进行连接查询。    <span id="more"></span></li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>partitions</strong>  <ul>
+<li>跟分区相关，通常为<code>NULL</code>。</li>
+</ul>
+</li>
+<li><strong>type</strong>  <ul>
+<li>表示查询该表时使用的访问方法，如<code>system</code>、<code>const</code>、<code>eq_ref</code>、<code>ref</code>、<code>index_merge</code>、<code>range</code>、<code>index</code>、<code>all</code>等。  </li>
+<li>访问方法按效率从高到低排列：<code>system</code> &gt; <code>const</code> &gt; <code>eq_ref</code> &gt; <code>ref</code> &gt; <code>range</code> &gt; <code>index</code> &gt; <code>all</code>。  </li>
+<li>详细解释：  <ol>
+<li><strong>system</strong>：表中只有一条记录，用MyISAM或Memory存储引擎，表的统计信息是精确的。  </li>
+<li><strong>const</strong>：单表查询时，对主键或唯一二级索引字段进行常数等值匹配。  </li>
+<li><strong>eq_ref</strong>：连接查询时，对被驱动表的主键或唯一二级索引字段进行常数等值匹配。  </li>
+<li><strong>ref</strong>：对普通二级索引字段进行常量等值匹配。  </li>
+<li><strong>index_merge</strong>：索引合并，多个索引同时使用。  </li>
+<li><strong>range</strong>：单表查询时使用范围查询。  </li>
+<li><strong>index</strong>：使用覆盖索引，对二级索引进行扫描，不回表。  </li>
+<li><strong>all</strong>：对聚集索引进行全表扫描。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>possible_keys和key</strong>  <ul>
+<li><code>possible_keys</code>表示可以使用的索引，<code>key</code>表示实际使用的索引。  </li>
+<li>注意：<code>possible_keys</code>并不是越多越好，可用索引越多，查询优化器就需要为更多的执行方案计算成本。</li>
+</ul>
+</li>
+<li><strong>key_len</strong>  <ul>
+<li>表示使用的索引字段的最大长度，主要功能是让我们知道使用联合索引时用到了几个字段。</li>
+</ul>
+</li>
+<li><strong>ref</strong>  <ul>
+<li><code>ref</code>表示对索引列进行等值匹配时，匹配的是什么类型。</li>
+</ul>
+</li>
+<li><strong>rows</strong>  <ul>
+<li>表示预计扫描的行数。</li>
+</ul>
+</li>
+<li><strong>filtered</strong>  <ul>
+<li>与<code>condition filtering</code>相关，用于计算<code>fanout</code>。  </li>
+<li><code>filtered</code>是一个百分比，用于估计扫描到的记录中有多少记录符合条件。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><strong>执行计划中剩下的字段</strong>  <ol>
+<li><strong>Extra</strong>  <ul>
+<li>提供一些额外的提示信息，如：  <ol>
+<li><strong>no tables used</strong>：<code>FROM</code>子句为空。  </li>
+<li><strong>impossible where</strong>：<code>WHERE</code>子句为永假式。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><strong>JSON格式的执行计划</strong>  <ul>
+<li>使用<code>FORMAT=JSON</code>，可以将执行计划通过JSON格式输出。</li>
+</ul>
+</li>
+<li><strong>show warnings</strong>  <ul>
+<li>执行完<code>EXPLAIN</code>后，再调用<code>SHOW WARNINGS</code>，就可以看到查询优化器重写后的查询语句。</li>
+</ul>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>数据库</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>《MySQL是怎样运行的》笔记 第十四章 MySQL基于规则的优化</title>
     <url>/2023/04/05/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0%20MySQL%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84%E4%BC%98%E5%8C%96/</url>
     <content><![CDATA[<ol>
@@ -3442,157 +3444,6 @@
 </ul>
 </li>
 </ol>
-</li>
-</ul>
-</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>数据库</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>《MySQL是怎样运行的》笔记 第四章 InnoDB记录结构</title>
-    <url>/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[<ol>
-<li><p><strong>准备工作</strong></p>
-<ul>
-<li>不同存储引擎对于数据的存储格式都是不同的</li>
-<li>这本书主要讲的是InnoDB的格式</li>
-</ul>
-</li>
-<li><p><strong>InnoDB页简介</strong></p>
-<ul>
-<li>InnoDB会把数据划分为多个页</li>
-<li>以页作为磁盘和内存之间交互的基本单位</li>
-<li>页的大小一般为16KB</li>
-<li>一次至少读取16KB内容的数据到内存<ul>
-<li>同样的，一次最少刷新16KB的数据到磁盘</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>InnoDB行格式</strong></p>
-<ul>
-<li><p><strong>简介</strong></p>
-<ul>
-<li>我们以记录为单位往表中存储数据</li>
-<li>每一条记录在磁盘上的存储方式就被称为 行格式 或者 记录格式</li>
-<li>InnoDB有四种不同的行格式<ol>
-<li>Compact</li>
-<li>Redundant</li>
-<li>Dynamic</li>
-<li>Compressed <span id="more"></span></li>
-</ol>
-</li>
-</ul>
-</li>
-<li><p><strong>指定行格式的语法</strong></p>
-<ul>
-<li><code>CREATE TABLE 表名 (列的信息) ROW_FORMAT=行格式名称</code></li>
-<li><code>ALTER TABLE 表名 ROW_FORMAT=行格式名称</code></li>
-</ul>
-</li>
-<li><p><strong>Compact行格式</strong></p>
-<ul>
-<li><strong>结构</strong><br> <img src="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/image.png"></li>
-<li><strong>记录的额外的信息</strong><ul>
-<li>也就是为了描述记录不得不添加的记录</li>
-<li><strong>变长字段长度列表</strong><ul>
-<li>因为有些字段是变长的，所以我们除了记录实际的数据之外，还需要记录每个变长数据占用的字节数</li>
-<li>所以在Compact行格式中，会把每个变长字段数据的字节数按照逆序存放</li>
-<li>每个变成字段数据占用的字节数用一个字节或两个字节存，取决于字符集和变长字段的最长长度</li>
-<li>注意 当变长字段数据为null时，不存储它的长度</li>
-</ul>
-</li>
-<li><strong>NULL值列表</strong><ul>
-<li>用来标记哪些字段的值为null</li>
-<li>每个字段用一个bit来标记，也是逆序，为1时表示该值为null</li>
-<li>如果每个字段都不允许为null，那就不记录数据</li>
-</ul>
-</li>
-<li><strong>记录头信息</strong><ul>
-<li>记录一些额外信息，比如<ul>
-<li>删除标记</li>
-<li>记录类型</li>
-<li>下一条记录的相对位置</li>
-</ul>
-</li>
-<li>之后会详细讲</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>记录的真实数据</strong><ul>
-<li>除了实际的字段值之外，还会存储一些隐藏字段，比如<ul>
-<li>行ID<ul>
-<li>在没有主键，没有unique键的情况下</li>
-<li>才会自动生成row id</li>
-</ul>
-</li>
-<li>事务ID</li>
-<li>回滚指针</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>Redundant行格式</strong></p>
-<ul>
-<li><strong>示意图</strong></li>
-</ul>
-<p>  <img src="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/image-1.png"></p>
-<ul>
-<li><strong>简介</strong><ul>
-<li>这个过时了，看看就行</li>
-<li>字段长度偏移表记录每个字段的结束地址<ul>
-<li>需要用相邻的偏移量相减才能知道该字段的长度</li>
-</ul>
-</li>
-<li>记录头信息和Compact差不多，有些许的不同</li>
-<li>偏移量会有一个null比特位，标记该字段是否为null</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>行溢出数据的情况</strong></p>
-<ul>
-<li><strong>varchar(M)最多能存储的数据</strong><ul>
-<li>mysql中对于varchar类型，最多可以占用65535个字节<ul>
-<li>对于BLOB和TEXT类型倒没要求</li>
-</ul>
-</li>
-<li>其中M表示最多可以存储的字符数量<ul>
-<li>因为总体字节数有限制，所以M的大小取决于用的字符集占用几个字节</li>
-</ul>
-</li>
-<li>其实是因为mysql对于一条记录的大小限制为65535个字节<ul>
-<li>包括了除了真实数据之外的额外记录数据，比如变长字段长度列表和NULL列表</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>记录中的数据太多产生的行溢出</strong><ul>
-<li>因为数据库中的数据是以页为单位存储的，16KB，而varchar最多能存64KB的数据</li>
-<li>所以当一个字段数据太多时，会只存一部分，以及一个指向其它页的指针，指针指向的页存放剩余的部分，也叫溢出页(这是Compact和Redundant行格式处理溢出的方法)</li>
-</ul>
-</li>
-<li><strong>行溢出的临界点</strong><ul>
-<li>一条记录中的所有数据以及额外记录信息 超过16KB时就会发生行溢出</li>
-<li>不需要知道具体的临界点，只需要知道当存储数据很大时就可能发生溢出就行了</li>
-</ul>
-</li>
-<li><strong>Dynamic和Compressed行格式</strong><ul>
-<li>MySQL5.7默认使用的行格式就是Dynamic</li>
-<li>这两种行格式和Compact的区别只在于对于行溢出的处理<ul>
-<li>Dynamic和Compressed都会把产生行溢出的字段的全部真实数据放在其他页上，只在记录中存放指针</li>
-</ul>
-</li>
-<li>Compressed会在Dynamic基础上对页面进行压缩，节省空间</li>
-</ul>
-</li>
-</ul>
 </li>
 </ul>
 </li>
@@ -3755,6 +3606,157 @@
 ]]></content>
       <tags>
         <tag>项目管理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《MySQL是怎样运行的》笔记 第四章 InnoDB记录结构</title>
+    <url>/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<ol>
+<li><p><strong>准备工作</strong></p>
+<ul>
+<li>不同存储引擎对于数据的存储格式都是不同的</li>
+<li>这本书主要讲的是InnoDB的格式</li>
+</ul>
+</li>
+<li><p><strong>InnoDB页简介</strong></p>
+<ul>
+<li>InnoDB会把数据划分为多个页</li>
+<li>以页作为磁盘和内存之间交互的基本单位</li>
+<li>页的大小一般为16KB</li>
+<li>一次至少读取16KB内容的数据到内存<ul>
+<li>同样的，一次最少刷新16KB的数据到磁盘</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>InnoDB行格式</strong></p>
+<ul>
+<li><p><strong>简介</strong></p>
+<ul>
+<li>我们以记录为单位往表中存储数据</li>
+<li>每一条记录在磁盘上的存储方式就被称为 行格式 或者 记录格式</li>
+<li>InnoDB有四种不同的行格式<ol>
+<li>Compact</li>
+<li>Redundant</li>
+<li>Dynamic</li>
+<li>Compressed <span id="more"></span></li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p><strong>指定行格式的语法</strong></p>
+<ul>
+<li><code>CREATE TABLE 表名 (列的信息) ROW_FORMAT=行格式名称</code></li>
+<li><code>ALTER TABLE 表名 ROW_FORMAT=行格式名称</code></li>
+</ul>
+</li>
+<li><p><strong>Compact行格式</strong></p>
+<ul>
+<li><strong>结构</strong><br> <img src="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/image.png"></li>
+<li><strong>记录的额外的信息</strong><ul>
+<li>也就是为了描述记录不得不添加的记录</li>
+<li><strong>变长字段长度列表</strong><ul>
+<li>因为有些字段是变长的，所以我们除了记录实际的数据之外，还需要记录每个变长数据占用的字节数</li>
+<li>所以在Compact行格式中，会把每个变长字段数据的字节数按照逆序存放</li>
+<li>每个变成字段数据占用的字节数用一个字节或两个字节存，取决于字符集和变长字段的最长长度</li>
+<li>注意 当变长字段数据为null时，不存储它的长度</li>
+</ul>
+</li>
+<li><strong>NULL值列表</strong><ul>
+<li>用来标记哪些字段的值为null</li>
+<li>每个字段用一个bit来标记，也是逆序，为1时表示该值为null</li>
+<li>如果每个字段都不允许为null，那就不记录数据</li>
+</ul>
+</li>
+<li><strong>记录头信息</strong><ul>
+<li>记录一些额外信息，比如<ul>
+<li>删除标记</li>
+<li>记录类型</li>
+<li>下一条记录的相对位置</li>
+</ul>
+</li>
+<li>之后会详细讲</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>记录的真实数据</strong><ul>
+<li>除了实际的字段值之外，还会存储一些隐藏字段，比如<ul>
+<li>行ID<ul>
+<li>在没有主键，没有unique键的情况下</li>
+<li>才会自动生成row id</li>
+</ul>
+</li>
+<li>事务ID</li>
+<li>回滚指针</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Redundant行格式</strong></p>
+<ul>
+<li><strong>示意图</strong></li>
+</ul>
+<p>  <img src="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/image-1.png"></p>
+<ul>
+<li><strong>简介</strong><ul>
+<li>这个过时了，看看就行</li>
+<li>字段长度偏移表记录每个字段的结束地址<ul>
+<li>需要用相邻的偏移量相减才能知道该字段的长度</li>
+</ul>
+</li>
+<li>记录头信息和Compact差不多，有些许的不同</li>
+<li>偏移量会有一个null比特位，标记该字段是否为null</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>行溢出数据的情况</strong></p>
+<ul>
+<li><strong>varchar(M)最多能存储的数据</strong><ul>
+<li>mysql中对于varchar类型，最多可以占用65535个字节<ul>
+<li>对于BLOB和TEXT类型倒没要求</li>
+</ul>
+</li>
+<li>其中M表示最多可以存储的字符数量<ul>
+<li>因为总体字节数有限制，所以M的大小取决于用的字符集占用几个字节</li>
+</ul>
+</li>
+<li>其实是因为mysql对于一条记录的大小限制为65535个字节<ul>
+<li>包括了除了真实数据之外的额外记录数据，比如变长字段长度列表和NULL列表</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>记录中的数据太多产生的行溢出</strong><ul>
+<li>因为数据库中的数据是以页为单位存储的，16KB，而varchar最多能存64KB的数据</li>
+<li>所以当一个字段数据太多时，会只存一部分，以及一个指向其它页的指针，指针指向的页存放剩余的部分，也叫溢出页(这是Compact和Redundant行格式处理溢出的方法)</li>
+</ul>
+</li>
+<li><strong>行溢出的临界点</strong><ul>
+<li>一条记录中的所有数据以及额外记录信息 超过16KB时就会发生行溢出</li>
+<li>不需要知道具体的临界点，只需要知道当存储数据很大时就可能发生溢出就行了</li>
+</ul>
+</li>
+<li><strong>Dynamic和Compressed行格式</strong><ul>
+<li>MySQL5.7默认使用的行格式就是Dynamic</li>
+<li>这两种行格式和Compact的区别只在于对于行溢出的处理<ul>
+<li>Dynamic和Compressed都会把产生行溢出的字段的全部真实数据放在其他页上，只在记录中存放指针</li>
+</ul>
+</li>
+<li>Compressed会在Dynamic基础上对页面进行压缩，节省空间</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>

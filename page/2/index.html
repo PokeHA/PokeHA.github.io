@@ -28,7 +28,156 @@
       switchTab();
       window.addEventListener('hashchange', switchTab, false);
   })();
-  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/tags">标签</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/PokeHA"><i class="fab fa-github"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-04-04T08:00:00.000Z" title="4/4/2023, 4:00:00 PM">2023-04-04</time>发表</span><span class="level-item"><time dateTime="2023-04-04T08:00:00.000Z" title="4/4/2023, 4:00:00 PM">2023-04-04</time>更新</span><span class="level-item">10 分钟读完 (大约1477个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/04/04/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0%20%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%8E%9F%E7%90%86/">《MySQL是怎样运行的》笔记 第十一章 连接的原理</a></h1><div class="content"><ol>
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/tags">标签</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/PokeHA"><i class="fab fa-github"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-04-06T08:00:00.000Z" title="4/6/2023, 4:00:00 PM">2023-04-06</time>发表</span><span class="level-item"><time dateTime="2023-04-06T08:00:00.000Z" title="4/6/2023, 4:00:00 PM">2023-04-06</time>更新</span><span class="level-item">8 分钟读完 (大约1146个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%20Explain%E8%AF%A6%E8%A7%A3/">《MySQL是怎样运行的》笔记 第十五章 Explain详解</a></h1><div class="content"><ol>
+<li><strong>简介</strong>  <ul>
+<li>MySQL在进行基于规则的优化和基于成本的优化之后，会生成最终的执行计划。  </li>
+<li>执行计划记录了最终执行查询的步骤，比如多表连接的顺序，每个表采用什么访问方法等。  </li>
+<li>使用<code>EXPLAIN</code>关键字可以查看一个查询语句的具体执行计划。</li>
+</ul>
+</li>
+<li><strong>执行计划中的各列详解</strong>  <ol>
+<li><strong>table</strong>  <ul>
+<li>不管查询语句多么复杂，最后都是单表访问。  </li>
+<li>所以执行计划中的每一条记录都对应一个单表，记录了对于该单表怎么执行（如访问方法<code>const</code>、<code>ref</code>、<code>range</code>等）。  </li>
+<li>这些记录的顺序就是表的连接顺序。  </li>
+<li><code>table</code>指的是该条记录对应的表名。</li>
+</ul>
+</li>
+<li><strong>id</strong>  <ul>
+<li><code>id</code>是<code>SELECT</code>关键字的id。  </li>
+<li>每使用一个<code>SELECT</code>关键字，就会分配一个<code>id</code>。  </li>
+<li>进行连接查询的表拥有同一个<code>id</code>。  </li>
+<li>子查询则会使用另一个<code>id</code>。  </li>
+<li>如果子查询被转换为连接查询，也会拥有相同的<code>id</code>。  </li>
+<li><code>id</code>为<code>NULL</code>表示这是一个临时表。</li>
+</ul>
+</li>
+<li><strong>select_type</strong>  <ul>
+<li>每个<code>SELECT</code>语句代表一个小查询，会被分配一个<code>id</code>。  </li>
+<li><code>select_type</code>表示这个<code>SELECT</code>关键字对应的小查询的类型。  </li>
+<li>常见的<code>select_type</code>：  <ol>
+<li><strong>simple</strong>：表示查询不包括子查询或<code>UNION</code>操作，常见于单表查询和连接查询。  </li>
+<li><strong>primary</strong>：表示该查询是一个大查询，由几个小查询组成。使用了<code>UNION</code>或子查询的查询就是<code>primary</code>。  </li>
+<li><strong>union</strong>：用于<code>UNION</code>查询，第一个小查询的类型是<code>primary</code>，其余的小查询类型是<code>union</code>。  </li>
+<li><strong>union result</strong>：表示该表是一个用于<code>UNION</code>的临时表，并且这表没有<code>id</code>。  </li>
+<li><strong>subquery</strong>：表示该查询是未转换为半连接的不相关子查询，并使用物化方式执行。  </li>
+<li><strong>dependent subquery</strong>：表示这是未转换为半连接的相关子查询，会执行多遍。  </li>
+<li><strong>dependent union</strong>：子查询中的<code>UNION</code>查询，依赖于外层查询。  </li>
+<li><strong>drived</strong>：表示用物化表的方式执行派生表查询。  </li>
+<li><strong>materialized</strong>：子查询物化后与外层查询进行连接查询。</div><a class="article-more button is-small is-size-7" href="/2023/04/06/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%20Explain%E8%AF%A6%E8%A7%A3/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-04-05T08:00:00.000Z" title="4/5/2023, 4:00:00 PM">2023-04-05</time>发表</span><span class="level-item"><time dateTime="2023-04-05T08:00:00.000Z" title="4/5/2023, 4:00:00 PM">2023-04-05</time>更新</span><span class="level-item">18 分钟读完 (大约2708个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/04/05/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0%20MySQL%E5%9F%BA%E4%BA%8E%E6%88%90%E6%9C%AC%E7%9A%84%E4%BC%98%E5%8C%96/">《MySQL是怎样运行的》笔记 第十二章 MySQL基于成本的优化</a></h1><div class="content"><ol>
+<li><strong>什么是成本</strong>  <ul>
+<li>同一查询会有多个执行方案，MySQL会自动选择成本最低的方案去进行查询。  </li>
+<li>成本主要由两个方面组成：<ol>
+<li><strong>IO成本</strong>  <ul>
+<li>当我们想查询数据时，需要先把数据从磁盘里加载到内存里之后才可以查询。  </li>
+<li>从外存加载到内存的时间损耗就可以称为IO成本。</li>
+</ul>
+</li>
+<li><strong>CPU成本</strong>  <ul>
+<li>检测记录是否满足查询条件、对结果集进行排序等等，就称为CPU成本。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>读取一个页面的成本是1.0，读取和检测一条记录是否满足查询条件的成本是0.2，这些数字叫成本常数。  </li>
+<li>对一条记录光读取不匹配的成本也是0.2。</li>
+</ul>
+</li>
+<li><strong>单表查询成本</strong>  <ul>
+<li><strong>准备工作</strong>  <ul>
+<li>创建一个表。</li>
+</ul>
+</li>
+<li><strong>基于成本的优化步骤</strong>  <ul>
+<li><strong>简介</strong>  <ul>
+<li><strong>流程简介</strong>：  <ol>
+<li>在执行一条单表查询条件时，查询优化器会找出可行的执行方案。  </li>
+<li>然后比对所有执行方案的代价。  </li>
+<li>选择代价最低的执行方案进行执行。</li>
+</ol>
+</li>
+<li><strong>更具体的流程</strong>：  <ol>
+<li>根据搜索条件，找出所有可用的索引。  </li>
+<li>然后计算全表扫描的代价。  </li>
+<li>计算使用不同索引执行查询的代价。  </li>
+<li>选择代价最低的执行计划进行查询。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>查询语句如下</strong>：<br>  <img src="/2023/04/05/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0%20MySQL%E5%9F%BA%E4%BA%8E%E6%88%90%E6%9C%AC%E7%9A%84%E4%BC%98%E5%8C%96/image.png" alt="alt text"></li>
+<li><strong>先分析可用的索引 possible keys</strong>：<br>  <img src="/2023/04/05/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0%20MySQL%E5%9F%BA%E4%BA%8E%E6%88%90%E6%9C%AC%E7%9A%84%E4%BC%98%E5%8C%96/image-1.png" alt="alt text"><ul>
+<li>发现possible keys 只有 idx_key1 和 idx_key2。</li>
+</ul>
+</li>
+<li><strong>计算全表扫描的代价</strong>：  <ul>
+<li>查询成本&#x3D;IO成本+CPU成本，所以计算全表扫描的代价主要看两个部分：  <ol>
+<li>聚集索引占用的页面数量。  </li>
+<li>表中的记录总数。</li>
+</ol>
+</li>
+<li>这些信息可以通过表的统计数据获取：  <ol>
+<li>使用 <code>SHOW TABLE STATUS LIKE &#39;single_table&#39;</code>。  </li>
+<li>这些信息由MySQL负责收集。</li>
+</ol>
+</li>
+<li>我们主要看Rows和Data_Length：  <ol>
+<li><strong>Rows</strong>：  <ul>
+<li>本选项表示表中的记录条数。对于使用 MyISAM 存储引擎的表来说，该值是准确的，对于使用 InnoDB 存储引擎的表来说，该值是一个估计值。</li>
+</ul>
+</li>
+<li><strong>Data_length</strong>：  <ul>
+<li>表示表占用的存储空间字节数。使用 MyISAM 存储引擎的表来说，该值就是数据文件的大小，对于使用 InnoDB 存储引擎的表来说，该值就相当于聚簇索引占用的存储空间大小。  </li>
+<li>所以聚簇索引的页面数量 &#x3D; 1589248 ÷ 16 ÷ 1024 &#x3D; 97。</div><a class="article-more button is-small is-size-7" href="/2023/04/05/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0%20MySQL%E5%9F%BA%E4%BA%8E%E6%88%90%E6%9C%AC%E7%9A%84%E4%BC%98%E5%8C%96/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-04-05T08:00:00.000Z" title="4/5/2023, 4:00:00 PM">2023-04-05</time>发表</span><span class="level-item"><time dateTime="2023-04-05T08:00:00.000Z" title="4/5/2023, 4:00:00 PM">2023-04-05</time>更新</span><span class="level-item">9 分钟读完 (大约1296个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/04/05/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0%20MySQL%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84%E4%BC%98%E5%8C%96/">《MySQL是怎样运行的》笔记 第十四章 MySQL基于规则的优化</a></h1><div class="content"><ol>
+<li><strong>简介</strong>  <ul>
+<li>查询优化器除了会根据查询成本进行优化之外，还会使用特定规则查询语句进行重写，优化查询性能。</li>
+</ul>
+</li>
+<li><strong>条件化简</strong>  <ul>
+<li>条件化简会对查询语句进行简化：  <ol>
+<li>移除不必要的括号。  </li>
+<li><strong>常量传递</strong>  <ul>
+<li>当查询条件使用<code>AND</code>连接时，可以将 <code>a = 5 AND b &gt; a</code> 替换为 <code>a = 5 AND b &gt; 5</code>。</li>
+</ul>
+</li>
+<li><strong>等值传递</strong>  <ul>
+<li><code>a = b AND b = c AND c = 5</code> 替换为 <code>a = 5 AND b = 5 AND c = 5</code>。</li>
+</ul>
+</li>
+<li><strong>移除没用的条件</strong>  <ul>
+<li>移除永真或者永假的表达式。</li>
+</ul>
+</li>
+<li><strong>表达式计算</strong>  <ul>
+<li>对只包含常量的表达式进行提前计算，<code>a = 5 + 1</code> 替换为 <code>a = 6</code>。  </li>
+<li>注意不会对涉及字段的表达式进行化简，所以不要对索引字段使用表达式或函数。</li>
+</ul>
+</li>
+<li><strong><code>HAVING</code>子句和<code>WHERE</code>子句合并</strong>  <ul>
+<li>如果查询语句里没有聚集函数以及<code>GROUP BY</code>子句，就把<code>HAVING</code>子句和<code>WHERE</code>子句合并起来。</li>
+</ul>
+</li>
+<li><strong>常量表检测</strong>  <ul>
+<li>满足常量表查询有两种条件：  <ol>
+<li>查询的表中没有记录，或者只有一条记录。  </li>
+<li>使用<code>const</code>访问方法进行查询（对主键或者唯一二级索引进行等值匹配）。</li>
+</ol>
+</li>
+<li>当查询优化器发现可以执行常量表查询时，就会跳过查询成本分析，直接查询。  <ol>
+<li>然后把涉及到该表的查询条件全部替换为常数。  </li>
+<li>最后再分析剩下的表的查询成本。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>外连接消除</strong>  <ul>
+<li>因为内连接可以交换连接顺序，有更多执行方案，所以比起外连接有更多优化空间。  </li>
+<li>可以在进行外连接时，在<code>WHERE</code>子句里指定被驱动表的字段不为<code>NULL</code>，这种方法叫做<strong>空值拒绝</strong>。  <ol>
+<li>相当于把外连接转换为内连接，查询优化器也可以交换连接顺序了。</div><a class="article-more button is-small is-size-7" href="/2023/04/05/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0%20MySQL%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84%E4%BC%98%E5%8C%96/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-04-04T08:00:00.000Z" title="4/4/2023, 4:00:00 PM">2023-04-04</time>发表</span><span class="level-item"><time dateTime="2023-04-04T08:00:00.000Z" title="4/4/2023, 4:00:00 PM">2023-04-04</time>更新</span><span class="level-item">10 分钟读完 (大约1477个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/04/04/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0%20%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%8E%9F%E7%90%86/">《MySQL是怎样运行的》笔记 第十一章 连接的原理</a></h1><div class="content"><ol>
 <li><strong>简介</strong><br> MySQL中的连接 <code>join</code>，如果使用不好可能会导致慢查询，所以最好弄懂原理再去用。</li>
 <li><strong>连接简介</strong><ul>
 <li><strong>连接的本质</strong><ul>
@@ -305,125 +454,7 @@
 </ul>
 </li>
 <li><strong>405 Method Not Allowed</strong>：<ul>
-<li>请求方法不被支持，客户端可以通过 <code>OPTIONS</code> 请求获取资源支持的请求方法，响应中的 <code>Allow</code> 首部字段列出支持的方法。</div><a class="article-more button is-small is-size-7" href="/2023/03/28/%E3%80%8A%E5%9B%BE%E8%A7%A3HTTP%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20HTTP%E7%8A%B6%E6%80%81%E7%A0%81/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-27T03:22:28.000Z" title="3/27/2023, 11:22:28 AM">2023-03-27</time>发表</span><span class="level-item"><time dateTime="2023-03-27T03:22:28.000Z" title="3/27/2023, 11:22:28 AM">2023-03-27</time>更新</span><span class="level-item">11 分钟读完 (大约1597个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/27/%E3%80%8A%E7%96%AF%E7%8B%82Java%E3%80%8B%E7%AC%94%E8%AE%B0%20%E5%BC%82%E5%B8%B8/">《疯狂Java》笔记 异常</a></h1><div class="content"><p><strong>本章要点</strong></p>
-<ol>
-<li>异常的定义和概念</li>
-<li>Java异常机制的优势</li>
-<li>使用<code>try-catch</code>捕获异常</li>
-<li>多异常捕获</li>
-<li><code>finally</code>块的作用</li>
-<li>自动关闭资源的<code>try</code>语句</li>
-<li>异常处理的合理嵌套</li>
-<li><code>Checked</code>异常和<code>Runtime</code>异常</li>
-<li>使用<code>throws</code>声明异常</li>
-<li>使用<code>throw</code>抛出异常</li>
-<li>自定义异常</li>
-<li>异常链和异常转译</li>
-<li>异常的跟踪栈信息</li>
-<li>异常的处理规则</li>
-</ol>
-<hr>
-<h3 id="10-1-异常概述"><a href="#10-1-异常概述" class="headerlink" title="10.1 异常概述"></a>10.1 异常概述</h3><p>Java 的异常处理机制可以将“业务代码”和“异常处理代码”分离，提高代码可读性。</p>
-<ol>
-<li><strong>异常处理机制的关键字</strong><ul>
-<li><code>try</code>：用于包裹可能会发生异常的代码块。</li>
-<li><code>catch</code>：捕获并处理指定类型的异常。</li>
-<li><code>finally</code>：无论是否抛出异常，都会执行，用于回收资源。</li>
-<li><code>throws</code>：声明方法可能抛出的异常。</li>
-<li><code>throw</code>：实际抛出一个异常。</li>
-</ul>
-</li>
-<li><strong>异常的分类</strong><ul>
-<li><code>Checked</code> 异常：<ul>
-<li>编译时必须处理的异常，所有的 <code>Checked</code> 异常都必须明确处理（捕获或声明）。</li>
-</ul>
-</li>
-<li><code>Runtime</code> 异常：<ul>
-<li>运行时异常，可以选择不处理，常见如 <code>NullPointerException</code>。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-<hr>
-<h3 id="10-2-异常处理机制"><a href="#10-2-异常处理机制" class="headerlink" title="10.2 异常处理机制"></a>10.2 异常处理机制</h3><ol>
-<li><strong>使用<code>try-catch</code>捕获异常</strong><ul>
-<li>当<code>try</code>块中的代码在运行时出现异常时，系统会自动生成一个异常对象，并将其交给 JVM。JVM 会查找匹配的 <code>catch</code> 块，找到后进行处理，若找不到，程序会退出。</div><a class="article-more button is-small is-size-7" href="/2023/03/27/%E3%80%8A%E7%96%AF%E7%8B%82Java%E3%80%8B%E7%AC%94%E8%AE%B0%20%E5%BC%82%E5%B8%B8/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-24T03:22:28.000Z" title="3/24/2023, 11:22:28 AM">2023-03-24</time>发表</span><span class="level-item"><time dateTime="2023-03-24T03:22:28.000Z" title="3/24/2023, 11:22:28 AM">2023-03-24</time>更新</span><span class="level-item">5 分钟读完 (大约716个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/24/%E3%80%8A%E5%9B%BE%E8%A7%A3HTTP%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E4%BA%86%E8%A7%A3Web%E5%8F%8A%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">《图解HTTP》笔记 第一章 了解Web及网络基础</a></h1><div class="content"><h3 id="1-1-使用HTTP协议访问Web"><a href="#1-1-使用HTTP协议访问Web" class="headerlink" title="1.1 使用HTTP协议访问Web"></a>1.1 使用HTTP协议访问Web</h3><p>当我们在浏览器中输入 URL 并返回显示内容时，实际上使用的就是 <strong>HTTP</strong>（HyperText Transfer Protocol，超文本传输协议）来进行数据传输。</p>
-<hr>
-<h3 id="1-2-HTTP的诞生"><a href="#1-2-HTTP的诞生" class="headerlink" title="1.2 HTTP的诞生"></a>1.2 HTTP的诞生</h3><ol>
-<li><strong>为知识共享而规划 Web</strong><ul>
-<li><strong>基本理念</strong>：通过超文本将互联网连成可互相参阅的万维网（WWW）。</li>
-<li><strong>WWW 的三项技术</strong>：<ol>
-<li><strong>HTML</strong>：文本标记语言。</li>
-<li><strong>HTTP</strong>：文档传输协议。</li>
-<li><strong>URL</strong>：指定文档所在地址。</li>
-</ol>
-</li>
-<li>WWW 简称为 Web。</li>
-</ul>
-</li>
-<li><strong>Web 的成长时代</strong><ul>
-<li>各种 Web 客户端和服务器陆续出现，推动了 Web 的发展。</li>
-</ul>
-</li>
-<li><strong>HTTP 的发展历程</strong><ul>
-<li><strong>HTTP&#x2F;0.9</strong>：初始版本，未正式公布为标准。</li>
-<li><strong>HTTP&#x2F;1.0</strong>：正式标准，仍然在许多服务端广泛使用。</li>
-<li><strong>HTTP&#x2F;1.1</strong>：目前最主流的版本。</li>
-<li><strong>HTTP&#x2F;2.0</strong>：新版本，尚未完全普及。</li>
-</ul>
-</li>
-</ol>
-<hr>
-<h3 id="1-3-网络基础-TCP-x2F-IP"><a href="#1-3-网络基础-TCP-x2F-IP" class="headerlink" title="1.3 网络基础 TCP&#x2F;IP"></a>1.3 网络基础 TCP&#x2F;IP</h3><ol>
-<li><strong>TCP&#x2F;IP 协议族</strong><ul>
-<li>TCP&#x2F;IP 是一系列网络协议的集合，负责管理网络通信。</li>
-</ul>
-</li>
-<li><strong>TCP&#x2F;IP 的分层管理</strong><ul>
-<li>TCP&#x2F;IP 协议分为四层：<ol>
-<li><strong>网络接口层</strong>：负责相邻节点之间的数据传输。</li>
-<li><strong>网际层</strong>：实现主机间的逻辑通信，负责选择传输路径（包括 IP 协议）。</li>
-<li><strong>传输层</strong>：实现主机进程间的逻辑通信（包括 TCP、UDP）。</li>
-<li><strong>应用层</strong>：用户与网络的接口，应用层协议如 HTTP、DNS、FTP 等。</li>
-</ol>
-</li>
-<li><strong>分层设计的好处</strong>：<ol>
-<li>每层只需要解决其特定的问题，简化了设计。</li>
-<li>分层后，各层之间的接口定义明确，改变某层的内部实现不会影响其他层。</div><a class="article-more button is-small is-size-7" href="/2023/03/24/%E3%80%8A%E5%9B%BE%E8%A7%A3HTTP%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E4%BA%86%E8%A7%A3Web%E5%8F%8A%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-24T03:22:28.000Z" title="3/24/2023, 11:22:28 AM">2023-03-24</time>发表</span><span class="level-item"><time dateTime="2023-03-24T03:22:28.000Z" title="3/24/2023, 11:22:28 AM">2023-03-24</time>更新</span><span class="level-item">5 分钟读完 (大约810个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/24/%E3%80%8A%E5%9B%BE%E8%A7%A3HTTP%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%89%E7%AB%A0%20HTTP%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84/">《图解HTTP》笔记 第三章 HTTP报文结构</a></h1><div class="content"><ol>
-<li><strong>HTTP报文</strong><ul>
-<li><strong>HTTP报文</strong> 是 HTTP 协议在通信时传递的信息单元。<ul>
-<li><strong>请求报文</strong>：客户端发送的报文。</li>
-<li><strong>响应报文</strong>：服务器端返回的报文。</li>
-</ul>
-</li>
-<li>HTTP 报文由 <strong>报文首部</strong> 和 <strong>报文主体</strong> 组成。</li>
-</ul>
-</li>
-<li><strong>请求报文和响应报文的结构</strong><ul>
-<li>HTTP 报文首部包含不同类型的首部字段。</li>
-<li><strong>首部字段</strong> 分为四种类型：<ol>
-<li><strong>请求首部</strong>：客户端发送的请求报文包含的首部信息。</li>
-<li><strong>响应首部</strong>：服务器发送的响应报文包含的首部信息。</li>
-<li><strong>通用首部</strong>：请求和响应报文都可以使用的通用信息。</li>
-<li><strong>实体首部</strong>：用于描述报文主体内容的信息。</li>
-</ol>
-</li>
-<li>这些首部字段的具体作用会在后面的章节中详细解释。</li>
-</ul>
-</li>
-<li><strong>数据压缩</strong><ul>
-<li><strong>简介</strong>：通过对报文内容进行压缩，减少数据体积，提高传输效率。</li>
-<li><strong>报文主体和实体主体</strong>：二者指代相同的内容，但未压缩时称为报文主体，压缩后称为实体主体。</li>
-<li><strong>内容编码（Content-Encoding）</strong>：用于指定报文压缩的算法。常见的编码方式有：<ol>
-<li><strong>gzip</strong>：常见的压缩算法。</li>
-<li><strong>compress</strong>：另一种压缩算法。</li>
-<li><strong>deflate</strong>：压缩方式。</li>
-<li><strong>identity</strong>：不进行压缩。</li>
-</ol>
-</li>
-<li><strong>分块传输编码（Transfer-Encoding）</strong>：<ul>
-<li>报文通过 <strong>Transfer-Encoding</strong> 分块传输，便于处理大文件或未知长度的文件传输。</div><a class="article-more button is-small is-size-7" href="/2023/03/24/%E3%80%8A%E5%9B%BE%E8%A7%A3HTTP%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%89%E7%AB%A0%20HTTP%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84/#more">阅读更多</a></article></div><nav class="pagination" role="navigation" aria-label="pagination"><div class="pagination-previous"><a href="/">上一页</a></div><div class="pagination-next"><a href="/page/3/">下一页</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link" href="/">1</a></li><li><a class="pagination-link is-current" href="/page/2/">2</a></li><li><a class="pagination-link" href="/page/3/">3</a></li><li><a class="pagination-link" href="/page/4/">4</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.jpg" alt="Shawn Zong"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Shawn Zong</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">35</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">10</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/PokeHA" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/PokeHA"><i class="fab fa-github"></i></a></div></div></div><!--!--><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/HTTP/"><span class="tag">HTTP</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/HTTPS/"><span class="tag">HTTPS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Java/"><span class="tag">Java</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BF%9D%E7%A0%94/"><span class="tag">保研</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%A0%E6%83%AF/"><span class="tag">学习习惯</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="tag">操作系统</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%BD%91%E7%BB%9C/"><span class="tag">网络</span><span class="tag">6</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><span class="tag">项目管理</span><span class="tag">2</span></a></div></div></div></div></div><!--!--><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-26T03:22:28.000Z">2023-11-26</time></p><p class="title"><a href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第10章 进程管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-12T03:22:28.000Z">2023-11-12</time></p><p class="title"><a href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">《Linux从入门到精通》笔记 第5章 Shell基本命令</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-25T03:42:28.000Z">2023-10-25</time></p><p class="title"><a href="/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/">《人件 Peopleware》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-09T03:42:28.000Z">2023-10-09</time></p><p class="title"><a href="/2023/10/09/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%20The%20Mythical%20Man-Month%E3%80%8B%E7%AC%94%E8%AE%B0/">《人月神话 The Mythical Man-Month》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-07T08:00:00.000Z">2023-04-07</time></p><p class="title"><a href="/2023/04/07/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%BA%94%E7%AB%A0%20%E9%94%81/">《MySQL是怎样运行的》笔记 第二十五章 锁</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2023/11/"><span class="level-start"><span class="level-item">十一月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/10/"><span class="level-start"><span class="level-item">十月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/04/"><span class="level-start"><span class="level-item">四月 2023</span></span><span class="level-end"><span class="level-item tag">8</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/03/"><span class="level-start"><span class="level-item">三月 2023</span></span><span class="level-end"><span class="level-item tag">18</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/02/"><span class="level-start"><span class="level-item">二月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/12/"><span class="level-start"><span class="level-item">十二月 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/11/"><span class="level-start"><span class="level-item">十一月 2022</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a><p class="is-size-7"><span>&copy; 2024 Shawn Zong</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+<li>请求方法不被支持，客户端可以通过 <code>OPTIONS</code> 请求获取资源支持的请求方法，响应中的 <code>Allow</code> 首部字段列出支持的方法。</div><a class="article-more button is-small is-size-7" href="/2023/03/28/%E3%80%8A%E5%9B%BE%E8%A7%A3HTTP%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20HTTP%E7%8A%B6%E6%80%81%E7%A0%81/#more">阅读更多</a></article></div><nav class="pagination" role="navigation" aria-label="pagination"><div class="pagination-previous"><a href="/">上一页</a></div><div class="pagination-next"><a href="/page/3/">下一页</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link" href="/">1</a></li><li><a class="pagination-link is-current" href="/page/2/">2</a></li><li><a class="pagination-link" href="/page/3/">3</a></li><li><a class="pagination-link" href="/page/4/">4</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.jpg" alt="Shawn Zong"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Shawn Zong</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">35</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">10</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/PokeHA" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/PokeHA"><i class="fab fa-github"></i></a></div></div></div><!--!--><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/HTTP/"><span class="tag">HTTP</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/HTTPS/"><span class="tag">HTTPS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Java/"><span class="tag">Java</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BF%9D%E7%A0%94/"><span class="tag">保研</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%A0%E6%83%AF/"><span class="tag">学习习惯</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="tag">操作系统</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%BD%91%E7%BB%9C/"><span class="tag">网络</span><span class="tag">6</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><span class="tag">项目管理</span><span class="tag">2</span></a></div></div></div></div></div><!--!--><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-28T03:22:28.000Z">2023-11-28</time></p><p class="title"><a href="/2023/11/28/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC15%E7%AB%A0%20%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95/">《Linux从入门到精通》笔记 第15章 远程登录</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-26T03:22:28.000Z">2023-11-26</time></p><p class="title"><a href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第10章 进程管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-24T03:22:28.000Z">2023-11-24</time></p><p class="title"><a href="/2023/11/24/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC7%E7%AB%A0%20%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第7章 软件包管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-18T03:22:28.000Z">2023-11-18</time></p><p class="title"><a href="/2023/11/18/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC6%E7%AB%A0%20%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第6章 文件目录管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-12T03:22:28.000Z">2023-11-12</time></p><p class="title"><a href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">《Linux从入门到精通》笔记 第5章 Shell基本命令</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2023/11/"><span class="level-start"><span class="level-item">十一月 2023</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/10/"><span class="level-start"><span class="level-item">十月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/04/"><span class="level-start"><span class="level-item">四月 2023</span></span><span class="level-end"><span class="level-item tag">8</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/03/"><span class="level-start"><span class="level-item">三月 2023</span></span><span class="level-end"><span class="level-item tag">18</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/02/"><span class="level-start"><span class="level-item">二月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/12/"><span class="level-start"><span class="level-item">十二月 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a><p class="is-size-7"><span>&copy; 2024 Shawn Zong</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
             article: {
                 highlight: {
                     clipboard: true,

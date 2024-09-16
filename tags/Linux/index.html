@@ -28,7 +28,55 @@
       switchTab();
       window.addEventListener('hashchange', switchTab, false);
   })();
-  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/tags">标签</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/PokeHA"><i class="fab fa-github"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><div class="card-content"><nav class="breadcrumb" aria-label="breadcrumbs"><ul><li><a href="/tags">标签</a></li><li class="is-active"><a href="#" aria-current="page">Linux</a></li></ul></nav></div></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-11-26T03:22:28.000Z" title="11/26/2023, 11:22:28 AM">2023-11-26</time>发表</span><span class="level-item"><time dateTime="2023-11-26T03:22:28.000Z" title="11/26/2023, 11:22:28 AM">2023-11-26</time>更新</span><span class="level-item">5 分钟读完 (大约767个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第10章 进程管理</a></h1><div class="content"><p><strong>快速上手：结束一个失控的程序</strong></p>
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/tags">标签</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/PokeHA"><i class="fab fa-github"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><div class="card-content"><nav class="breadcrumb" aria-label="breadcrumbs"><ul><li><a href="/tags">标签</a></li><li class="is-active"><a href="#" aria-current="page">Linux</a></li></ul></nav></div></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-11-28T03:22:28.000Z" title="11/28/2023, 11:22:28 AM">2023-11-28</time>发表</span><span class="level-item"><time dateTime="2023-11-28T03:22:28.000Z" title="11/28/2023, 11:22:28 AM">2023-11-28</time>更新</span><span class="level-item">6 分钟读完 (大约932个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/11/28/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC15%E7%AB%A0%20%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95/">《Linux从入门到精通》笔记 第15章 远程登录</a></h1><div class="content"><p><strong>15.1 快速上手，搭建实验环境</strong></p>
+<ol>
+<li>VPS还是虚拟机<ul>
+<li>VPS可以进行真正的远程登录。</li>
+<li>虚拟机需要考虑宿主机的网络问题，如桥接等。</li>
+</ul>
+</li>
+<li>安装OpenSSH<ul>
+<li>OpenSSH是Linux下常用的SSH服务器&#x2F;客户端软件。</li>
+<li>可启动SSH服务器，等待连接，通常随系统启动。</li>
+</ul>
+</li>
+<li>安装<code>vnc4server</code><ul>
+<li>VNC用于图形化远程登录，Linux一般自带服务器端。</li>
+<li>VNC包括：<ul>
+<li><code>vnc4-coooon</code></li>
+<li><code>vnc4server</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>防火墙设置<ul>
+<li>Ubuntu Desktop 默认关闭防火墙，不用考虑。</li>
+<li>openSUSE 需要设置防火墙规则。</li>
+</ul>
+</li>
+</ol>
+<p><strong>15.2 登录另一台 Linux 服务器</strong></p>
+<p>远程登录有多种方式，也可以从 Windows 或 Linux 登录到另一台 Linux。</p>
+<ol>
+<li>Secure Shell：SSH<ul>
+<li>SSH 是 Secure Shell 的缩写。<ul>
+<li>rlogin、rcp、telnet 是古老的远程登录软件，但由于安全问题已不再使用。</li>
+</ul>
+</li>
+<li>SSH 是协议，SSH2、OpenSSH 是具体实现。</li>
+<li>从一个 Linux 登录另一个 Linux：<ul>
+<li><code>ssh -l login_name hostname</code><ul>
+<li><code>login_name</code> 是用户名。</li>
+<li><code>hostname</code> 是主机名或主机的 IP 地址。</li>
+<li>登录成功后，Shell 中的主机名会发生变化，注意区分。</li>
+<li>使用 <code>exit</code> 退出 SSH 连接。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>注意：<ul>
+<li>不建议在远程机上进入 <code>root</code> 模式。</li>
+<li>推荐使用 <code>su</code> 或 <code>sudo</code> 临时获得 <code>root</code> 权限。</div><a class="article-more button is-small is-size-7" href="/2023/11/28/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC15%E7%AB%A0%20%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-11-26T03:22:28.000Z" title="11/26/2023, 11:22:28 AM">2023-11-26</time>发表</span><span class="level-item"><time dateTime="2023-11-26T03:22:28.000Z" title="11/26/2023, 11:22:28 AM">2023-11-26</time>更新</span><span class="level-item">5 分钟读完 (大约767个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第10章 进程管理</a></h1><div class="content"><p><strong>快速上手：结束一个失控的程序</strong></p>
 <ul>
 <li><code>./badpro &amp;</code><ul>
 <li>后台执行当前目录的badpro可执行文件</li>
@@ -86,87 +134,7 @@
 <li>用户只能够设置谦让度</li>
 </ul>
 </li>
-</ul></div><a class="article-more button is-small is-size-7" href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-11-12T03:22:28.000Z" title="11/12/2023, 11:22:28 AM">2023-11-12</time>发表</span><span class="level-item"><time dateTime="2023-11-12T03:22:28.000Z" title="11/12/2023, 11:22:28 AM">2023-11-12</time>更新</span><span class="level-item">10 分钟读完 (大约1505个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">《Linux从入门到精通》笔记 第5章 Shell基本命令</a></h1><div class="content"><p><strong>Shell 简介</strong></p>
-<ul>
-<li>命令行是输入命令的界面</li>
-<li>Shell是命令解释器，是程序</li>
-<li>Linux默认的Shell是 Bash Shell</li>
-</ul>
-<p><strong>输入输出约定</strong></p>
-<ul>
-<li><strong>提示符</strong><ul>
-<li>输入行开头的 $ 或 # 表示提示符<ul>
-<li>$表示普通身份</li>
-<li>#表示root身份</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>命令格式</strong><ul>
-<li>提示符+命令+注释</li>
-<li>注释 由”##”开头</li>
-</ul>
-</li>
-</ul>
-<p><strong>简单文件指令</strong></p>
-<ul>
-<li><strong>进入目录：</strong> cd+地址<ul>
-<li>cd &#x2F; ：进入根目录</li>
-<li>cd ：单独一个cd不带参数，进入home下的用户目录</li>
-<li>cd &#x2F;地址：地址以斜杠开头，表示进入从根目录开始的完整地址</li>
-</ul>
-</li>
-<li><strong>列出当前地址下的文件和目录：</strong> ls</li>
-<li>**&#x2F;etc目录下存放了linux的配置文件</li>
-</ul></div><a class="article-more button is-small is-size-7" href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2022-11-28T03:22:28.000Z" title="11/28/2022, 11:22:28 AM">2022-11-28</time>发表</span><span class="level-item"><time dateTime="2022-11-28T03:22:28.000Z" title="11/28/2022, 11:22:28 AM">2022-11-28</time>更新</span><span class="level-item">6 分钟读完 (大约932个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2022/11/28/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC15%E7%AB%A0%20%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95/">《Linux从入门到精通》笔记 第15章 远程登录</a></h1><div class="content"><p><strong>15.1 快速上手，搭建实验环境</strong></p>
-<ol>
-<li>VPS还是虚拟机<ul>
-<li>VPS可以进行真正的远程登录。</li>
-<li>虚拟机需要考虑宿主机的网络问题，如桥接等。</li>
-</ul>
-</li>
-<li>安装OpenSSH<ul>
-<li>OpenSSH是Linux下常用的SSH服务器&#x2F;客户端软件。</li>
-<li>可启动SSH服务器，等待连接，通常随系统启动。</li>
-</ul>
-</li>
-<li>安装<code>vnc4server</code><ul>
-<li>VNC用于图形化远程登录，Linux一般自带服务器端。</li>
-<li>VNC包括：<ul>
-<li><code>vnc4-coooon</code></li>
-<li><code>vnc4server</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>防火墙设置<ul>
-<li>Ubuntu Desktop 默认关闭防火墙，不用考虑。</li>
-<li>openSUSE 需要设置防火墙规则。</li>
-</ul>
-</li>
-</ol>
-<p><strong>15.2 登录另一台 Linux 服务器</strong></p>
-<p>远程登录有多种方式，也可以从 Windows 或 Linux 登录到另一台 Linux。</p>
-<ol>
-<li>Secure Shell：SSH<ul>
-<li>SSH 是 Secure Shell 的缩写。<ul>
-<li>rlogin、rcp、telnet 是古老的远程登录软件，但由于安全问题已不再使用。</li>
-</ul>
-</li>
-<li>SSH 是协议，SSH2、OpenSSH 是具体实现。</li>
-<li>从一个 Linux 登录另一个 Linux：<ul>
-<li><code>ssh -l login_name hostname</code><ul>
-<li><code>login_name</code> 是用户名。</li>
-<li><code>hostname</code> 是主机名或主机的 IP 地址。</li>
-<li>登录成功后，Shell 中的主机名会发生变化，注意区分。</li>
-<li>使用 <code>exit</code> 退出 SSH 连接。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>注意：<ul>
-<li>不建议在远程机上进入 <code>root</code> 模式。</li>
-<li>推荐使用 <code>su</code> 或 <code>sudo</code> 临时获得 <code>root</code> 权限。</div><a class="article-more button is-small is-size-7" href="/2022/11/28/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC15%E7%AB%A0%20%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2022-11-24T03:22:28.000Z" title="11/24/2022, 11:22:28 AM">2022-11-24</time>发表</span><span class="level-item"><time dateTime="2022-11-24T03:22:28.000Z" title="11/24/2022, 11:22:28 AM">2022-11-24</time>更新</span><span class="level-item">5 分钟读完 (大约747个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2022/11/24/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC7%E7%AB%A0%20%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第7章 软件包管理</a></h1><div class="content"><p><strong>7.2 软件包管理系统简述</strong></p>
+</ul></div><a class="article-more button is-small is-size-7" href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-11-24T03:22:28.000Z" title="11/24/2023, 11:22:28 AM">2023-11-24</time>发表</span><span class="level-item"><time dateTime="2023-11-24T03:22:28.000Z" title="11/24/2023, 11:22:28 AM">2023-11-24</time>更新</span><span class="level-item">5 分钟读完 (大约747个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/11/24/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC7%E7%AB%A0%20%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第7章 软件包管理</a></h1><div class="content"><p><strong>7.2 软件包管理系统简述</strong></p>
 <ul>
 <li>软件包管理系统可以自动安装软件包，以及它们所需的依赖。</li>
 <li>软件包格式有两种：<ul>
@@ -199,7 +167,10 @@
 </li>
 <li>卸载软件包：<ul>
 <li><code>sudo dpkg -r</code> 软件名。</li>
-<li><code>sudo dpkg --remove</code> 软件名。</div><a class="article-more button is-small is-size-7" href="/2022/11/24/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC7%E7%AB%A0%20%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2022-11-18T03:22:28.000Z" title="11/18/2022, 11:22:28 AM">2022-11-18</time>发表</span><span class="level-item"><time dateTime="2022-11-18T03:22:28.000Z" title="11/18/2022, 11:22:28 AM">2022-11-18</time>更新</span><span class="level-item">11 分钟读完 (大约1598个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2022/11/18/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC6%E7%AB%A0%20%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第6章 文件目录管理</a></h1><div class="content"><p><strong>6.1 Linux文件系统的架构</strong></p>
+<li><code>sudo dpkg --remove</code> 软件名。</li>
+</ul>
+</li>
+</ol></div><a class="article-more button is-small is-size-7" href="/2023/11/24/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC7%E7%AB%A0%20%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-11-18T03:22:28.000Z" title="11/18/2023, 11:22:28 AM">2023-11-18</time>发表</span><span class="level-item"><time dateTime="2023-11-18T03:22:28.000Z" title="11/18/2023, 11:22:28 AM">2023-11-18</time>更新</span><span class="level-item">11 分钟读完 (大约1598个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/11/18/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC6%E7%AB%A0%20%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第6章 文件目录管理</a></h1><div class="content"><p><strong>6.1 Linux文件系统的架构</strong></p>
 <ul>
 <li>Linux没有盘符，也就是C盘D盘。</li>
 <li>Linux先有根目录，再有分区，可以将不同的分区挂载到不同的子目录上。</li>
@@ -255,7 +226,39 @@
 </li>
 <li>重命名：<ol>
 <li><code>mv fileA fileB</code> 将 <code>fileA</code> 重命名为 <code>fileB</code>。</li>
-<li>重命名实际上就是移动文件的同时重命名。</div><a class="article-more button is-small is-size-7" href="/2022/11/18/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC6%E7%AB%A0%20%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86/#more">阅读更多</a></article></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.jpg" alt="Shawn Zong"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Shawn Zong</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">35</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">10</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/PokeHA" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/PokeHA"><i class="fab fa-github"></i></a></div></div></div><!--!--><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/HTTP/"><span class="tag">HTTP</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/HTTPS/"><span class="tag">HTTPS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Java/"><span class="tag">Java</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BF%9D%E7%A0%94/"><span class="tag">保研</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%A0%E6%83%AF/"><span class="tag">学习习惯</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="tag">操作系统</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%BD%91%E7%BB%9C/"><span class="tag">网络</span><span class="tag">6</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><span class="tag">项目管理</span><span class="tag">2</span></a></div></div></div></div></div><!--!--><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-26T03:22:28.000Z">2023-11-26</time></p><p class="title"><a href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第10章 进程管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-12T03:22:28.000Z">2023-11-12</time></p><p class="title"><a href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">《Linux从入门到精通》笔记 第5章 Shell基本命令</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-25T03:42:28.000Z">2023-10-25</time></p><p class="title"><a href="/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/">《人件 Peopleware》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-09T03:42:28.000Z">2023-10-09</time></p><p class="title"><a href="/2023/10/09/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%20The%20Mythical%20Man-Month%E3%80%8B%E7%AC%94%E8%AE%B0/">《人月神话 The Mythical Man-Month》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-07T08:00:00.000Z">2023-04-07</time></p><p class="title"><a href="/2023/04/07/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%BA%94%E7%AB%A0%20%E9%94%81/">《MySQL是怎样运行的》笔记 第二十五章 锁</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2023/11/"><span class="level-start"><span class="level-item">十一月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/10/"><span class="level-start"><span class="level-item">十月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/04/"><span class="level-start"><span class="level-item">四月 2023</span></span><span class="level-end"><span class="level-item tag">8</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/03/"><span class="level-start"><span class="level-item">三月 2023</span></span><span class="level-end"><span class="level-item tag">18</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/02/"><span class="level-start"><span class="level-item">二月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/12/"><span class="level-start"><span class="level-item">十二月 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/11/"><span class="level-start"><span class="level-item">十一月 2022</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a><p class="is-size-7"><span>&copy; 2024 Shawn Zong</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+<li>重命名实际上就是移动文件的同时重命名。</div><a class="article-more button is-small is-size-7" href="/2023/11/18/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC6%E7%AB%A0%20%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-11-12T03:22:28.000Z" title="11/12/2023, 11:22:28 AM">2023-11-12</time>发表</span><span class="level-item"><time dateTime="2023-11-12T03:22:28.000Z" title="11/12/2023, 11:22:28 AM">2023-11-12</time>更新</span><span class="level-item">10 分钟读完 (大约1505个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">《Linux从入门到精通》笔记 第5章 Shell基本命令</a></h1><div class="content"><p><strong>Shell 简介</strong></p>
+<ul>
+<li>命令行是输入命令的界面</li>
+<li>Shell是命令解释器，是程序</li>
+<li>Linux默认的Shell是 Bash Shell</li>
+</ul>
+<p><strong>输入输出约定</strong></p>
+<ul>
+<li><strong>提示符</strong><ul>
+<li>输入行开头的 $ 或 # 表示提示符<ul>
+<li>$表示普通身份</li>
+<li>#表示root身份</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>命令格式</strong><ul>
+<li>提示符+命令+注释</li>
+<li>注释 由”##”开头</li>
+</ul>
+</li>
+</ul>
+<p><strong>简单文件指令</strong></p>
+<ul>
+<li><strong>进入目录：</strong> cd+地址<ul>
+<li>cd &#x2F; ：进入根目录</li>
+<li>cd ：单独一个cd不带参数，进入home下的用户目录</li>
+<li>cd &#x2F;地址：地址以斜杠开头，表示进入从根目录开始的完整地址</li>
+</ul>
+</li>
+<li><strong>列出当前地址下的文件和目录：</strong> ls</li>
+<li>**&#x2F;etc目录下存放了linux的配置文件</li>
+</ul></div><a class="article-more button is-small is-size-7" href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/#more">阅读更多</a></article></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.jpg" alt="Shawn Zong"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Shawn Zong</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">35</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">10</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/PokeHA" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/PokeHA"><i class="fab fa-github"></i></a></div></div></div><!--!--><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/HTTP/"><span class="tag">HTTP</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/HTTPS/"><span class="tag">HTTPS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Java/"><span class="tag">Java</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BF%9D%E7%A0%94/"><span class="tag">保研</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%A0%E6%83%AF/"><span class="tag">学习习惯</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="tag">操作系统</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%BD%91%E7%BB%9C/"><span class="tag">网络</span><span class="tag">6</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><span class="tag">项目管理</span><span class="tag">2</span></a></div></div></div></div></div><!--!--><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-28T03:22:28.000Z">2023-11-28</time></p><p class="title"><a href="/2023/11/28/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC15%E7%AB%A0%20%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95/">《Linux从入门到精通》笔记 第15章 远程登录</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-26T03:22:28.000Z">2023-11-26</time></p><p class="title"><a href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第10章 进程管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-24T03:22:28.000Z">2023-11-24</time></p><p class="title"><a href="/2023/11/24/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC7%E7%AB%A0%20%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第7章 软件包管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-18T03:22:28.000Z">2023-11-18</time></p><p class="title"><a href="/2023/11/18/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC6%E7%AB%A0%20%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第6章 文件目录管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-12T03:22:28.000Z">2023-11-12</time></p><p class="title"><a href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">《Linux从入门到精通》笔记 第5章 Shell基本命令</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2023/11/"><span class="level-start"><span class="level-item">十一月 2023</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/10/"><span class="level-start"><span class="level-item">十月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/04/"><span class="level-start"><span class="level-item">四月 2023</span></span><span class="level-end"><span class="level-item tag">8</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/03/"><span class="level-start"><span class="level-item">三月 2023</span></span><span class="level-end"><span class="level-item tag">18</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/02/"><span class="level-start"><span class="level-item">二月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/12/"><span class="level-start"><span class="level-item">十二月 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a><p class="is-size-7"><span>&copy; 2024 Shawn Zong</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
             article: {
                 highlight: {
                     clipboard: true,

@@ -28,7 +28,96 @@
       switchTab();
       window.addEventListener('hashchange', switchTab, false);
   })();
-  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/tags">标签</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/PokeHA"><i class="fab fa-github"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-02-09T03:42:28.000Z" title="2/9/2023, 11:42:28 AM">2023-02-09</time>发表</span><span class="level-item"><time dateTime="2023-02-09T03:42:28.000Z" title="2/9/2023, 11:42:28 AM">2023-02-09</time>更新</span><span class="level-item">10 分钟读完 (大约1559个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/02/09/%E3%80%8A%E5%8E%9F%E5%AD%90%E4%B9%A0%E6%83%AF%20Atomic%20Habits%E3%80%8B%E7%AC%AC%E4%B8%80%E7%AB%A0&amp;%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E7%AC%94%E8%AE%B0/">《原子习惯 Atomic Habits》第一章&amp;第二章 笔记</a></h1><div class="content"><h1 id="一、原子习惯的力量"><a href="#一、原子习惯的力量" class="headerlink" title="一、原子习惯的力量"></a><strong>一、原子习惯的力量</strong></h1><h2 id="小习惯大作用"><a href="#小习惯大作用" class="headerlink" title="小习惯大作用"></a><strong>小习惯大作用</strong></h2><p>日常习惯产生的微小改变很重要。</p>
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/tags">标签</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/PokeHA"><i class="fab fa-github"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-17T07:59:28.000Z" title="3/17/2023, 3:59:28 PM">2023-03-17</time>发表</span><span class="level-item"><time dateTime="2023-03-17T07:59:28.000Z" title="3/17/2023, 3:59:28 PM">2023-03-17</time>更新</span><span class="level-item">7 分钟读完 (大约1069个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/">《MySQL是怎样运行的》笔记 第四章 InnoDB记录结构</a></h1><div class="content"><ol>
+<li><p><strong>准备工作</strong></p>
+<ul>
+<li>不同存储引擎对于数据的存储格式都是不同的</li>
+<li>这本书主要讲的是InnoDB的格式</li>
+</ul>
+</li>
+<li><p><strong>InnoDB页简介</strong></p>
+<ul>
+<li>InnoDB会把数据划分为多个页</li>
+<li>以页作为磁盘和内存之间交互的基本单位</li>
+<li>页的大小一般为16KB</li>
+<li>一次至少读取16KB内容的数据到内存<ul>
+<li>同样的，一次最少刷新16KB的数据到磁盘</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>InnoDB行格式</strong></p>
+<ul>
+<li><p><strong>简介</strong></p>
+<ul>
+<li>我们以记录为单位往表中存储数据</li>
+<li>每一条记录在磁盘上的存储方式就被称为 行格式 或者 记录格式</li>
+<li>InnoDB有四种不同的行格式<ol>
+<li>Compact</li>
+<li>Redundant</li>
+<li>Dynamic</li>
+<li>Compressed</div><a class="article-more button is-small is-size-7" href="/2023/03/17/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-16T14:59:28.000Z" title="3/16/2023, 10:59:28 PM">2023-03-16</time>发表</span><span class="level-item"><time dateTime="2023-03-16T14:59:28.000Z" title="3/16/2023, 10:59:28 PM">2023-03-16</time>更新</span><span class="level-item">4 分钟读完 (大约534个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E5%AD%97%E7%AC%A6%E9%9B%86%E5%92%8C%E6%AF%94%E8%BE%83%E8%A7%84%E5%88%99/">《MySQL是怎样运行的》笔记 第三章 字符集和比较规则</a></h1><div class="content"><ol>
+<li><p><strong>字符集和比较规则简介</strong></p>
+<ul>
+<li><strong>字符集简介</strong><ul>
+<li>字符集负责处理字符与二进制数据的存储关系</li>
+</ul>
+</li>
+<li><strong>比较规则</strong><ul>
+<li>字典序也就是比较他们二进制的大小</li>
+<li>除了字典序外也有其他的比较规则</li>
+</ul>
+</li>
+<li><strong>重要的字符集</strong><ul>
+<li><strong>ASCII</strong><ol>
+<li>128个字符，包括数字、大小写字母、空格等等</li>
+<li>每个字符一个字节</li>
+</ol>
+</li>
+<li><strong>GB2132</strong><ol>
+<li>包括中文和其他国家的字符</li>
+<li>存在于ASCII中的字符用1个字节存储</li>
+<li>其余的字符用2个字节存储</li>
+<li>也就是变长存储方式</li>
+</ol>
+</li>
+<li><strong>GBK</strong><ol>
+<li>对于GB2132的字符收集范围做了补充，其余一样</li>
+</ol>
+</li>
+<li><strong>Unicode系列</strong><ol>
+<li>对地球上所有的字符进行了收录，同样是变长编码</li>
+<li><strong>utf-8</strong><ul>
+<li>1-4个字节存储字符</li>
+</ul>
+</li>
+<li><strong>utf-16</strong><ul>
+<li>2或4个字节存储字符</li>
+</ul>
+</li>
+<li><strong>utf-32</strong><ul>
+<li>全用4字节存</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>MySQL支持的字符集</strong></p></div><a class="article-more button is-small is-size-7" href="/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E5%AD%97%E7%AC%A6%E9%9B%86%E5%92%8C%E6%AF%94%E8%BE%83%E8%A7%84%E5%88%99/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-16T03:42:28.000Z" title="3/16/2023, 11:42:28 AM">2023-03-16</time>发表</span><span class="level-item"><time dateTime="2023-03-16T03:42:28.000Z" title="3/16/2023, 11:42:28 AM">2023-03-16</time>更新</span><span class="level-item">9 分钟读完 (大约1299个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86MySQL/">《MySQL是怎样运行的》笔记 第一章</a></h1><div class="content"><h1 id="重新认识MySQL"><a href="#重新认识MySQL" class="headerlink" title="重新认识MySQL"></a><strong>重新认识MySQL</strong></h1><pre><code>1 MySQL的客户端/服务器架构
+    a. 服务器处理存储的数据，客户端发出增删改查的请求
+    b. 服务器进程的名称为mysqld
+    c. 客户端进程的名称为mysql
+2. MySQL的安装
+    a. bin目录下的可执行文件
+        i. MySQL的安装目录下有一个bin文件夹，有很多可执行文件
+    b. 运行bin目录下的mysqld就可以开启mysql服务器
+        i. 环境变量PATH
+            1) 环境变量是一系列地址的集合，通过冒号隔开
+            2) 指定了环境变量之后，输入命令的时候就会从环境变量的地址中找有没有这个命令
+            3) 就不需要每次都到MySQL的目录下去执行命令了
+</code></pre></div><a class="article-more button is-small is-size-7" href="/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86MySQL/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-02-09T03:42:28.000Z" title="2/9/2023, 11:42:28 AM">2023-02-09</time>发表</span><span class="level-item"><time dateTime="2023-02-09T03:42:28.000Z" title="2/9/2023, 11:42:28 AM">2023-02-09</time>更新</span><span class="level-item">10 分钟读完 (大约1559个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/02/09/%E3%80%8A%E5%8E%9F%E5%AD%90%E4%B9%A0%E6%83%AF%20Atomic%20Habits%E3%80%8B%E7%AC%AC%E4%B8%80%E7%AB%A0&amp;%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E7%AC%94%E8%AE%B0/">《原子习惯 Atomic Habits》第一章&amp;第二章 笔记</a></h1><div class="content"><h1 id="一、原子习惯的力量"><a href="#一、原子习惯的力量" class="headerlink" title="一、原子习惯的力量"></a><strong>一、原子习惯的力量</strong></h1><h2 id="小习惯大作用"><a href="#小习惯大作用" class="headerlink" title="小习惯大作用"></a><strong>小习惯大作用</strong></h2><p>日常习惯产生的微小改变很重要。</p>
 <p>成功是日常习惯产生的结果，而不是千载难逢的转变。</p>
 <p>同时，你目前的成功与否无关紧要，重要的是你目前的习惯是否正在把你推向成功。需要更注重于当前的过程，而不是已经拥有的结果。</p>
 <h2 id="习惯的正面积累和负面积累"><a href="#习惯的正面积累和负面积累" class="headerlink" title="习惯的正面积累和负面积累"></a><strong>习惯的正面积累和负面积累</strong></h2><p>正面积累：</p>
@@ -50,144 +139,7 @@
 <p><strong>外语</strong>：CET4 600多 CET6 550多</p>
 <p><strong>科研</strong>：无，没找过导师做东西</p>
 <p><strong>项目</strong>：全是课设，其中有一个老师给了很大的发挥空间，做了点有用的东西出来</p>
-<p><strong>竞赛</strong>：蓝桥杯国三+省一、建模国赛省一，其余都是一些水赛</p></div><a class="article-more button is-small is-size-7" href="/2022/12/02/2022%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BF%9D%E7%A0%94%E7%BB%8F%E5%8E%86%EF%BC%9A%E6%9C%AB%E4%B9%9D6-%E7%9A%84%E5%A4%B4%E9%93%81%E4%B9%8B%E8%B7%AF%EF%BC%88%E5%8D%97%E5%A4%A7%E8%BD%AF%E9%99%A2%E3%80%81%E6%B5%99%E5%A4%A7%E8%BD%AF%E9%99%A2%E3%80%81%E6%AD%A6%E5%A4%A7%E8%AE%A1%E7%AE%97%E6%9C%BA%E3%80%81%E4%B8%AD%E7%A7%91%E5%A4%A7%E5%85%88%E7%A0%94%E9%99%A2%E3%80%81%E8%A5%BF%E4%BA%A4%E8%BD%AF%E9%99%A2%EF%BC%89/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2022-11-28T03:22:28.000Z" title="11/28/2022, 11:22:28 AM">2022-11-28</time>发表</span><span class="level-item"><time dateTime="2022-11-28T03:22:28.000Z" title="11/28/2022, 11:22:28 AM">2022-11-28</time>更新</span><span class="level-item">6 分钟读完 (大约932个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2022/11/28/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC15%E7%AB%A0%20%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95/">《Linux从入门到精通》笔记 第15章 远程登录</a></h1><div class="content"><p><strong>15.1 快速上手，搭建实验环境</strong></p>
-<ol>
-<li>VPS还是虚拟机<ul>
-<li>VPS可以进行真正的远程登录。</li>
-<li>虚拟机需要考虑宿主机的网络问题，如桥接等。</li>
-</ul>
-</li>
-<li>安装OpenSSH<ul>
-<li>OpenSSH是Linux下常用的SSH服务器&#x2F;客户端软件。</li>
-<li>可启动SSH服务器，等待连接，通常随系统启动。</li>
-</ul>
-</li>
-<li>安装<code>vnc4server</code><ul>
-<li>VNC用于图形化远程登录，Linux一般自带服务器端。</li>
-<li>VNC包括：<ul>
-<li><code>vnc4-coooon</code></li>
-<li><code>vnc4server</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>防火墙设置<ul>
-<li>Ubuntu Desktop 默认关闭防火墙，不用考虑。</li>
-<li>openSUSE 需要设置防火墙规则。</li>
-</ul>
-</li>
-</ol>
-<p><strong>15.2 登录另一台 Linux 服务器</strong></p>
-<p>远程登录有多种方式，也可以从 Windows 或 Linux 登录到另一台 Linux。</p>
-<ol>
-<li>Secure Shell：SSH<ul>
-<li>SSH 是 Secure Shell 的缩写。<ul>
-<li>rlogin、rcp、telnet 是古老的远程登录软件，但由于安全问题已不再使用。</li>
-</ul>
-</li>
-<li>SSH 是协议，SSH2、OpenSSH 是具体实现。</li>
-<li>从一个 Linux 登录另一个 Linux：<ul>
-<li><code>ssh -l login_name hostname</code><ul>
-<li><code>login_name</code> 是用户名。</li>
-<li><code>hostname</code> 是主机名或主机的 IP 地址。</li>
-<li>登录成功后，Shell 中的主机名会发生变化，注意区分。</li>
-<li>使用 <code>exit</code> 退出 SSH 连接。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>注意：<ul>
-<li>不建议在远程机上进入 <code>root</code> 模式。</li>
-<li>推荐使用 <code>su</code> 或 <code>sudo</code> 临时获得 <code>root</code> 权限。</div><a class="article-more button is-small is-size-7" href="/2022/11/28/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC15%E7%AB%A0%20%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2022-11-24T03:22:28.000Z" title="11/24/2022, 11:22:28 AM">2022-11-24</time>发表</span><span class="level-item"><time dateTime="2022-11-24T03:22:28.000Z" title="11/24/2022, 11:22:28 AM">2022-11-24</time>更新</span><span class="level-item">5 分钟读完 (大约747个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2022/11/24/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC7%E7%AB%A0%20%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第7章 软件包管理</a></h1><div class="content"><p><strong>7.2 软件包管理系统简述</strong></p>
-<ul>
-<li>软件包管理系统可以自动安装软件包，以及它们所需的依赖。</li>
-<li>软件包格式有两种：<ul>
-<li>RPM，由Red Hat开发。</li>
-<li><code>.deb</code>，由Debian和Ubuntu使用。</li>
-</ul>
-</li>
-<li>软件包管理工具有 <code>APT</code> 和 <code>yum</code>（只能用于RPM格式）。</li>
-<li>还有 <code>dpkg</code> 和 <code>rpm</code> 两个低级软件包管理工具。</li>
-</ul>
-<p><strong>7.3 管理.deb软件包：dpkg</strong></p>
-<p>简介：<code>dpkg</code> 主要用于Debian和Ubuntu的软件包管理。</p>
-<ol>
-<li>安装软件包：<ul>
-<li><code>dpkg -i</code> 软件名 或 <code>dpkg --install</code> 软件名。</li>
-</ul>
-</li>
-<li>查看已安装的软件包：<ul>
-<li><code>dpkg -l</code>：<ul>
-<li>查看所有安装的软件包。</li>
-</ul>
-</li>
-<li><code>dpkg -l | grep firefox</code>：<ul>
-<li>在 <code>dpkg</code> 的输出中搜索含有 <code>firefox</code> 关键字的行。</li>
-<li>显示当前安装的 <code>firefox</code> 软件包信息。</li>
-<li>使用了管道 <code>|</code>。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>卸载软件包：<ul>
-<li><code>sudo dpkg -r</code> 软件名。</li>
-<li><code>sudo dpkg --remove</code> 软件名。</div><a class="article-more button is-small is-size-7" href="/2022/11/24/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC7%E7%AB%A0%20%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2022-11-18T03:22:28.000Z" title="11/18/2022, 11:22:28 AM">2022-11-18</time>发表</span><span class="level-item"><time dateTime="2022-11-18T03:22:28.000Z" title="11/18/2022, 11:22:28 AM">2022-11-18</time>更新</span><span class="level-item">11 分钟读完 (大约1598个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2022/11/18/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC6%E7%AB%A0%20%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第6章 文件目录管理</a></h1><div class="content"><p><strong>6.1 Linux文件系统的架构</strong></p>
-<ul>
-<li>Linux没有盘符，也就是C盘D盘。</li>
-<li>Linux先有根目录，再有分区，可以将不同的分区挂载到不同的子目录上。</li>
-<li>对于没有挂载目录的分区，统一放在根分区中。</li>
-</ul>
-<p><strong>6.3 建立文件和目录</strong></p>
-<ol>
-<li>建立目录：<code>mkdir</code><ul>
-<li>例子：<ol>
-<li><code>mkdir document picture</code><ul>
-<li>在当前目录下创建 <code>document</code>和<code>picture</code>两个文件夹。</li>
-</ul>
-</li>
-<li><code>mkdir ~/picture/temp</code><ul>
-<li>在指定目录下创建指定文件夹。</li>
-<li>注意路径中的每一个父目录都必须存在。</li>
-</ul>
-</li>
-<li><code>mkdir -p ~/tempx/job</code><ul>
-<li>加上了 <code>-p</code> 选项，可以新建一个完整的路径。</li>
-</ul>
-</li>
-</ol>
-</li>
-</ul>
-</li>
-<li>建立一个空文件：<code>touch</code><ul>
-<li><code>touch</code> 文件名。</li>
-<li>可以覆盖文件。</li>
-</ul>
-</li>
-</ol>
-<p><strong>6.4 移动、复制和删除</strong></p>
-<ol>
-<li>移动和重命名：<code>mv</code><ul>
-<li>例子：<ol>
-<li><code>mv hello bin/</code><ul>
-<li><code>hello</code> 文件移动到 <code>bin/</code> 下。</li>
-<li>注意文件夹后面一定要加斜杠 <code>/</code>，不然就是文件。</li>
-</ul>
-</li>
-<li><code>mv Photos/ 桌面/</code><ul>
-<li><code>Photos/</code> 文件夹移动到 <code>桌面/</code> 下。</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>文件重复问题：<ol>
-<li><code>mv</code> 默认会覆盖重复文件。</li>
-<li><code>mv -i</code> 会在覆盖前提示，<code>y</code> 覆盖，<code>n</code> 跳过。</li>
-<li><code>mv -b</code> 发现重复时，在重复的文件的名字后面自动加上 <code>~</code>。</li>
-</ol>
-</li>
-<li>重命名：<ol>
-<li><code>mv fileA fileB</code> 将 <code>fileA</code> 重命名为 <code>fileB</code>。</li>
-<li>重命名实际上就是移动文件的同时重命名。</div><a class="article-more button is-small is-size-7" href="/2022/11/18/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC6%E7%AB%A0%20%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86/#more">阅读更多</a></article></div><nav class="pagination" role="navigation" aria-label="pagination"><div class="pagination-previous"><a href="/page/3/">上一页</a></div><div class="pagination-next is-invisible is-hidden-mobile"><a href="/page/5/">下一页</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link" href="/">1</a></li><li><a class="pagination-link" href="/page/2/">2</a></li><li><a class="pagination-link" href="/page/3/">3</a></li><li><a class="pagination-link is-current" href="/page/4/">4</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.jpg" alt="Shawn Zong"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Shawn Zong</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">35</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">10</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/PokeHA" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/PokeHA"><i class="fab fa-github"></i></a></div></div></div><!--!--><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/HTTP/"><span class="tag">HTTP</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/HTTPS/"><span class="tag">HTTPS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Java/"><span class="tag">Java</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BF%9D%E7%A0%94/"><span class="tag">保研</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%A0%E6%83%AF/"><span class="tag">学习习惯</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="tag">操作系统</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%BD%91%E7%BB%9C/"><span class="tag">网络</span><span class="tag">6</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><span class="tag">项目管理</span><span class="tag">2</span></a></div></div></div></div></div><!--!--><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-26T03:22:28.000Z">2023-11-26</time></p><p class="title"><a href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第10章 进程管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-12T03:22:28.000Z">2023-11-12</time></p><p class="title"><a href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">《Linux从入门到精通》笔记 第5章 Shell基本命令</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-25T03:42:28.000Z">2023-10-25</time></p><p class="title"><a href="/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/">《人件 Peopleware》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-09T03:42:28.000Z">2023-10-09</time></p><p class="title"><a href="/2023/10/09/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%20The%20Mythical%20Man-Month%E3%80%8B%E7%AC%94%E8%AE%B0/">《人月神话 The Mythical Man-Month》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-07T08:00:00.000Z">2023-04-07</time></p><p class="title"><a href="/2023/04/07/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%BA%94%E7%AB%A0%20%E9%94%81/">《MySQL是怎样运行的》笔记 第二十五章 锁</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2023/11/"><span class="level-start"><span class="level-item">十一月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/10/"><span class="level-start"><span class="level-item">十月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/04/"><span class="level-start"><span class="level-item">四月 2023</span></span><span class="level-end"><span class="level-item tag">8</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/03/"><span class="level-start"><span class="level-item">三月 2023</span></span><span class="level-end"><span class="level-item tag">18</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/02/"><span class="level-start"><span class="level-item">二月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/12/"><span class="level-start"><span class="level-item">十二月 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/11/"><span class="level-start"><span class="level-item">十一月 2022</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a><p class="is-size-7"><span>&copy; 2024 Shawn Zong</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+<p><strong>竞赛</strong>：蓝桥杯国三+省一、建模国赛省一，其余都是一些水赛</p></div><a class="article-more button is-small is-size-7" href="/2022/12/02/2022%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BF%9D%E7%A0%94%E7%BB%8F%E5%8E%86%EF%BC%9A%E6%9C%AB%E4%B9%9D6-%E7%9A%84%E5%A4%B4%E9%93%81%E4%B9%8B%E8%B7%AF%EF%BC%88%E5%8D%97%E5%A4%A7%E8%BD%AF%E9%99%A2%E3%80%81%E6%B5%99%E5%A4%A7%E8%BD%AF%E9%99%A2%E3%80%81%E6%AD%A6%E5%A4%A7%E8%AE%A1%E7%AE%97%E6%9C%BA%E3%80%81%E4%B8%AD%E7%A7%91%E5%A4%A7%E5%85%88%E7%A0%94%E9%99%A2%E3%80%81%E8%A5%BF%E4%BA%A4%E8%BD%AF%E9%99%A2%EF%BC%89/#more">阅读更多</a></article></div><nav class="pagination" role="navigation" aria-label="pagination"><div class="pagination-previous"><a href="/page/3/">上一页</a></div><div class="pagination-next is-invisible is-hidden-mobile"><a href="/page/5/">下一页</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link" href="/">1</a></li><li><a class="pagination-link" href="/page/2/">2</a></li><li><a class="pagination-link" href="/page/3/">3</a></li><li><a class="pagination-link is-current" href="/page/4/">4</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.jpg" alt="Shawn Zong"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Shawn Zong</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">35</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">10</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/PokeHA" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/PokeHA"><i class="fab fa-github"></i></a></div></div></div><!--!--><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/HTTP/"><span class="tag">HTTP</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/HTTPS/"><span class="tag">HTTPS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Java/"><span class="tag">Java</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BF%9D%E7%A0%94/"><span class="tag">保研</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%A0%E6%83%AF/"><span class="tag">学习习惯</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="tag">操作系统</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%BD%91%E7%BB%9C/"><span class="tag">网络</span><span class="tag">6</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><span class="tag">项目管理</span><span class="tag">2</span></a></div></div></div></div></div><!--!--><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-28T03:22:28.000Z">2023-11-28</time></p><p class="title"><a href="/2023/11/28/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC15%E7%AB%A0%20%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95/">《Linux从入门到精通》笔记 第15章 远程登录</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-26T03:22:28.000Z">2023-11-26</time></p><p class="title"><a href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第10章 进程管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-24T03:22:28.000Z">2023-11-24</time></p><p class="title"><a href="/2023/11/24/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC7%E7%AB%A0%20%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第7章 软件包管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-18T03:22:28.000Z">2023-11-18</time></p><p class="title"><a href="/2023/11/18/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC6%E7%AB%A0%20%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第6章 文件目录管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-12T03:22:28.000Z">2023-11-12</time></p><p class="title"><a href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">《Linux从入门到精通》笔记 第5章 Shell基本命令</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2023/11/"><span class="level-start"><span class="level-item">十一月 2023</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/10/"><span class="level-start"><span class="level-item">十月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/04/"><span class="level-start"><span class="level-item">四月 2023</span></span><span class="level-end"><span class="level-item tag">8</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/03/"><span class="level-start"><span class="level-item">三月 2023</span></span><span class="level-end"><span class="level-item tag">18</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/02/"><span class="level-start"><span class="level-item">二月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/12/"><span class="level-start"><span class="level-item">十二月 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a><p class="is-size-7"><span>&copy; 2024 Shawn Zong</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
             article: {
                 highlight: {
                     clipboard: true,
