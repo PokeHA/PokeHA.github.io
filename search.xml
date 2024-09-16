@@ -1140,6 +1140,119 @@
       </tags>
   </entry>
   <entry>
+    <title>《Linux从入门到精通》笔记 第7章 软件包管理</title>
+    <url>/2023/11/24/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC7%E7%AB%A0%20%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<p><strong>7.2 软件包管理系统简述</strong></p>
+<ul>
+<li>软件包管理系统可以自动安装软件包，以及它们所需的依赖。</li>
+<li>软件包格式有两种：<ul>
+<li>RPM，由Red Hat开发。</li>
+<li><code>.deb</code>，由Debian和Ubuntu使用。</li>
+</ul>
+</li>
+<li>软件包管理工具有 <code>APT</code> 和 <code>yum</code>（只能用于RPM格式）。</li>
+<li>还有 <code>dpkg</code> 和 <code>rpm</code> 两个低级软件包管理工具。</li>
+</ul>
+<p><strong>7.3 管理.deb软件包：dpkg</strong></p>
+<p>简介：<code>dpkg</code> 主要用于Debian和Ubuntu的软件包管理。</p>
+<ol>
+<li>安装软件包：<ul>
+<li><code>dpkg -i</code> 软件名 或 <code>dpkg --install</code> 软件名。</li>
+</ul>
+</li>
+<li>查看已安装的软件包：<ul>
+<li><code>dpkg -l</code>：<ul>
+<li>查看所有安装的软件包。</li>
+</ul>
+</li>
+<li><code>dpkg -l | grep firefox</code>：<ul>
+<li>在 <code>dpkg</code> 的输出中搜索含有 <code>firefox</code> 关键字的行。</li>
+<li>显示当前安装的 <code>firefox</code> 软件包信息。</li>
+<li>使用了管道 <code>|</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>卸载软件包：<ul>
+<li><code>sudo dpkg -r</code> 软件名。</li>
+<li><code>sudo dpkg --remove</code> 软件名。</li>
+</ul>
+</li>
+</ol>
+<span id="more"></span>
+
+<p><strong>7.4 管理RPM软件包：rpm</strong></p>
+<p>简介：<code>rpm</code> 主要用于 <code>.rpm</code> 格式的软件包，适用于 OpenSUSE 和 Red Hat，不适用于 Debian 和 Ubuntu。</p>
+<p><strong>7.5 高级软件包工具：APT</strong></p>
+<p>简介：<code>rpm</code> 和 <code>dpkg</code> 是低级软件包管理器，无法自动解决依赖问题，<code>APT</code> 和 <code>yum</code> 是高级软件包工具。</p>
+<ol>
+<li>APT简介：<ul>
+<li>APT 全称 Advanced Package Tool。</li>
+<li>能自动检测和解决软件依赖。</li>
+<li>支持 <code>.deb</code> 和 <code>.rpm</code> 两种软件包格式。</li>
+<li>APT 常用的两个命令：<ul>
+<li><code>apt-get</code>：安装软件包。</li>
+<li><code>apt-cache</code>：查找软件包的相关信息。</li>
+</ul>
+</li>
+<li>APT 也有图形化工具。</li>
+</ul>
+</li>
+<li>下载和安装软件包：<ul>
+<li>使用 <code>apt-get install</code> 之前，先执行 <code>sudo apt-get update</code> 更新 <code>apt-get</code> 缓存中的软件包信息，确保将要下载的软件是最新版本。<ul>
+<li>之前用 <code>apt-get</code> 下载 <code>node</code> 不是最新版，可能是因为没有执行 <code>apt-get update</code>。</li>
+</ul>
+</li>
+<li><code>apt-get</code> 的常用命令：<ul>
+<li>使用 <code>apt-get -h</code> 可以列出 <code>apt-get</code> 的完整用法。</li>
+<li>也可以使用 <code>man apt-get</code> 查看详细信息。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>查询软件包信息：<ul>
+<li><code>apt-cache search flight</code>：<ul>
+<li>搜索带有 <code>flight</code> 字样的软件包，根据名字下载。</li>
+</ul>
+</li>
+<li><code>apt-cache depends flightgear</code>：<ul>
+<li>显示 <code>flightgear</code> 软件包的依赖关系。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>配置 <code>apt-get</code>：<ul>
+<li><code>apt-get</code> 的安装源在 <code>/etc/apt/sources.list</code> 文件中。<ul>
+<li>文件格式：<ul>
+<li><code>deb</code> 表示 <code>.deb</code> 软件包的源地址。</li>
+<li><code>deb-src</code> 表示源代码的源地址。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>使用图形化的 APT：<ul>
+<li>没有看到详细内容。</li>
+</ul>
+</li>
+</ol>
+<p><strong>7.7 小结</strong></p>
+<ol>
+<li>软件包是对应用程序的打包，使用软件包管理系统可以方便地安装和卸载软件。</li>
+<li>Linux 的软件格式分为 <code>.deb</code> 和 <code>.rpm</code>。</li>
+<li>普通软件包管理工具有 <code>dpkg</code> 和 <code>rpm</code>。</li>
+<li>高级软件包管理工具有 <code>APT</code> 和 <code>yum</code>。</li>
+<li><code>apt-get</code> 和 <code>apt-cache</code> 是常用命令。</li>
+<li><code>/etc/apt/sources.list</code> 可以修改 <code>apt</code> 的安装源。</li>
+<li><code>apt-get update</code> 用于更新软件包信息。</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>《MySQL是怎样运行的》笔记 第一章</title>
     <url>/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86MySQL/</url>
     <content><![CDATA[<h1 id="重新认识MySQL"><a href="#重新认识MySQL" class="headerlink" title="重新认识MySQL"></a><strong>重新认识MySQL</strong></h1><pre><code>1 MySQL的客户端/服务器架构
@@ -1261,116 +1374,120 @@
       </tags>
   </entry>
   <entry>
-    <title>《Linux从入门到精通》笔记 第7章 软件包管理</title>
-    <url>/2023/11/24/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC7%E7%AB%A0%20%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[<p><strong>7.2 软件包管理系统简述</strong></p>
+    <title>《MySQL是怎样运行的》笔记 第三章 字符集和比较规则</title>
+    <url>/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E5%AD%97%E7%AC%A6%E9%9B%86%E5%92%8C%E6%AF%94%E8%BE%83%E8%A7%84%E5%88%99/</url>
+    <content><![CDATA[<ol>
+<li><p><strong>字符集和比较规则简介</strong></p>
 <ul>
-<li>软件包管理系统可以自动安装软件包，以及它们所需的依赖。</li>
-<li>软件包格式有两种：<ul>
-<li>RPM，由Red Hat开发。</li>
-<li><code>.deb</code>，由Debian和Ubuntu使用。</li>
+<li><strong>字符集简介</strong><ul>
+<li>字符集负责处理字符与二进制数据的存储关系</li>
 </ul>
 </li>
-<li>软件包管理工具有 <code>APT</code> 和 <code>yum</code>（只能用于RPM格式）。</li>
-<li>还有 <code>dpkg</code> 和 <code>rpm</code> 两个低级软件包管理工具。</li>
-</ul>
-<p><strong>7.3 管理.deb软件包：dpkg</strong></p>
-<p>简介：<code>dpkg</code> 主要用于Debian和Ubuntu的软件包管理。</p>
-<ol>
-<li>安装软件包：<ul>
-<li><code>dpkg -i</code> 软件名 或 <code>dpkg --install</code> 软件名。</li>
+<li><strong>比较规则</strong><ul>
+<li>字典序也就是比较他们二进制的大小</li>
+<li>除了字典序外也有其他的比较规则</li>
 </ul>
 </li>
-<li>查看已安装的软件包：<ul>
-<li><code>dpkg -l</code>：<ul>
-<li>查看所有安装的软件包。</li>
+<li><strong>重要的字符集</strong><ul>
+<li><strong>ASCII</strong><ol>
+<li>128个字符，包括数字、大小写字母、空格等等</li>
+<li>每个字符一个字节</li>
+</ol>
+</li>
+<li><strong>GB2132</strong><ol>
+<li>包括中文和其他国家的字符</li>
+<li>存在于ASCII中的字符用1个字节存储</li>
+<li>其余的字符用2个字节存储</li>
+<li>也就是变长存储方式</li>
+</ol>
+</li>
+<li><strong>GBK</strong><ol>
+<li>对于GB2132的字符收集范围做了补充，其余一样</li>
+</ol>
+</li>
+<li><strong>Unicode系列</strong><ol>
+<li>对地球上所有的字符进行了收录，同样是变长编码</li>
+<li><strong>utf-8</strong><ul>
+<li>1-4个字节存储字符</li>
 </ul>
 </li>
-<li><code>dpkg -l | grep firefox</code>：<ul>
-<li>在 <code>dpkg</code> 的输出中搜索含有 <code>firefox</code> 关键字的行。</li>
-<li>显示当前安装的 <code>firefox</code> 软件包信息。</li>
-<li>使用了管道 <code>|</code>。</li>
+<li><strong>utf-16</strong><ul>
+<li>2或4个字节存储字符</li>
 </ul>
 </li>
-</ul>
-</li>
-<li>卸载软件包：<ul>
-<li><code>sudo dpkg -r</code> 软件名。</li>
-<li><code>sudo dpkg --remove</code> 软件名。</li>
+<li><strong>utf-32</strong><ul>
+<li>全用4字节存</li>
 </ul>
 </li>
 </ol>
-<span id="more"></span>
-
-<p><strong>7.4 管理RPM软件包：rpm</strong></p>
-<p>简介：<code>rpm</code> 主要用于 <code>.rpm</code> 格式的软件包，适用于 OpenSUSE 和 Red Hat，不适用于 Debian 和 Ubuntu。</p>
-<p><strong>7.5 高级软件包工具：APT</strong></p>
-<p>简介：<code>rpm</code> 和 <code>dpkg</code> 是低级软件包管理器，无法自动解决依赖问题，<code>APT</code> 和 <code>yum</code> 是高级软件包工具。</p>
-<ol>
-<li>APT简介：<ul>
-<li>APT 全称 Advanced Package Tool。</li>
-<li>能自动检测和解决软件依赖。</li>
-<li>支持 <code>.deb</code> 和 <code>.rpm</code> 两种软件包格式。</li>
-<li>APT 常用的两个命令：<ul>
-<li><code>apt-get</code>：安装软件包。</li>
-<li><code>apt-cache</code>：查找软件包的相关信息。</li>
-</ul>
-</li>
-<li>APT 也有图形化工具。</li>
-</ul>
-</li>
-<li>下载和安装软件包：<ul>
-<li>使用 <code>apt-get install</code> 之前，先执行 <code>sudo apt-get update</code> 更新 <code>apt-get</code> 缓存中的软件包信息，确保将要下载的软件是最新版本。<ul>
-<li>之前用 <code>apt-get</code> 下载 <code>node</code> 不是最新版，可能是因为没有执行 <code>apt-get update</code>。</li>
-</ul>
-</li>
-<li><code>apt-get</code> 的常用命令：<ul>
-<li>使用 <code>apt-get -h</code> 可以列出 <code>apt-get</code> 的完整用法。</li>
-<li>也可以使用 <code>man apt-get</code> 查看详细信息。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>查询软件包信息：<ul>
-<li><code>apt-cache search flight</code>：<ul>
-<li>搜索带有 <code>flight</code> 字样的软件包，根据名字下载。</li>
-</ul>
-</li>
-<li><code>apt-cache depends flightgear</code>：<ul>
-<li>显示 <code>flightgear</code> 软件包的依赖关系。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>配置 <code>apt-get</code>：<ul>
-<li><code>apt-get</code> 的安装源在 <code>/etc/apt/sources.list</code> 文件中。<ul>
-<li>文件格式：<ul>
-<li><code>deb</code> 表示 <code>.deb</code> 软件包的源地址。</li>
-<li><code>deb-src</code> 表示源代码的源地址。</li>
-</ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li>使用图形化的 APT：<ul>
-<li>没有看到详细内容。</li>
-</ul>
-</li>
+<li><p><strong>MySQL支持的字符集</strong></p>
+ <span id="more"></span>
+<ul>
+<li><strong>utf8和utf-8mb4</strong><ul>
+<li><strong>utf8</strong><ol>
+<li>utf8mb3的别名，依旧用1-3个字节存储字符</li>
 </ol>
-<p><strong>7.7 小结</strong></p>
-<ol>
-<li>软件包是对应用程序的打包，使用软件包管理系统可以方便地安装和卸载软件。</li>
-<li>Linux 的软件格式分为 <code>.deb</code> 和 <code>.rpm</code>。</li>
-<li>普通软件包管理工具有 <code>dpkg</code> 和 <code>rpm</code>。</li>
-<li>高级软件包管理工具有 <code>APT</code> 和 <code>yum</code>。</li>
-<li><code>apt-get</code> 和 <code>apt-cache</code> 是常用命令。</li>
-<li><code>/etc/apt/sources.list</code> 可以修改 <code>apt</code> 的安装源。</li>
-<li><code>apt-get update</code> 用于更新软件包信息。</li>
+</li>
+<li><strong>utf8mb3</strong><ol>
+<li>是阉割版，用1-3个字节存储字符</li>
+</ol>
+</li>
+<li><strong>utf8mb4</strong><ol>
+<li>完整版，用1-4个字节存储字符</li>
+<li>如果要存储更完整的数据的话就用这个，比如emoji表情</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>字符集的查看</strong><ul>
+<li>使用<code>SHOW CHARACTER SET</code>命令，可以指定匹配的模式</li>
+</ul>
+</li>
+<li><strong>比较规则的查看</strong><ul>
+<li>使用<code>SHOW COLLATION</code>命令，可以指定匹配的模式</li>
+<li>每种语言都有多个比较规则</li>
+<li>还会有个默认的比较规则<ol>
+<li>比如utf8的默认比较规则就是utf8_general_ci</li>
+<li>ci是case insensitive</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>字符集和比较规则的应用</strong></p>
+<ul>
+<li><strong>各级别的字符集和比较规则</strong><ul>
+<li>字符集的级别分为<ol>
+<li>服务器级别</li>
+<li>数据库级别</li>
+<li>表级别</li>
+<li>列级别</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>客户端和服务器通信中的字符集</strong><ul>
+<li>客户端和服务器通信时需要进行字符集的转换</li>
+<li>因为转换来转换去容易出错，所以一般通知设置为一样的字符集</li>
+</ul>
+</li>
+<li><strong>比较规则的应用</strong><ul>
+<li>如果发现按列排序后不是自己想要的顺序</li>
+<li>就可以考虑下更改比较规则</li>
+</ul>
+</li>
+</ul>
+</li>
 </ol>
 ]]></content>
       <tags>
-        <tag>Linux</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -1516,123 +1633,6 @@
 </li>
 <li><strong>避免冗余和重复索引</strong>：<ul>
 <li>不要给同一个字段建立多个索引，例如 <code>UNIQUE</code> 关键字会自动建立索引。</li>
-</ul>
-</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>数据库</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>《MySQL是怎样运行的》笔记 第三章 字符集和比较规则</title>
-    <url>/2023/03/16/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E5%AD%97%E7%AC%A6%E9%9B%86%E5%92%8C%E6%AF%94%E8%BE%83%E8%A7%84%E5%88%99/</url>
-    <content><![CDATA[<ol>
-<li><p><strong>字符集和比较规则简介</strong></p>
-<ul>
-<li><strong>字符集简介</strong><ul>
-<li>字符集负责处理字符与二进制数据的存储关系</li>
-</ul>
-</li>
-<li><strong>比较规则</strong><ul>
-<li>字典序也就是比较他们二进制的大小</li>
-<li>除了字典序外也有其他的比较规则</li>
-</ul>
-</li>
-<li><strong>重要的字符集</strong><ul>
-<li><strong>ASCII</strong><ol>
-<li>128个字符，包括数字、大小写字母、空格等等</li>
-<li>每个字符一个字节</li>
-</ol>
-</li>
-<li><strong>GB2132</strong><ol>
-<li>包括中文和其他国家的字符</li>
-<li>存在于ASCII中的字符用1个字节存储</li>
-<li>其余的字符用2个字节存储</li>
-<li>也就是变长存储方式</li>
-</ol>
-</li>
-<li><strong>GBK</strong><ol>
-<li>对于GB2132的字符收集范围做了补充，其余一样</li>
-</ol>
-</li>
-<li><strong>Unicode系列</strong><ol>
-<li>对地球上所有的字符进行了收录，同样是变长编码</li>
-<li><strong>utf-8</strong><ul>
-<li>1-4个字节存储字符</li>
-</ul>
-</li>
-<li><strong>utf-16</strong><ul>
-<li>2或4个字节存储字符</li>
-</ul>
-</li>
-<li><strong>utf-32</strong><ul>
-<li>全用4字节存</li>
-</ul>
-</li>
-</ol>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>MySQL支持的字符集</strong></p>
- <span id="more"></span>
-<ul>
-<li><strong>utf8和utf-8mb4</strong><ul>
-<li><strong>utf8</strong><ol>
-<li>utf8mb3的别名，依旧用1-3个字节存储字符</li>
-</ol>
-</li>
-<li><strong>utf8mb3</strong><ol>
-<li>是阉割版，用1-3个字节存储字符</li>
-</ol>
-</li>
-<li><strong>utf8mb4</strong><ol>
-<li>完整版，用1-4个字节存储字符</li>
-<li>如果要存储更完整的数据的话就用这个，比如emoji表情</li>
-</ol>
-</li>
-</ul>
-</li>
-<li><strong>字符集的查看</strong><ul>
-<li>使用<code>SHOW CHARACTER SET</code>命令，可以指定匹配的模式</li>
-</ul>
-</li>
-<li><strong>比较规则的查看</strong><ul>
-<li>使用<code>SHOW COLLATION</code>命令，可以指定匹配的模式</li>
-<li>每种语言都有多个比较规则</li>
-<li>还会有个默认的比较规则<ol>
-<li>比如utf8的默认比较规则就是utf8_general_ci</li>
-<li>ci是case insensitive</li>
-</ol>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>字符集和比较规则的应用</strong></p>
-<ul>
-<li><strong>各级别的字符集和比较规则</strong><ul>
-<li>字符集的级别分为<ol>
-<li>服务器级别</li>
-<li>数据库级别</li>
-<li>表级别</li>
-<li>列级别</li>
-</ol>
-</li>
-</ul>
-</li>
-<li><strong>客户端和服务器通信中的字符集</strong><ul>
-<li>客户端和服务器通信时需要进行字符集的转换</li>
-<li>因为转换来转换去容易出错，所以一般通知设置为一样的字符集</li>
-</ul>
-</li>
-<li><strong>比较规则的应用</strong><ul>
-<li>如果发现按列排序后不是自己想要的顺序</li>
-<li>就可以考虑下更改比较规则</li>
-</ul>
-</li>
 </ul>
 </li>
 </ol>
@@ -3451,161 +3451,6 @@
 ]]></content>
       <tags>
         <tag>数据库</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>《人件 Peopleware》笔记</title>
-    <url>/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="一、书名和作者"><a href="#一、书名和作者" class="headerlink" title="一、书名和作者"></a><strong>一、书名和作者</strong></h2><ul>
-<li><strong>书名：</strong> 人件 Peopleware: Productive Projects and Teams</li>
-<li><strong>作者：</strong> Tom DeMarco &#x2F; Timothy Lister</li>
-</ul>
-<h2 id="二、书籍概览"><a href="#二、书籍概览" class="headerlink" title="二、书籍概览"></a><strong>二、书籍概览</strong></h2><ul>
-<li><p><strong>主要论点和结构</strong></p>
-<p>  本书是软件管理领域的传奇经典，被誉为“对美国软件业影响最大的一本书”。全书从管理人力资源、创建健康的办公环境、高效团队形成、改造企业文化和快乐工作等多个角度阐释了如何思考和管理软件开发的最大问题——人，以得到高效的项目和团队。</p>
-<p>  全书分为六个主要部分，分别是“管理人力资源”、“办公环境”、“正确的人”、“高效团队养成”、“沃土”和“快乐地工作”。</p>
-</li>
-<li><p><strong>目标读者和应用场景</strong></p>
-<p>  本书适合所有软件工程师、项目经理、软件开发者、软件工程专业学生等正在或者将要从事软件开发的人员阅读。</p>
-</li>
-</ul>
-<span id="more"></span>
-
-<h2 id="三、核心观点与主题"><a href="#三、核心观点与主题" class="headerlink" title="三、核心观点与主题"></a><strong>三、核心观点与主题</strong></h2><h3 id="主题一-此时此刻，一个项目正在走向失败"><a href="#主题一-此时此刻，一个项目正在走向失败" class="headerlink" title="主题一  此时此刻，一个项目正在走向失败"></a><strong>主题一  此时此刻，一个项目正在走向失败</strong></h3><ul>
-<li><p><strong>子观点1</strong></p>
-<p>  作为管理者，典型的失败情境：习惯把人当作固定的模块来管理。</p>
-</li>
-<li><p><strong>子观点2</strong></p>
-<p>  在失败的绝大多数项目中，没有一个是因为单纯的技术问题导致失败的。</p>
-</li>
-<li><p><strong>子观点3</strong></p>
-<p>  工作中的问题更多属于社会学范畴，而非技术范畴。<br>  但是大部分管理者总是将精力放在解决技术问题上，与人相关的要素被放到了最低优先级。</p>
-</li>
-<li><p><strong>子观点4</strong></p>
-<p>  大家以为自己是高科技工作者（其实不是），并且习惯性地专注于工作中的技术问题。并不是因为他们重要，而是因为他们更简单。比人与人之间的互动简单多了。</p>
-</li>
-<li><p><strong>实例或案例</strong></p>
-<p> 统计结果表明有15%的项目出现问题:项目取消、终止、延迟或者交付的产品从未被使用。项目越大，出现问题的几率就越高。对于持续时间达到25个工作年及以上的项目，足有25%的项目最后宣告失败。作者分析了这些案例，并且发现绝大多数失败项目中，没有一个是因单纯的技术问题导致失败的。</p>
-</li>
-</ul>
-<h3 id="主题二-干酪汉堡，做一个卖一个"><a href="#主题二-干酪汉堡，做一个卖一个" class="headerlink" title="主题二  干酪汉堡，做一个卖一个"></a><strong>主题二  干酪汉堡，做一个卖一个</strong></h3><ul>
-<li><p><strong>子观点1</strong></p>
-<p>  管理脑力劳动者，不应该采用快餐行业的管理方法。也就是不应该把员工当作可以随便替换的零部件。</p>
-</li>
-<li><p><strong>子观点2</strong></p>
-<p>  营造一个不容许任何失误的氛围会让大家持有戒心，大家就会害怕犯错。在这种情况下，平均水平也许会提高，但是团队的社会氛围会遭受伤害。</p>
-<p>  相反的做法是鼓励大家犯错。可以不时地去问问大家遭遇了那些错误，让大家明白犯错是可以的。</p>
-</li>
-<li><p><strong>子观点3</strong></p>
-<p>  管理不是踢屁股。向人们施压可以增加短期输出，长远看还是无效的。</p>
-<p>  不需要使用严格的度量来促使大家工作，大部分人是热爱工作的。有时可能需要采取一些手段让大家少工作一会儿。</p>
-</li>
-<li><p><strong>子观点4</strong></p>
-<p>  在生产环境中，容易将人当作是机器的零部件。磨损了就可以换个新的。不要盲目地遵从这个风格。</p>
-<p>  不要因为员工的独特个性而感到害怕，从而去扼杀它。</p>
-</li>
-<li><p><strong>子观点5</strong></p>
-<p>  不要只关注每个员工在当下的产出，从而来评估员工对于项目的贡献。</p>
-<p>  有的员工产生的作用并不是明显可见的，比如催化剂的角色，可以增加整个项目团队的粘性。</p>
-</li>
-<li><p><strong>子观点6</strong></p>
-<p>  磨刀不误砍柴工。花更多的时间在思考和计划上，而不是在实施上。越是时间紧迫的项目，更是应该在团队内部进行频繁的头脑风暴。</p>
-</li>
-<li><p><strong>实例或案例</strong></p>
-<p>  有的员工并不能做出明显的对项目的贡献，但可能是一个超级催化剂。这种存在使得团队内部更有黏度。可以帮助团队成员互相交流和相处，有他的项目会变得更加有趣。我们需要认识到催化剂这个角色在一个项目中的重要性。</p>
-</li>
-</ul>
-<h3 id="主题三-维也纳在等你"><a href="#主题三-维也纳在等你" class="headerlink" title="主题三  维也纳在等你"></a><strong>主题三  维也纳在等你</strong></h3><ul>
-<li><p><strong>子观点1</strong></p>
-<p>  管理者总是在研究如何让人们以牺牲自我生活为代价来承受更大的工作强度。</p>
-</li>
-<li><p><strong>子观点2</strong></p>
-<p>  西班牙理论就是认为财富的总量是固定的，因此得殖民别人，抢黄金，造成的结果就是通货膨胀。</p>
-<p>  生产效率应该是在单位工作时间内产生更多的价值，而管理者思考的是如何在单位薪酬内获取更多的价值。</p>
-<p>  奉行西班牙理论的管理者想通过无偿的加班来获得生产效率的提高。他们给员工强化交付日期的重要性（其实可能是随意的，地球不会因为项目晚了一个月就停止转动）。让员工因为内疚而不得不牺牲自己的时间来工作。</p>
-</li>
-<li><p><strong>子观点3</strong></p>
-<p>  项目成员都会意识到人生苦短，生活中还有很多比工作更重要的事情。</p>
-</li>
-<li><p><strong>子观点4</strong></p>
-<p>  每加班一个小时，就可能导致员工在正常的工作时间摸鱼一个小时进行补偿，这是杀鸡取卵。<br>  但管理者看不到摸鱼时间，只关注总时间。实际上最终的有效工作时间还是相同的。</p>
-</li>
-<li><p><strong>子观点5</strong></p>
-<p>  工作狂会自愿做很多加班，如果管理者无底线地对工作狂进行压榨。工作狂迟早有一天也会离职。</p>
-</li>
-<li><p><strong>子观点6</strong></p>
-<p>  需要多考虑考虑生产效率和人员流失率之间的取舍，控制在可接受范围内。<br>  别超额完成任务后导致所有人在项目结束后离职。</p>
-<p>  也要考虑工作速度和产品质量之间的关系。</p>
-</li>
-<li><p><strong>实例或案例</strong></p>
-<p>  大多数组织不会对流失人员进行统计。无论什么时候讨论生产效率，衡量起来都好像人员流失根本不存在，或者与成本无关一样。DataGeneral的Eagle项目就是这样一个案例。该项目是西班牙理论的胜利：工作狂的项目成员通过不停加班把生产效率推向了一个前所未有的高度。但项目最后，几乎所有开发人员都离职了。</p>
-</li>
-</ul>
-<h3 id="主题四-质量——如果时间允许"><a href="#主题四-质量——如果时间允许" class="headerlink" title="主题四  质量——如果时间允许"></a><strong>主题四  质量——如果时间允许</strong></h3><ul>
-<li><p><strong>子观点1</strong></p>
-<p>  采取任何可能牺牲产品质量的行动都可能挑起员工反对的情绪。</p>
-</li>
-<li><p><strong>子观点2</strong></p>
-<p>  当开发过程被置于极度的时间压力时，质量是第一个开始被牺牲的代价。<br>  但质量毫无疑问是重要的，不过很多管理者认为为了快速抢占市场，降低点质量也是可以的。</p>
-</li>
-<li><p><strong>子观点3</strong></p>
-<p>  大部分人认为过度提高质量是做无用的工作。</p>
-</li>
-<li><p><strong>子观点4</strong></p>
-<p>  有些日本的企业，项目团队拥有否决发布未成熟产品的权力。<br>  是否给予团队成员否决交付的权力是一个需要考虑的问题。</p>
-</li>
-<li><p><strong>实例或案例</strong></p>
-<p>  惠普就被认为是一个通过制造者自定义高质量标准而提升生产效率获益的典型组织。从一开始，惠普就信奉质量。在这种环境下，需要更多时间或资金来生产高质量产品的说法压根儿就没有出现过。因此，开发人员形成的文化是交付的质量要超越市场的质量要求。他们追求质量的标志成为提高他们工作满意度的动因，从而拥有行业内最低的人员流失率。</p>
-</li>
-</ul>
-<h3 id="主题五-再谈帕金森管理"><a href="#主题五-再谈帕金森管理" class="headerlink" title="主题五  再谈帕金森管理"></a><strong>主题五  再谈帕金森管理</strong></h3><ul>
-<li><p><strong>子观点1</strong></p>
-<p>  帕金森定律：工作会自动膨胀，占满一个人所有的可用时间。但帕金森定律并不是公理，只是存在一定的真实成分。</p>
-</li>
-<li><p><strong>子观点2</strong></p>
-<p>  一旦某个员工表现出工作低效，那么应该让他调换工作或跳槽，而不是继续施加更多的压力。</p>
-</li>
-<li><p><strong>子观点3</strong></p>
-<p>  在某些情况下，不给团队压力，反而会得到最高的生产效率，但也不是绝对的。</p>
-</li>
-<li><p><strong>子观点4</strong></p>
-<p>  一个组织的工作如果都忙忙碌碌，就会膨胀以至于占满整个工作日。</p>
-</li>
-<li><p><strong>实例或案例</strong></p>
-<p>  倘若你不知道其实很少有管理者接受过管理方面的正规培训，你可能会错以为他们都是科班出身，在学校就学过帕金森定律及其分支理论。即使管理者对管理一无所知，他们也极为认同帕金森定律这一针对员工及其态度进行管理的公理。定律为他们提供了强有力的证据，只有设定不可能完成的交付日期，才能保证工作的完成。</p>
-</li>
-</ul>
-<h2 id="四、亮点与启发"><a href="#四、亮点与启发" class="headerlink" title="四、亮点与启发"></a><strong>四、亮点与启发</strong></h2><ul>
-<li><p><strong>最有影响的观点或实例</strong></p>
-<p>  本书强调了在软件项目开发过程中，最重要的是人而不是技术。因为我们工作中所面临的问题，本质上都是社会性的问题而不是技术性的问题。因此我们需要学习如何尊重人，发挥人的潜能，通过人来创造高效率的团队。</p>
-</li>
-<li><p><strong>对个人或专业发展的启示</strong></p>
-<p>  如果我以后成为了管理者，我需要像书中所讲的那样尊重自己的团队成员，规划合理的工作时间，打造怡人的工作环境，鼓励大家试错，尊重不同成员的个性，不以单一的指标去评判员工对于项目的贡献，以此来可持续性地提高整个团队的工作效率。</p>
-</li>
-</ul>
-<h2 id="五、批评与局限性"><a href="#五、批评与局限性" class="headerlink" title="五、批评与局限性"></a><strong>五、批评与局限性</strong></h2><ul>
-<li><p><strong>任何有争议、模糊或过时的信息</strong></p>
-<p>  书中所讲的内容可能太过于理想化了，就像乌托邦一样，给员工最好的福利和最低的压力真的就能有最好的工作效率吗。并且考虑到当今IT行业的工作的环境，感到的只有离天堂太远的哀伤。</p>
-</li>
-</ul>
-<h2 id="六、实际应用和拓展"><a href="#六、实际应用和拓展" class="headerlink" title="六、实际应用和拓展"></a><strong>六、实际应用和拓展</strong></h2><ul>
-<li><p><strong>在实际工作&#x2F;学习中如何应用这些概念</strong></p>
-<p>  书中提到了一个“流”的概念，流是一种深度的近乎于冥想的融入情况。在此种状态下，有一种普适幸福感存在，人们几乎不会意识到时间的流逝，工作会变得非常高产。</p>
-<p>  不幸的是，我们需要一个缓慢的过程来进入状态，15分钟或更长时间的集中才能把自己锁定在流里面。在这个引入过程中，我们对噪声和干扰是非常敏感的。</p>
-<p>  因此在我们平时的学习工作时，可以提前有意减少潜在的打扰对象，比如把手机放在远处、把耳机带上等等，这可以提高我们的工作效率。</p>
-</li>
-</ul>
-<h2 id="七、总结与评价"><a href="#七、总结与评价" class="headerlink" title="七、总结与评价"></a><strong>七、总结与评价</strong></h2><ul>
-<li><p><strong>对书籍的整体评价</strong></p>
-<p>  很有启发性，读起来很有趣，语言也翻译得没有那么生涩，容易理解。书中讲解的内容和以后的工作也息息相关，可以派上用场。</p>
-</li>
-<li><p><strong>书籍的长处和短处</strong></p>
-<p>  这本书读起来很有道理，但我毕业后先去干开发，这些道理又好像没用了，因为我是被管的那个。短处就是让我窥见了天堂，自己又只能下地狱，更绝望了。</p>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>项目管理</tag>
       </tags>
   </entry>
   <entry>
