@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>《疯狂Java》笔记 异常 - Shawn Zong&#039;s Notes</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Shawn Zong&#039;s Notes"><meta name="msapplication-TileImage" content="/images/avatar.jpg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Shawn Zong&#039;s Notes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="本章要点  异常的定义和概念 Java异常机制的优势 使用try-catch捕获异常 多异常捕获 finally块的作用 自动关闭资源的try语句 异常处理的合理嵌套 Checked异常和Runtime异常 使用throws声明异常 使用throw抛出异常 自定义异常 异常链和异常转译 异常的跟踪栈信息 异常的处理规则   10.1 异常概述Java 的异常处理机制可以将“业务代码”和“异常处理代"><meta property="og:type" content="blog"><meta property="og:title" content="《疯狂Java》笔记 异常"><meta property="og:url" content="http://shawnzong.cn/2023/03/27/%E3%80%8A%E7%96%AF%E7%8B%82Java%E3%80%8B%E7%AC%94%E8%AE%B0%20%E5%BC%82%E5%B8%B8/"><meta property="og:site_name" content="Shawn Zong&#039;s Notes"><meta property="og:description" content="本章要点  异常的定义和概念 Java异常机制的优势 使用try-catch捕获异常 多异常捕获 finally块的作用 自动关闭资源的try语句 异常处理的合理嵌套 Checked异常和Runtime异常 使用throws声明异常 使用throw抛出异常 自定义异常 异常链和异常转译 异常的跟踪栈信息 异常的处理规则   10.1 异常概述Java 的异常处理机制可以将“业务代码”和“异常处理代"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://shawnzong.cn/img/og_image.png"><meta property="article:published_time" content="2023-03-27T03:22:28.000Z"><meta property="article:modified_time" content="2023-03-27T03:22:28.000Z"><meta property="article:author" content="Shawn Zong"><meta property="article:tag" content="Java"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://shawnzong.cn/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://shawnzong.cn/2023/03/27/%E3%80%8A%E7%96%AF%E7%8B%82Java%E3%80%8B%E7%AC%94%E8%AE%B0%20%E5%BC%82%E5%B8%B8/"},"headline":"《疯狂Java》笔记 异常","image":["http://shawnzong.cn/img/og_image.png"],"datePublished":"2023-03-27T03:22:28.000Z","dateModified":"2023-03-27T03:22:28.000Z","author":{"@type":"Person","name":"Shawn Zong"},"publisher":{"@type":"Organization","name":"Shawn Zong's Notes","logo":{"@type":"ImageObject","url":"http://shawnzong.cn/images/avatar.jpg"}},"description":"本章要点  异常的定义和概念 Java异常机制的优势 使用try-catch捕获异常 多异常捕获 finally块的作用 自动关闭资源的try语句 异常处理的合理嵌套 Checked异常和Runtime异常 使用throws声明异常 使用throw抛出异常 自定义异常 异常链和异常转译 异常的跟踪栈信息 异常的处理规则   10.1 异常概述Java 的异常处理机制可以将“业务代码”和“异常处理代"}</script><link rel="canonical" href="http://shawnzong.cn/2023/03/27/%E3%80%8A%E7%96%AF%E7%8B%82Java%E3%80%8B%E7%AC%94%E8%AE%B0%20%E5%BC%82%E5%B8%B8/"><link rel="icon" href="/images/avatar.jpg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const $tabMenu = document.querySelector(`a[href="${location.hash}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(location.hash);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/tags">标签</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-27T03:22:28.000Z" title="3/27/2023, 11:22:28 AM">2023-03-27</time>发表</span><span class="level-item"><time dateTime="2023-03-27T03:22:28.000Z" title="3/27/2023, 11:22:28 AM">2023-03-27</time>更新</span><span class="level-item">11 分钟读完 (大约1597个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">《疯狂Java》笔记 异常</h1><div class="content"><p><strong>本章要点</strong></p>
+<ol>
+<li>异常的定义和概念</li>
+<li>Java异常机制的优势</li>
+<li>使用<code>try-catch</code>捕获异常</li>
+<li>多异常捕获</li>
+<li><code>finally</code>块的作用</li>
+<li>自动关闭资源的<code>try</code>语句</li>
+<li>异常处理的合理嵌套</li>
+<li><code>Checked</code>异常和<code>Runtime</code>异常</li>
+<li>使用<code>throws</code>声明异常</li>
+<li>使用<code>throw</code>抛出异常</li>
+<li>自定义异常</li>
+<li>异常链和异常转译</li>
+<li>异常的跟踪栈信息</li>
+<li>异常的处理规则</li>
+</ol>
+<hr>
+<h3 id="10-1-异常概述"><a href="#10-1-异常概述" class="headerlink" title="10.1 异常概述"></a>10.1 异常概述</h3><p>Java 的异常处理机制可以将“业务代码”和“异常处理代码”分离，提高代码可读性。</p>
+<ol>
+<li><strong>异常处理机制的关键字</strong><ul>
+<li><code>try</code>：用于包裹可能会发生异常的代码块。</li>
+<li><code>catch</code>：捕获并处理指定类型的异常。</li>
+<li><code>finally</code>：无论是否抛出异常，都会执行，用于回收资源。</li>
+<li><code>throws</code>：声明方法可能抛出的异常。</li>
+<li><code>throw</code>：实际抛出一个异常。</li>
+</ul>
+</li>
+<li><strong>异常的分类</strong><ul>
+<li><code>Checked</code> 异常：<ul>
+<li>编译时必须处理的异常，所有的 <code>Checked</code> 异常都必须明确处理（捕获或声明）。</li>
+</ul>
+</li>
+<li><code>Runtime</code> 异常：<ul>
+<li>运行时异常，可以选择不处理，常见如 <code>NullPointerException</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="10-2-异常处理机制"><a href="#10-2-异常处理机制" class="headerlink" title="10.2 异常处理机制"></a>10.2 异常处理机制</h3><ol>
+<li><strong>使用<code>try-catch</code>捕获异常</strong><ul>
+<li>当<code>try</code>块中的代码在运行时出现异常时，系统会自动生成一个异常对象，并将其交给 JVM。JVM 会查找匹配的 <code>catch</code> 块，找到后进行处理，若找不到，程序会退出。 <span id="more"></span></li>
+</ul>
+</li>
+<li><strong>异常类的继承体系</strong><ul>
+<li><code>Throwable</code> 是所有异常的父类，异常类分为两大类：<ul>
+<li><code>Error</code>：不可恢复的错误，通常与 JVM 相关，如内存溢出。</li>
+<li><code>Exception</code>：可捕获和处理的异常，如 <code>IndexOutOfBoundsException</code>、<code>NullPointerException</code>。</li>
+</ul>
+</li>
+<li><strong>捕获顺序</strong>：应先捕获子类异常，再捕获父类异常。例如：  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 可能发生异常的代码</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (IndexOutOfBoundsException e) &#123;</span><br><span class="line">    <span class="comment">// 处理数组越界异常</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    <span class="comment">// 处理其他异常</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><strong>Java 7 提供的多异常捕获</strong><ul>
+<li>使用竖线 <code>|</code> 来捕获多个异常。例如：  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 可能发生异常的代码</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException | SQLException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>捕获多个异常时，异常变量隐式被 <code>final</code> 修饰，因此不允许对其重新赋值。</li>
+</ul>
+</li>
+<li><strong>访问异常信息</strong><ul>
+<li>常见的异常信息获取方式：<ul>
+<li><code>getMessage()</code>：获取异常的描述信息。</li>
+<li><code>printStackTrace()</code>：打印异常的跟踪栈信息。</li>
+<li><code>getStackTrace()</code>：获取异常的堆栈跟踪数组。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>使用<code>finally</code>回收资源</strong><ul>
+<li><code>finally</code> 块中的代码总是会执行，因此适合回收资源。</li>
+<li>需要注意：<ul>
+<li>如果调用了 <code>System.exit(1)</code> 退出 JVM，<code>finally</code> 块不会执行。</li>
+<li>不要在 <code>finally</code> 块中使用 <code>return</code> 或 <code>throw</code>，这会导致 <code>try</code> 块中的 <code>return</code> 被忽略。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>异常处理的嵌套</strong><ul>
+<li>可以在 <code>try</code>、<code>catch</code>、<code>finally</code> 块中嵌套更多的 <code>try-catch</code> 块，虽然允许嵌套，但应避免复杂的嵌套结构。</li>
+</ul>
+</li>
+<li><strong>Java 7 自动关闭资源的<code>try</code>语句</strong><ul>
+<li>使用 <code>try-with-resources</code> 语句，自动关闭实现了 <code>AutoCloseable</code> 或 <code>Closeable</code> 接口的资源。例如：  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> (<span class="type">BufferedReader</span> <span class="variable">br</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">FileReader</span>(<span class="string">&quot;file.txt&quot;</span>))) &#123;</span><br><span class="line">    <span class="comment">// 使用资源</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// BufferedReader 会自动关闭</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="10-3-Checked异常和Runtime异常体系"><a href="#10-3-Checked异常和Runtime异常体系" class="headerlink" title="10.3 Checked异常和Runtime异常体系"></a>10.3 <code>Checked</code>异常和<code>Runtime</code>异常体系</h3><ol>
+<li><strong><code>Checked</code> 异常</strong><ul>
+<li>Java 异常分为两类，<code>Checked</code> 异常和 <code>Runtime</code> 异常：<ul>
+<li><code>Checked</code> 异常必须被显式捕获或通过 <code>throws</code> 声明，编译时必须处理，如 <code>IOException</code> 和 <code>SQLException</code>。</li>
+<li><code>Runtime</code> 异常无需显示声明或捕获，可以选择性处理，如 <code>NullPointerException</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>使用<code>throws</code>声明抛出异常</strong><ul>
+<li>使用 <code>throws</code> 声明方法可能抛出的异常：  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">readFile</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="comment">// 可能抛出 IOException</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>如果方法内无法处理异常，可以将异常抛出给调用者。如果未处理，最终由 JVM 处理，打印跟踪栈并终止程序。</li>
+</ul>
+</li>
+<li><strong>注意事项</strong><ul>
+<li>子类在覆盖父类方法时，不能声明比父类方法更多或更严重的异常，否则会编译失败。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="10-4-使用throw抛出异常"><a href="#10-4-使用throw抛出异常" class="headerlink" title="10.4 使用throw抛出异常"></a>10.4 使用<code>throw</code>抛出异常</h3><ol>
+<li><strong>抛出异常</strong><ul>
+<li>可以使用 <code>throw</code> 关键字显式抛出异常。例如：  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;非法参数&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><strong><code>Checked</code> 异常的抛出</strong><ul>
+<li>抛出 <code>Checked</code> 异常时，必须在 <code>try</code> 块中或使用 <code>throws</code> 关键字声明，否则编译会报错。</li>
+</ul>
+</li>
+<li><strong><code>Runtime</code> 异常的抛出</strong><ul>
+<li>可以随时抛出 <code>Runtime</code> 异常，编译器不会要求显式捕获。</li>
+</ul>
+</li>
+<li><strong>自定义异常</strong><ul>
+<li>可以通过继承 <code>Exception</code> 或 <code>RuntimeException</code> 来创建自定义异常。例如：  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyException</span> <span class="keyword">extends</span> <span class="title class_">Exception</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MyException</span><span class="params">(String message)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><strong>catch 和 throw 同时使用</strong><ul>
+<li>可以在捕获到异常后重新抛出新的异常。例如：  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 可能发生异常的代码</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">MyException</span>(<span class="string">&quot;自定义异常&quot;</span>, e);  <span class="comment">// 异常链</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><strong>异常链</strong><ul>
+<li>异常链可以将捕获的原始异常包裹在新的异常中，这样可以保留原始异常的上下文信息，便于调试和追踪。例如：  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">MyException</span>(<span class="string">&quot;自定义异常&quot;</span>, e);  <span class="comment">// 包裹原始异常</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="10-6-异常处理规则"><a href="#10-6-异常处理规则" class="headerlink" title="10.6 异常处理规则"></a>10.6 异常处理规则</h3><ol>
+<li><strong>不要过度使用异常</strong><ul>
+<li>仅在无法预料的错误情况下使用异常。能够通过正常逻辑处理的错误，不应抛出异常。</li>
+</ul>
+</li>
+<li><strong>避免过大的<code>try</code>块</strong><ul>
+<li>大的 <code>try</code> 块会增加捕获异常的复杂性，容易导致代码混乱。应将<code>try</code>块的范围缩小，集中处理特定异常。</li>
+</ul>
+</li>
+<li><strong>避免<code>Catch All</code></strong><ul>
+<li>不应使用 <code>Exception</code> 或 <code>Throwable</code> 捕获所有异常，这样会掩盖具体的异常信息。应该有针对性地捕获异常类型。</li>
+</ul>
+</li>
+<li><strong>不要忽略捕获的异常</strong><ul>
+<li>捕获异常后应适当地处理异常或抛出新的异常，不能简单地忽略或仅打印错误信息。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li>Java 的异常机制通过 <code>try-catch-finally</code> 实现，能够有效分离正常业务逻辑和错误处理代码。</li>
+<li>异常处理应该尽量简洁，不应使用过多嵌套或过于复杂的异常捕获机制。</li>
+<li>使用异常链可以传递更详细的错误信息，有助于调试。</li>
+<li>合理使用 <code>Checked</code> 异常和 <code>Runtime</code> 异常，避免滥用异常机制。</li>
+</ol>
+</div><div class="article-licensing box"><div class="licensing-title"><p>《疯狂Java》笔记 异常</p><p><a href="http://shawnzong.cn/2023/03/27/《疯狂Java》笔记 异常/">http://shawnzong.cn/2023/03/27/《疯狂Java》笔记 异常/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Shawn Zong</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-03-27</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2023-03-27</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Java/">Java</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2023/03/28/%E3%80%8A%E5%9B%BE%E8%A7%A3HTTP%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20HTTP%E7%8A%B6%E6%80%81%E7%A0%81/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">《图解HTTP》笔记 第四章 HTTP状态码</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/03/24/%E3%80%8A%E5%9B%BE%E8%A7%A3HTTP%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E4%BA%86%E8%A7%A3Web%E5%8F%8A%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/"><span class="level-item">《图解HTTP》笔记 第一章 了解Web及网络基础</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="disqus_thread"><noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div><script>var disqus_config = function () {
+            this.page.url = 'http://shawnzong.cn/2023/03/27/%E3%80%8A%E7%96%AF%E7%8B%82Java%E3%80%8B%E7%AC%94%E8%AE%B0%20%E5%BC%82%E5%B8%B8/';
+            this.page.identifier = '2023/03/27/《疯狂Java》笔记 异常/';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');  
+            s.src = '//' + 'Shawn' + '.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#10-1-异常概述"><span class="level-left"><span class="level-item">1</span><span class="level-item">10.1 异常概述</span></span></a></li><li><a class="level is-mobile" href="#10-2-异常处理机制"><span class="level-left"><span class="level-item">2</span><span class="level-item">10.2 异常处理机制</span></span></a></li><li><a class="level is-mobile" href="#10-3-Checked异常和Runtime异常体系"><span class="level-left"><span class="level-item">3</span><span class="level-item">10.3 Checked异常和Runtime异常体系</span></span></a></li><li><a class="level is-mobile" href="#10-4-使用throw抛出异常"><span class="level-left"><span class="level-item">4</span><span class="level-item">10.4 使用throw抛出异常</span></span></a></li><li><a class="level is-mobile" href="#10-6-异常处理规则"><span class="level-left"><span class="level-item">5</span><span class="level-item">10.6 异常处理规则</span></span></a></li><li><a class="level is-mobile" href="#总结"><span class="level-left"><span class="level-item">6</span><span class="level-item">总结</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.jpg" alt="Shawn Zong"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Shawn Zong</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">35</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">10</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/PokeHA" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="hhttps://github.com/PokeHA"><i class="fab fa-github"></i></a></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-26T03:22:28.000Z">2023-11-26</time></p><p class="title"><a href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第10章 进程管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-12T03:22:28.000Z">2023-11-12</time></p><p class="title"><a href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">《Linux从入门到精通》笔记 第5章 Shell基本命令</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-25T03:42:28.000Z">2023-10-25</time></p><p class="title"><a href="/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/">《人件 Peopleware》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-09T03:42:28.000Z">2023-10-09</time></p><p class="title"><a href="/2023/10/09/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%20The%20Mythical%20Man-Month%E3%80%8B%E7%AC%94%E8%AE%B0/">《人月神话 The Mythical Man-Month》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-07T08:00:00.000Z">2023-04-07</time></p><p class="title"><a href="/2023/04/07/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%BA%94%E7%AB%A0%20%E9%94%81/">《MySQL是怎样运行的》笔记 第二十五章 锁</a></p></div></article></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/HTTP/"><span class="tag">HTTP</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/HTTPS/"><span class="tag">HTTPS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Java/"><span class="tag">Java</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BF%9D%E7%A0%94/"><span class="tag">保研</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%A0%E6%83%AF/"><span class="tag">学习习惯</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="tag">操作系统</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%BD%91%E7%BB%9C/"><span class="tag">网络</span><span class="tag">6</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><span class="tag">项目管理</span><span class="tag">2</span></a></div></div></div></div></div><!--!--></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a><p class="is-size-7"><span>&copy; 2024 Shawn Zong</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>《图解HTTP》笔记 第六章 HTTP首部 - Shawn Zong&#039;s Notes</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Shawn Zong&#039;s Notes"><meta name="msapplication-TileImage" content="/images/avatar.jpg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Shawn Zong&#039;s Notes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="6.1 简介 HTTP报文首部 HTTP 报文首部包括报文行和报文头部，主要用于传递元数据信息。 HTTP 报文由 报文首部 和 报文主体 组成。报文首部包括： 请求行（请求报文）或 状态行（响应报文） 报文头：包含元数据信息的首部字段 报文主体：用于传输实际的数据     HTTP首部字段 首部字段结构：首部字段由 字段名 和 字段值 组成，即 Key: Value 对，多个字段可以组合在一起传"><meta property="og:type" content="blog"><meta property="og:title" content="《图解HTTP》笔记 第六章 HTTP首部"><meta property="og:url" content="http://shawnzong.cn/2023/03/29/%E3%80%8A%E5%9B%BE%E8%A7%A3HTTP%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%85%AD%E7%AB%A0%20HTTP%E9%A6%96%E9%83%A8/"><meta property="og:site_name" content="Shawn Zong&#039;s Notes"><meta property="og:description" content="6.1 简介 HTTP报文首部 HTTP 报文首部包括报文行和报文头部，主要用于传递元数据信息。 HTTP 报文由 报文首部 和 报文主体 组成。报文首部包括： 请求行（请求报文）或 状态行（响应报文） 报文头：包含元数据信息的首部字段 报文主体：用于传输实际的数据     HTTP首部字段 首部字段结构：首部字段由 字段名 和 字段值 组成，即 Key: Value 对，多个字段可以组合在一起传"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://shawnzong.cn/img/og_image.png"><meta property="article:published_time" content="2023-03-29T03:22:28.000Z"><meta property="article:modified_time" content="2023-03-29T03:22:28.000Z"><meta property="article:author" content="Shawn Zong"><meta property="article:tag" content="网络"><meta property="article:tag" content="HTTP"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://shawnzong.cn/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://shawnzong.cn/2023/03/29/%E3%80%8A%E5%9B%BE%E8%A7%A3HTTP%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%85%AD%E7%AB%A0%20HTTP%E9%A6%96%E9%83%A8/"},"headline":"《图解HTTP》笔记 第六章 HTTP首部","image":["http://shawnzong.cn/img/og_image.png"],"datePublished":"2023-03-29T03:22:28.000Z","dateModified":"2023-03-29T03:22:28.000Z","author":{"@type":"Person","name":"Shawn Zong"},"publisher":{"@type":"Organization","name":"Shawn Zong's Notes","logo":{"@type":"ImageObject","url":"http://shawnzong.cn/images/avatar.jpg"}},"description":"6.1 简介 HTTP报文首部 HTTP 报文首部包括报文行和报文头部，主要用于传递元数据信息。 HTTP 报文由 报文首部 和 报文主体 组成。报文首部包括： 请求行（请求报文）或 状态行（响应报文） 报文头：包含元数据信息的首部字段 报文主体：用于传输实际的数据     HTTP首部字段 首部字段结构：首部字段由 字段名 和 字段值 组成，即 Key: Value 对，多个字段可以组合在一起传"}</script><link rel="canonical" href="http://shawnzong.cn/2023/03/29/%E3%80%8A%E5%9B%BE%E8%A7%A3HTTP%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%85%AD%E7%AB%A0%20HTTP%E9%A6%96%E9%83%A8/"><link rel="icon" href="/images/avatar.jpg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const $tabMenu = document.querySelector(`a[href="${location.hash}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(location.hash);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/tags">标签</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-29T03:22:28.000Z" title="3/29/2023, 11:22:28 AM">2023-03-29</time>发表</span><span class="level-item"><time dateTime="2023-03-29T03:22:28.000Z" title="3/29/2023, 11:22:28 AM">2023-03-29</time>更新</span><span class="level-item">13 分钟读完 (大约1878个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">《图解HTTP》笔记 第六章 HTTP首部</h1><div class="content"><h4 id="6-1-简介"><a href="#6-1-简介" class="headerlink" title="6.1 简介"></a>6.1 简介</h4><ol>
+<li><strong>HTTP报文首部</strong><ul>
+<li>HTTP 报文首部包括报文行和报文头部，主要用于传递元数据信息。</li>
+<li>HTTP 报文由 <strong>报文首部</strong> 和 <strong>报文主体</strong> 组成。报文首部包括：<ol>
+<li><strong>请求行</strong>（请求报文）或 <strong>状态行</strong>（响应报文）</li>
+<li><strong>报文头</strong>：包含元数据信息的首部字段</li>
+<li><strong>报文主体</strong>：用于传输实际的数据</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>HTTP首部字段</strong><ul>
+<li><strong>首部字段结构</strong>：首部字段由 <strong>字段名</strong> 和 <strong>字段值</strong> 组成，即 <code>Key: Value</code> 对，多个字段可以组合在一起传输。</li>
+<li><strong>四种首部字段类型</strong>：<ol>
+<li><strong>通用首部字段</strong>：适用于请求和响应报文，传递常见的信息。</li>
+<li><strong>请求首部字段</strong>：用于客户端向服务器发送的请求报文中，传递客户端的元数据。</li>
+<li><strong>响应首部字段</strong>：用于服务器向客户端发送的响应报文中，传递服务端的元数据。</li>
+<li><strong>实体首部字段</strong>：用于描述报文体（请求体或响应体）的元数据，如长度、编码方式等。</li>
+</ol>
+</li>
+<li><strong>HTTP&#x2F;1.1 首部字段概览</strong>：<ul>
+<li><strong>通用首部字段</strong>：如 <code>Cache-Control</code>, <code>Connection</code>, <code>Date</code>。</li>
+<li><strong>请求首部字段</strong>：如 <code>Host</code>, <code>User-Agent</code>, <code>Accept</code>。</li>
+<li><strong>响应首部字段</strong>：如 <code>Server</code>, <code>ETag</code>, <code>Location</code>。</li>
+<li><strong>实体首部字段</strong>：如 <code>Content-Type</code>, <code>Content-Length</code>, <code>Content-Encoding</code>。</li>
+</ul>
+</li>
+<li><strong>End-to-end 和 Hop-by-hop 首部</strong>：<ol>
+<li><strong>端到端首部</strong>：在整个请求和响应链中有效，转发时不变。常见端到端首部有 <code>Cache-Control</code>, <code>Content-Type</code>。</li>
+<li><strong>逐跳首部</strong>：仅对单次转发有效，不会在代理或中继服务器之间转发。例如 <code>Connection</code>, <code>Keep-Alive</code>, <code>Proxy-Authenticate</code> 等。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h4 id="6-3-通用首部字段详解"><a href="#6-3-通用首部字段详解" class="headerlink" title="6.3 通用首部字段详解"></a>6.3 通用首部字段详解</h4><ol>
+<li><strong>Cache-Control</strong><ul>
+<li><strong>简介</strong>：用于控制缓存机制，指示请求和响应如何缓存或是否缓存。通过多个指令组合使用。</li>
+<li><strong>缓存指令</strong>：<ul>
+<li><strong>public</strong>：缓存对所有用户有效。</li>
+<li><strong>private</strong>：缓存仅对特定用户有效。</li>
+<li><strong>no-cache</strong>：必须先验证缓存的有效性再使用缓存。</li>
+<li><strong>no-store</strong>：不允许缓存，所有内容都必须直接从服务器获取。</li>
+<li><strong>max-age</strong>：指定缓存的最大有效时间（秒数），超过该时间后必须重新请求。</li>
+<li><strong>s-maxage</strong>：用于公共缓存的最大有效时间，优先于 <code>max-age</code>。</li>
+<li><strong>must-revalidate</strong>：缓存过期后必须重新验证其有效性，不能使用过期缓存。</li>
+<li><strong>no-transform</strong>：禁止代理或其他中间服务器更改传输中的资源内容。  <span id="more"></span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Connection</strong><ul>
+<li><strong>简介</strong>：控制不再转发给代理的首部字段，并用于管理持久连接（长连接或短连接）。</li>
+<li><strong>Connection: close</strong>：表示关闭连接，使用短连接。</li>
+<li><strong>Connection: Keep-Alive</strong>：表示保持连接，使用长连接，适用于多次请求-响应的通信。<ul>
+<li>HTTP&#x2F;1.1 默认使用长连接。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Date</strong><ul>
+<li><strong>简介</strong>：表示报文的创建时间，格式为 <code>Date: Tue, 15 Nov 1994 08:12:31 GMT</code>。</li>
+</ul>
+</li>
+<li><strong>Pragma</strong><ul>
+<li><strong>Pragma: no-cache</strong>：遗留字段，主要用于 HTTP&#x2F;1.0，表示不使用缓存内容，必须重新请求服务器。</li>
+</ul>
+</li>
+<li><strong>Transfer-Encoding</strong><ul>
+<li><strong>简介</strong>：指示报文主体传输时的编码方式，常用于分块传输大文件。</li>
+<li><strong>Transfer-Encoding: chunked</strong>：分块传输，使报文可以逐块发送和接收，不必知道总长度。</li>
+</ul>
+</li>
+<li><strong>Upgrade</strong><ul>
+<li><strong>简介</strong>：用于请求或响应中切换协议，如从 HTTP 切换到 HTTPS 或 TLS。</li>
+<li>示例：<code>Upgrade: TLS/1.0, HTTP/1.1</code>。</li>
+</ul>
+</li>
+<li><strong>Via</strong><ul>
+<li><strong>简介</strong>：用于记录请求或响应报文经过的代理服务器信息，显示报文通过的每一个中间节点。</li>
+</ul>
+</li>
+<li><strong>Warning</strong><ul>
+<li><strong>简介</strong>：用于告知客户端与缓存相关的警告信息，例如 <code>Warning: 110 - Response is Stale</code>（响应数据过期）。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h4 id="6-4-请求首部字段"><a href="#6-4-请求首部字段" class="headerlink" title="6.4 请求首部字段"></a>6.4 请求首部字段</h4><ol>
+<li><strong>Accept</strong><ul>
+<li><strong>简介</strong>：用于指定客户端可以接收的媒体类型。</li>
+<li>示例：<code>Accept: text/html, application/json;q=0.9</code>（表示优先接收 <code>text/html</code>，但也能接受 <code>application/json</code>）。</li>
+</ul>
+</li>
+<li><strong>Accept-Charset</strong><ul>
+<li><strong>简介</strong>：用于指定客户端可以接收的字符集编码。</li>
+<li>示例：<code>Accept-Charset: utf-8, iso-8859-1;q=0.7</code>。</li>
+</ul>
+</li>
+<li><strong>Accept-Encoding</strong><ul>
+<li><strong>简介</strong>：指定客户端支持的内容编码方式。</li>
+<li>常见编码方式：<code>gzip</code>, <code>compress</code>, <code>deflate</code>, <code>identity</code>（不编码）。</li>
+</ul>
+</li>
+<li><strong>Accept-Language</strong><ul>
+<li><strong>简介</strong>：用于指定客户端希望的响应语言。</li>
+<li>示例：<code>Accept-Language: en-US, fr;q=0.8</code>。</li>
+</ul>
+</li>
+<li><strong>Authorization</strong><ul>
+<li><strong>简介</strong>：客户端向服务器提供身份验证信息，用于访问受限资源。</li>
+<li>示例：<code>Authorization: Basic dXNlcjpwYXNzd29yZA==</code>。</li>
+</ul>
+</li>
+<li><strong>Host</strong><ul>
+<li><strong>简介</strong>：指定请求的目标主机名，用于支持虚拟主机。</li>
+<li>示例：<code>Host: www.example.com</code>。</li>
+</ul>
+</li>
+<li><strong>Range</strong><ul>
+<li><strong>简介</strong>：请求获取资源的部分内容，用于分段下载大文件。</li>
+<li>示例：<code>Range: bytes=500-999</code>（请求第 500 到 999 字节的资源）。</li>
+</ul>
+</li>
+<li><strong>User-Agent</strong><ul>
+<li><strong>简介</strong>：客户端浏览器或设备信息，用于识别发起请求的设备类型。</li>
+<li>示例：<code>User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)</code>。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h4 id="6-5-响应首部字段"><a href="#6-5-响应首部字段" class="headerlink" title="6.5 响应首部字段"></a>6.5 响应首部字段</h4><ol>
+<li><strong>Accept-Range</strong><ul>
+<li><strong>简介</strong>：用于告知客户端服务器是否支持范围请求（分段下载）。</li>
+<li>示例：<code>Accept-Range: bytes</code>（支持字节范围请求）。</li>
+</ul>
+</li>
+<li><strong>ETag</strong><ul>
+<li><strong>简介</strong>：资源的唯一标识符，用于检测资源是否发生变化。每次资源修改都会更新 ETag。</li>
+<li>示例：<code>ETag: &quot;33a64df551425fcc55e4d42a148795d9f25f89d9&quot;</code>。</li>
+</ul>
+</li>
+<li><strong>Location</strong><ul>
+<li><strong>简介</strong>：用于重定向响应，告知客户端资源的新位置，通常与 3XX 状态码配合使用。</li>
+<li>示例：<code>Location: http://www.example.org/index.html</code>。</li>
+</ul>
+</li>
+<li><strong>Retry-After</strong><ul>
+<li><strong>简介</strong>：告知客户端需要等待的时间后再重新发起请求。</li>
+<li>示例：<code>Retry-After: 120</code>（120秒后重试）。</li>
+</ul>
+</li>
+<li><strong>Server</strong><ul>
+<li><strong>简介</strong>：用于告知客户端服务器的相关信息。</li>
+<li>示例：<code>Server: Apache/2.4.1 (Unix)</code>。</li>
+</ul>
+</li>
+<li><strong>Vary</strong><ul>
+<li><strong>简介</strong>：用于指定缓存响应时需考虑的首部字段，如果 <code>Vary</code> 中的字段值不同，则缓存失效。</li>
+<li>示例：<code>Vary: Accept-Encoding</code>。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h4 id="6-6-实体首部字段"><a href="#6-6-实体首部字段" class="headerlink" title="6.6 实体首部字段"></a>6.6 实体首部字段</h4><ol>
+<li><strong>Content-Encoding</strong><ul>
+<li><strong>简介</strong>：描述实体内容的编码方式。</li>
+<li>示例：<code>Content-Encoding: gzip</code>（实体内容采用 gzip 压缩）。</li>
+</ul>
+</li>
+<li><strong>Content-Length</strong><ul>
+<li><strong>简介</strong>：表示实体内容的字节大小。</li>
+<li>示例：<code>Content-Length: 348</code>。</li>
+</ul>
+</li>
+<li><strong>Content-Type</strong><ul>
+<li><strong>简介</strong>：描述实体内容的媒体类型。</li>
+<li>示例：<code>Content-Type: text/html; charset=utf-8</code>。</li>
+</ul>
+</li>
+<li><strong>Content-Range</strong><ul>
+<li><strong>简介</strong>：用于描述部分实体内容的范围。</li>
+<li>示例：<code>Content-Range: bytes 200-1000/67589</code>。</li>
+</ul>
+</li>
+<li><strong>Expires</strong><ul>
+<li><strong>简介</strong>：指明实体内容的过期时间，过期后需要重新获取资源。</li>
+<li>示例：<code>Expires: Wed, 21 Oct 2023 07:28:00 GMT</code>。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h4 id="6-7-为Cookie服务的首部字段"><a href="#6-7-为Cookie服务的首部字段" class="headerlink" title="6.7 为Cookie服务的首部字段"></a>6.7 为Cookie服务的首部字段</h4><ol>
+<li><strong>Set-Cookie</strong><ul>
+<li><strong>简介</strong>：服务端通过该字段设置客户端的 Cookie，用于会话管理和身份验证。</li>
+<li>示例：<code>Set-Cookie: sessionId=abc123; Path=/; Expires=Wed, 21 Oct 2023 07:28:00 GMT; Secure; HttpOnly</code>。<ul>
+<li><strong>Expires</strong>：指定 Cookie 的有效期。</li>
+<li><strong>Path</strong>：指定 Cookie 有效的 URL 路径。</li>
+<li><strong>Domain</strong>：指定 Cookie 有效的域。</li>
+<li><strong>Secure</strong>：只允许在 HTTPS 连接中传输。</li>
+<li><strong>HttpOnly</strong>：仅限于 HTTP 使用，禁止通过 JavaScript 访问。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Cookie</strong><ul>
+<li><strong>简介</strong>：客户端在发送请求时，携带服务端设置的 Cookie。</li>
+<li>示例：<code>Cookie: sessionId=abc123</code>。</li>
+</ul>
+</li>
+</ol>
+</div><div class="article-licensing box"><div class="licensing-title"><p>《图解HTTP》笔记 第六章 HTTP首部</p><p><a href="http://shawnzong.cn/2023/03/29/《图解HTTP》笔记 第六章 HTTP首部/">http://shawnzong.cn/2023/03/29/《图解HTTP》笔记 第六章 HTTP首部/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Shawn Zong</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-03-29</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2023-03-29</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/%E7%BD%91%E7%BB%9C/">网络</a><a class="link-muted mr-2" rel="tag" href="/tags/HTTP/">HTTP</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2023/03/30/%E3%80%8A%E5%9B%BE%E8%A7%A3HTTP%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%83%E7%AB%A0%20HTTPS/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">《图解HTTP》笔记 第七章 HTTPS</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/03/28/%E3%80%8A%E5%9B%BE%E8%A7%A3HTTP%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20HTTP%E7%8A%B6%E6%80%81%E7%A0%81/"><span class="level-item">《图解HTTP》笔记 第四章 HTTP状态码</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="disqus_thread"><noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div><script>var disqus_config = function () {
+            this.page.url = 'http://shawnzong.cn/2023/03/29/%E3%80%8A%E5%9B%BE%E8%A7%A3HTTP%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%85%AD%E7%AB%A0%20HTTP%E9%A6%96%E9%83%A8/';
+            this.page.identifier = '2023/03/29/《图解HTTP》笔记 第六章 HTTP首部/';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');  
+            s.src = '//' + 'Shawn' + '.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#6-1-简介"><span class="level-left"><span class="level-item">1</span><span class="level-item">6.1 简介</span></span></a></li><li><a class="level is-mobile" href="#6-3-通用首部字段详解"><span class="level-left"><span class="level-item">2</span><span class="level-item">6.3 通用首部字段详解</span></span></a></li><li><a class="level is-mobile" href="#6-4-请求首部字段"><span class="level-left"><span class="level-item">3</span><span class="level-item">6.4 请求首部字段</span></span></a></li><li><a class="level is-mobile" href="#6-5-响应首部字段"><span class="level-left"><span class="level-item">4</span><span class="level-item">6.5 响应首部字段</span></span></a></li><li><a class="level is-mobile" href="#6-6-实体首部字段"><span class="level-left"><span class="level-item">5</span><span class="level-item">6.6 实体首部字段</span></span></a></li><li><a class="level is-mobile" href="#6-7-为Cookie服务的首部字段"><span class="level-left"><span class="level-item">6</span><span class="level-item">6.7 为Cookie服务的首部字段</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.jpg" alt="Shawn Zong"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Shawn Zong</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">35</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">10</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/PokeHA" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="hhttps://github.com/PokeHA"><i class="fab fa-github"></i></a></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-26T03:22:28.000Z">2023-11-26</time></p><p class="title"><a href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第10章 进程管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-12T03:22:28.000Z">2023-11-12</time></p><p class="title"><a href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">《Linux从入门到精通》笔记 第5章 Shell基本命令</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-25T03:42:28.000Z">2023-10-25</time></p><p class="title"><a href="/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/">《人件 Peopleware》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-09T03:42:28.000Z">2023-10-09</time></p><p class="title"><a href="/2023/10/09/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%20The%20Mythical%20Man-Month%E3%80%8B%E7%AC%94%E8%AE%B0/">《人月神话 The Mythical Man-Month》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-07T08:00:00.000Z">2023-04-07</time></p><p class="title"><a href="/2023/04/07/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%BA%94%E7%AB%A0%20%E9%94%81/">《MySQL是怎样运行的》笔记 第二十五章 锁</a></p></div></article></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/HTTP/"><span class="tag">HTTP</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/HTTPS/"><span class="tag">HTTPS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Java/"><span class="tag">Java</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BF%9D%E7%A0%94/"><span class="tag">保研</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%A0%E6%83%AF/"><span class="tag">学习习惯</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="tag">操作系统</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%BD%91%E7%BB%9C/"><span class="tag">网络</span><span class="tag">6</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><span class="tag">项目管理</span><span class="tag">2</span></a></div></div></div></div></div><!--!--></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a><p class="is-size-7"><span>&copy; 2024 Shawn Zong</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

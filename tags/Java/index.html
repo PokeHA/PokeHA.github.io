@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="robots" content="noindex"><meta><title>标签: Java - Shawn Zong&#039;s Notes</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Shawn Zong&#039;s Notes"><meta name="msapplication-TileImage" content="/images/avatar.jpg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Shawn Zong&#039;s Notes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="Guns, lots of guns"><meta property="og:type" content="blog"><meta property="og:title" content="Shawn Zong&#039;s Notes"><meta property="og:url" content="http://shawnzong.cn/"><meta property="og:site_name" content="Shawn Zong&#039;s Notes"><meta property="og:description" content="Guns, lots of guns"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://shawnzong.cn/img/og_image.png"><meta property="article:author" content="Shawn Zong"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://shawnzong.cn/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://shawnzong.cn"},"headline":"Shawn Zong's Notes","image":["http://shawnzong.cn/img/og_image.png"],"author":{"@type":"Person","name":"Shawn Zong"},"publisher":{"@type":"Organization","name":"Shawn Zong's Notes","logo":{"@type":"ImageObject","url":"http://shawnzong.cn/images/avatar.jpg"}},"description":"Guns, lots of guns"}</script><link rel="icon" href="/images/avatar.jpg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const $tabMenu = document.querySelector(`a[href="${location.hash}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(location.hash);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/tags">标签</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/PokeHA"><i class="fab fa-github"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><div class="card-content"><nav class="breadcrumb" aria-label="breadcrumbs"><ul><li><a href="/tags">标签</a></li><li class="is-active"><a href="#" aria-current="page">Java</a></li></ul></nav></div></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-04-01T03:22:28.000Z" title="4/1/2023, 11:22:28 AM">2023-04-01</time>发表</span><span class="level-item"><time dateTime="2023-04-01T03:22:28.000Z" title="4/1/2023, 11:22:28 AM">2023-04-01</time>更新</span><span class="level-item">10 分钟读完 (大约1533个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/04/01/%E3%80%8A%E7%96%AF%E7%8B%82Java%E3%80%8B%E7%AC%94%E8%AE%B0%20%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6/">《疯狂Java》笔记 反射机制</a></h1><div class="content"><h3 id="本章要点"><a href="#本章要点" class="headerlink" title="本章要点"></a><strong>本章要点</strong></h3><ol>
+<li>使用 <code>Class</code> 对象</li>
+<li>Java 8 新增的方法参数反射</li>
+<li>动态创建 Java 对象</li>
+<li>动态调用方法</li>
+<li>访问并修改 Java 对象的属性值</li>
+<li>使用反射操作数组</li>
+<li>使用 <code>Proxy</code> 和 <code>InvocationHandler</code> 创建动态代理</li>
+<li>AOP 入门</li>
+<li><code>Class</code> 类的泛型</li>
+<li>通过反射获取泛型类型</li>
+</ol>
+<hr>
+<h3 id="18-3-通过反射查看类信息"><a href="#18-3-通过反射查看类信息" class="headerlink" title="18.3 通过反射查看类信息"></a>18.3 通过反射查看类信息</h3><p><strong>简介</strong>：<br>Java 中变量有编译时类型和运行时类型。编译时类型是变量声明的类型，而运行时类型是对象的实际类型。通过 <code>instanceof</code> 可以判断一个对象是否是某个类型，而通过反射可以获取对象的类信息，甚至在运行时动态操作类和对象。反射允许在运行时动态获取类的详细信息，例如构造器、成员变量、方法等，并且可以创建对象、调用方法、访问和修改对象的属性值。反射特别适合在运行时根据字符串动态生成对象的场景。</p>
+<ol>
+<li><strong>获取 <code>Class</code> 对象的三种方式</strong><ul>
+<li>**<code>Class.forName(String name)</code>**：<ul>
+<li>通过类的全限定名获取 <code>Class</code> 对象，可能会抛出 <code>ClassNotFoundException</code>。</li>
+<li>例如：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class&lt;?&gt; clazz = Class.forName(<span class="string">&quot;java.lang.String&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><strong>类的 <code>.class</code> 属性</strong>：<ul>
+<li>例如 <code>Person.class</code>，这种方式速度更快，且更安全。</li>
+</ul>
+</li>
+<li><strong>调用对象的 <code>getClass()</code> 方法</strong>：<ul>
+<li>返回该对象所属类的 <code>Class</code> 对象。</div><a class="article-more button is-small is-size-7" href="/2023/04/01/%E3%80%8A%E7%96%AF%E7%8B%82Java%E3%80%8B%E7%AC%94%E8%AE%B0%20%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-31T03:22:28.000Z" title="3/31/2023, 11:22:28 AM">2023-03-31</time>发表</span><span class="level-item"><time dateTime="2023-03-31T03:22:28.000Z" title="3/31/2023, 11:22:28 AM">2023-03-31</time>更新</span><span class="level-item">8 分钟读完 (大约1237个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/31/%E3%80%8A%E7%96%AF%E7%8B%82Java%E3%80%8B%E7%AC%94%E8%AE%B0%20%E6%B3%A8%E8%A7%A3/">《疯狂Java》笔记 注解</a></h1><div class="content"><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a><strong>简介</strong></h3><p>注解（Annotation）是一种特殊的标记，可以在编译、运行的时候通过反射获取，并且执行相应的处理。注解的好处是可以在不改变原有逻辑的情况下添加一些补充的信息。<code>Annotation</code> 是一个接口，可以通过反射来获得指定对象的注解对象，然后通过注解对象获取其中的元数据。注解的处理工具称为 <strong>APT</strong>（Annotation Processing Tool）。</p>
+<hr>
+<h3 id="本章要点"><a href="#本章要点" class="headerlink" title="本章要点"></a>本章要点</h3><ol>
+<li>Annotation 的概念和作用</li>
+<li><code>@Override</code></li>
+<li><code>@Deprecated</code></li>
+<li><code>@SuppressWarnings</code></li>
+<li>自定义注解</li>
+<li>重复注解</li>
+<li>Type Annotation</li>
+<li>提取注释信息</li>
+<li><code>@Retention</code></li>
+<li><code>@Target</code></li>
+<li><code>@Documented</code></li>
+<li><code>@Inherited</code></li>
+</ol>
+<hr>
+<h3 id="14-1-基本-Annotation"><a href="#14-1-基本-Annotation" class="headerlink" title="14.1 基本 Annotation"></a>14.1 基本 Annotation</h3><ol>
+<li><strong><code>@Override</code></strong><ul>
+<li>用于标识当前方法是重写了父类的方法。</li>
+<li>如果没有正确地重写父类的方法，例如方法签名不匹配，编译时会报错。</li>
+<li>例如：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;This is an override method.&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><a class="article-more button is-small is-size-7" href="/2023/03/31/%E3%80%8A%E7%96%AF%E7%8B%82Java%E3%80%8B%E7%AC%94%E8%AE%B0%20%E6%B3%A8%E8%A7%A3/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-31T03:22:28.000Z" title="3/31/2023, 11:22:28 AM">2023-03-31</time>发表</span><span class="level-item"><time dateTime="2023-03-31T03:22:28.000Z" title="3/31/2023, 11:22:28 AM">2023-03-31</time>更新</span><span class="level-item">10 分钟读完 (大约1484个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/31/%E3%80%8A%E7%96%AF%E7%8B%82Java%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">《疯狂Java》笔记 类加载机制</a></h1><div class="content"><h3 id="本章要点"><a href="#本章要点" class="headerlink" title="本章要点"></a><strong>本章要点</strong></h3><ol>
+<li>类加载</li>
+<li>类连接的过程</li>
+<li>类初始化的过程</li>
+<li>类加载器及其实现机制</li>
+<li>继承 <code>ClassLoader</code> 实现自定义类加载器</li>
+<li>使用 <code>URLClassLoader</code></li>
+</ol>
+<hr>
+<h3 id="18-1-类的加载、连接和初始化"><a href="#18-1-类的加载、连接和初始化" class="headerlink" title="18.1 类的加载、连接和初始化"></a>18.1 类的加载、连接和初始化</h3><p>JVM 可能在第一次使用某个类时加载该类，也可能采用预加载机制来提前加载某个类。</p>
+<ol>
+<li><strong>JVM 和类</strong><ul>
+<li>当执行一个 Java 程序时，会启动一个 JVM 进程，所有线程和数据都在这一个进程里。</li>
+<li>JVM 终止的情况：<ul>
+<li>程序正常执行结束。</li>
+<li>出现未捕捉的异常或错误。</li>
+<li>调用 <code>System.exit()</code>。</li>
+<li>进程被外部强制关闭。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>类的加载（不包括连接和初始化）</strong><ul>
+<li>当程序使用某个类时，如果该类尚未被加载到内存中，JVM 会通过类加载器将类的 <code>.class</code> 文件加载到内存，并创建一个 <code>java.lang.Class</code> 对象。</li>
+<li>类加载的来源：<ul>
+<li>本地 <code>.class</code> 文件。</li>
+<li><code>.jar</code> 包中的类文件。</li>
+<li>网络上的类文件。</li>
+<li>动态编译的 Java 源文件。</div><a class="article-more button is-small is-size-7" href="/2023/03/31/%E3%80%8A%E7%96%AF%E7%8B%82Java%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-27T03:22:28.000Z" title="3/27/2023, 11:22:28 AM">2023-03-27</time>发表</span><span class="level-item"><time dateTime="2023-03-27T03:22:28.000Z" title="3/27/2023, 11:22:28 AM">2023-03-27</time>更新</span><span class="level-item">11 分钟读完 (大约1597个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/27/%E3%80%8A%E7%96%AF%E7%8B%82Java%E3%80%8B%E7%AC%94%E8%AE%B0%20%E5%BC%82%E5%B8%B8/">《疯狂Java》笔记 异常</a></h1><div class="content"><p><strong>本章要点</strong></p>
+<ol>
+<li>异常的定义和概念</li>
+<li>Java异常机制的优势</li>
+<li>使用<code>try-catch</code>捕获异常</li>
+<li>多异常捕获</li>
+<li><code>finally</code>块的作用</li>
+<li>自动关闭资源的<code>try</code>语句</li>
+<li>异常处理的合理嵌套</li>
+<li><code>Checked</code>异常和<code>Runtime</code>异常</li>
+<li>使用<code>throws</code>声明异常</li>
+<li>使用<code>throw</code>抛出异常</li>
+<li>自定义异常</li>
+<li>异常链和异常转译</li>
+<li>异常的跟踪栈信息</li>
+<li>异常的处理规则</li>
+</ol>
+<hr>
+<h3 id="10-1-异常概述"><a href="#10-1-异常概述" class="headerlink" title="10.1 异常概述"></a>10.1 异常概述</h3><p>Java 的异常处理机制可以将“业务代码”和“异常处理代码”分离，提高代码可读性。</p>
+<ol>
+<li><strong>异常处理机制的关键字</strong><ul>
+<li><code>try</code>：用于包裹可能会发生异常的代码块。</li>
+<li><code>catch</code>：捕获并处理指定类型的异常。</li>
+<li><code>finally</code>：无论是否抛出异常，都会执行，用于回收资源。</li>
+<li><code>throws</code>：声明方法可能抛出的异常。</li>
+<li><code>throw</code>：实际抛出一个异常。</li>
+</ul>
+</li>
+<li><strong>异常的分类</strong><ul>
+<li><code>Checked</code> 异常：<ul>
+<li>编译时必须处理的异常，所有的 <code>Checked</code> 异常都必须明确处理（捕获或声明）。</li>
+</ul>
+</li>
+<li><code>Runtime</code> 异常：<ul>
+<li>运行时异常，可以选择不处理，常见如 <code>NullPointerException</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="10-2-异常处理机制"><a href="#10-2-异常处理机制" class="headerlink" title="10.2 异常处理机制"></a>10.2 异常处理机制</h3><ol>
+<li><strong>使用<code>try-catch</code>捕获异常</strong><ul>
+<li>当<code>try</code>块中的代码在运行时出现异常时，系统会自动生成一个异常对象，并将其交给 JVM。JVM 会查找匹配的 <code>catch</code> 块，找到后进行处理，若找不到，程序会退出。</div><a class="article-more button is-small is-size-7" href="/2023/03/27/%E3%80%8A%E7%96%AF%E7%8B%82Java%E3%80%8B%E7%AC%94%E8%AE%B0%20%E5%BC%82%E5%B8%B8/#more">阅读更多</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-03-18T03:22:28.000Z" title="3/18/2023, 11:22:28 AM">2023-03-18</time>发表</span><span class="level-item"><time dateTime="2023-03-18T03:22:28.000Z" title="3/18/2023, 11:22:28 AM">2023-03-18</time>更新</span><span class="level-item">11 分钟读完 (大约1701个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/03/18/%E3%80%8A%E7%96%AF%E7%8B%82Java%E3%80%8B%E7%AC%94%E8%AE%B0%20%E6%B3%9B%E5%9E%8B/">《疯狂Java》笔记 泛型</a></h1><div class="content"><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a><strong>简介</strong></h3><p>在JDK 1.5添加泛型之前，集合类没法记住每个对象的类型，只能把所有的对象当作 <code>Object</code> 类处理。并且取出对象后需要进行强制类型转换，容易出现 <code>ClassCastException</code>。有了泛型之后，可以记住集合中元素的类型，并在往集合中添加对象时检查类型是否正确。</p>
+<h3 id="章节要点"><a href="#章节要点" class="headerlink" title="章节要点"></a>章节要点</h3><ol>
+<li>编译时类型检查的重要性。</li>
+<li>使用泛型实现编译时类型检查。</li>
+<li>定义泛型接口、泛型类。</li>
+<li>派生泛型接口、泛型类的子类、实现类。</li>
+<li>使用类型通配符。</li>
+<li>设定类型通配符的上限。</li>
+<li>设定类型形参的上限。</li>
+<li>在方法签名中定义类型形参。</li>
+<li>泛型方法和类型通配符的区别与联系。</li>
+<li>设定类型通配符的下限。</li>
+<li>泛型方法与方法重载。</li>
+<li>Java 8 改进的类型推断。</li>
+<li>擦除与转换。</li>
+<li>泛型与数组。</li>
+</ol>
+<hr>
+<h3 id="9-1-泛型入门"><a href="#9-1-泛型入门" class="headerlink" title="9.1 泛型入门"></a>9.1 泛型入门</h3><ol>
+<li><strong>集合不使用泛型会带来的问题</strong><ul>
+<li>将元素放入集合时不会对类型进行检查。</li>
+<li>取出集合时，需要进行强制类型转换，容易出现 <code>ClassCastException</code>。</li>
+<li>例如：  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">List</span> <span class="variable">list</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>();</span><br><span class="line">list.add(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">list.add(<span class="number">10</span>);  <span class="comment">// 没有泛型检查，允许插入不同类型的对象</span></span><br><span class="line"><span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> (String) list.get(<span class="number">0</span>);  <span class="comment">// 需要强制类型转换</span></span><br><span class="line"><span class="type">Integer</span> <span class="variable">num</span> <span class="operator">=</span> (Integer) list.get(<span class="number">1</span>);  <span class="comment">// 可能导致 ClassCastException</span></span><br></pre></td></tr></table></figure></div><a class="article-more button is-small is-size-7" href="/2023/03/18/%E3%80%8A%E7%96%AF%E7%8B%82Java%E3%80%8B%E7%AC%94%E8%AE%B0%20%E6%B3%9B%E5%9E%8B/#more">阅读更多</a></article></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.jpg" alt="Shawn Zong"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Shawn Zong</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">35</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">10</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/PokeHA" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/PokeHA"><i class="fab fa-github"></i></a></div></div></div><!--!--><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/HTTP/"><span class="tag">HTTP</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/HTTPS/"><span class="tag">HTTPS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Java/"><span class="tag">Java</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BF%9D%E7%A0%94/"><span class="tag">保研</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%A0%E6%83%AF/"><span class="tag">学习习惯</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="tag">操作系统</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%BD%91%E7%BB%9C/"><span class="tag">网络</span><span class="tag">6</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><span class="tag">项目管理</span><span class="tag">2</span></a></div></div></div></div></div><!--!--><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-26T03:22:28.000Z">2023-11-26</time></p><p class="title"><a href="/2023/11/26/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC10%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">《Linux从入门到精通》笔记 第10章 进程管理</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-12T03:22:28.000Z">2023-11-12</time></p><p class="title"><a href="/2023/11/12/%E3%80%8ALinux%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC5%E7%AB%A0%20Shell%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">《Linux从入门到精通》笔记 第5章 Shell基本命令</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-25T03:42:28.000Z">2023-10-25</time></p><p class="title"><a href="/2023/10/25/%E3%80%8A%E4%BA%BA%E4%BB%B6%20Peopleware%E3%80%8B%E7%AC%94%E8%AE%B0/">《人件 Peopleware》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-09T03:42:28.000Z">2023-10-09</time></p><p class="title"><a href="/2023/10/09/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%20The%20Mythical%20Man-Month%E3%80%8B%E7%AC%94%E8%AE%B0/">《人月神话 The Mythical Man-Month》笔记</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-07T08:00:00.000Z">2023-04-07</time></p><p class="title"><a href="/2023/04/07/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E3%80%8B%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%BA%94%E7%AB%A0%20%E9%94%81/">《MySQL是怎样运行的》笔记 第二十五章 锁</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2023/11/"><span class="level-start"><span class="level-item">十一月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/10/"><span class="level-start"><span class="level-item">十月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/04/"><span class="level-start"><span class="level-item">四月 2023</span></span><span class="level-end"><span class="level-item tag">8</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/03/"><span class="level-start"><span class="level-item">三月 2023</span></span><span class="level-end"><span class="level-item tag">18</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/02/"><span class="level-start"><span class="level-item">二月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/12/"><span class="level-start"><span class="level-item">十二月 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/11/"><span class="level-start"><span class="level-item">十一月 2022</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/avatar.jpg" alt="Shawn Zong&#039;s Notes" height="28"></a><p class="is-size-7"><span>&copy; 2024 Shawn Zong</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
